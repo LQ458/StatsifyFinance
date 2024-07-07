@@ -13,6 +13,10 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        // 在这里添加自定义颜色
+        "topbar-color": "rgba(0, 0, 0, 0.7)",
+      },
     },
   },
   plugins: [],
