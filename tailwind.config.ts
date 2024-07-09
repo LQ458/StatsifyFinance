@@ -15,7 +15,12 @@ const config: Config = {
       },
       colors: {
         // 在这里添加自定义颜色
-        "topbar-color": "rgba(0, 0, 0, 0.7)",
+        "topbar-color": "rgba(0, 0, 0, 0.9)",
+        "footer-color": "rgba(40, 40, 40, 1)",
+        "grey-color": "rgba(255, 255, 255, 0.3)",
+      },
+      fontSize: {
+        "footer-font": "0.8em",
       },
     },
   },

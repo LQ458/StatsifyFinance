@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
-import styles from "./topbar.module.css";
+import styles from "../css/topbar.module.css";
 
 const Topbar = () => {
   const [rotate, setRotate] = useState("original");
