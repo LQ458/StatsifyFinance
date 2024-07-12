@@ -35,7 +35,10 @@ const Topbar = () => {
               >
                 <h4 className="self-center font-[400]">分析</h4>
               </Link>
-              <Link href="#" className="justify-center flex no-underline text-black h-[4em] pr-9">
+              <Link
+                href="#"
+                className="justify-center flex no-underline text-black h-[4em] pr-9"
+              >
                 <h4 className="self-center font-[400]">策略</h4>
               </Link>
             </div>
