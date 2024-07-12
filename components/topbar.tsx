@@ -21,8 +21,14 @@ const Topbar = () => {
           onMouseEnter={() => setRotate("true")}
           onMouseLeave={() => setRotate("false")}
         >
-          <div className="bg-white flex justify-center space-x-1 cursor-pointer relative w-[7em]">
-            <h4 className="font-[400] self-center">Learn</h4>
+          <div
+            className={`${rotate === "true" && "bg-white"} flex justify-center space-x-1 cursor-pointer relative w-[7em]`}
+          >
+            <h4
+              className={`font-[400] self-center ${rotate !== "true" && "text-white"}`}
+            >
+              Learn
+            </h4>
             <IoIosArrowDown
               className={`self-center relative ${rotate === "true" && styles.iconRotate} ${rotate === "false" && styles.iconOriginal} text-[1.6em]`}
             />
