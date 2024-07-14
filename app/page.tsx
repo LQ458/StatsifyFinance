@@ -31,6 +31,31 @@ export default function Home() {
           className="absolute top-[20%] right-[20%]"
           alt="icon"
         />
+        <div
+          className="absolute bottom-[-4rem] h-[8rem] w-[60%] left-1/2 flex flex-row"
+          style={{ transform: "translateX(-50%)" }}
+        >
+          <div className="inline-flex relative" style={{ flexGrow: "1" }}>
+            <img src="./map-left.png" alt="left" className="bg-cover w-full" />
+            <div
+              className="absolute text-white text-2xl font-[600] text-right left-1/2 top-1/2"
+              style={{ transform: "translate(-50%, -50%)" }}
+            >
+              <p>Vocabs</p>
+              <p className="whitespace-nowrap">for the week</p>
+            </div>
+          </div>
+          <div className="bg-white" style={{ flexGrow: "12" }}></div>
+          <div className="bg-gray-300" style={{ flexGrow: "0.1" }} />
+          <div className="bg-white" style={{ flexGrow: "12" }}></div>
+          <div className="inline-flex" style={{ flexGrow: "0.3" }}>
+            <img
+              src="./map-right.png"
+              alt="right"
+              className="bg-cover w-full"
+            />
+          </div>
+        </div>
       </div>
       <Footer />
     </main>
