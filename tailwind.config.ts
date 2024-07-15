@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "intro-1": "url('/intro1.png')",
+        "intro-2": "url('/intro2.png')",
       },
       colors: {
         // 在这里添加自定义颜色

@@ -32,10 +32,13 @@ export default function Home() {
           alt="icon"
         />
         <div
-          className="absolute bottom-[-4rem] h-[8rem] w-[60%] left-1/2 flex flex-row"
+          className="absolute bottom-[-4rem] h-[8rem] w-[62%] left-1/2 flex flex-row"
           style={{ transform: "translateX(-50%)" }}
         >
-          <div className="inline-flex relative" style={{ flexGrow: "1" }}>
+          <div
+            className="inline-flex relative"
+            style={{ flexGrow: "4", flexBasis: "0" }}
+          >
             <img src="./map-left.png" alt="left" className="bg-cover w-full" />
             <div
               className="absolute text-white text-2xl font-[600] text-right left-1/2 top-1/2"
@@ -45,16 +48,71 @@ export default function Home() {
               <p className="whitespace-nowrap">for the week</p>
             </div>
           </div>
-          <div className="bg-white" style={{ flexGrow: "12" }}></div>
-          <div className="bg-gray-300" style={{ flexGrow: "0.1" }} />
-          <div className="bg-white" style={{ flexGrow: "12" }}></div>
-          <div className="inline-flex" style={{ flexGrow: "0.3" }}>
+          <div
+            className="bg-white grid grid-cols-2 p-4"
+            style={{ flexGrow: "6", flexBasis: "0" }}
+          >
+            <div className="flex flex-col gap-1">
+              <h2 className="text-lg">ESG</h2>
+              <p className="text-xs">
+                ESG
+                是环境、社会和治理的缩写。它是一种衡量企业可持续性和社会责任的标准
+              </p>
+            </div>
+            <img
+              src="https://picsum.photos/id/247/150/90"
+              width="90%"
+              height="90%"
+              alt="pic1"
+              className="m-auto relative object-cover"
+            />
+          </div>
+          <div
+            className="bg-gray-300"
+            style={{ flexGrow: "0.1", flexBasis: "0" }}
+          />
+          <div
+            className="bg-white grid grid-cols-2 p-4"
+            style={{ flexGrow: "6", flexBasis: "0" }}
+          >
+            <div className="flex flex-col gap-1">
+              <h2 className="text-lg">ESG</h2>
+              <p className="text-xs">
+                ESG
+                是环境、社会和治理的缩写。它是一种衡量企业可持续性和社会责任的标准
+              </p>
+            </div>
+            <img
+              src="https://picsum.photos/id/247/150/90"
+              width="90%"
+              height="90%"
+              alt="pic2"
+              className="m-auto relative"
+            />
+          </div>
+          <div
+            className="inline-flex"
+            style={{ flexGrow: "1.3", flexBasis: "0" }}
+          >
             <img
               src="./map-right.png"
               alt="right"
               className="bg-cover w-full"
             />
           </div>
+        </div>
+      </div>
+      <div className="bg-intro-2 bg-cover bg-center w-full h-[40rem] flex flex-col text-center pt-[5rem]">
+        <br />
+        <br />
+        <div className="relative">
+          <h2 className="text-3xl z-[1000] relative">著名投资者</h2>
+          <h2 className="relative text-gray-200 text-[2.5rem] bottom-6 z-0">
+            Famous Investors
+          </h2>
+          <p className="bottom-7 relative text-sm">
+            影响力巨大的投资者就像金融世界的摇滚明星
+          </p>
         </div>
       </div>
       <Footer />
