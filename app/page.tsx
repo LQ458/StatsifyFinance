@@ -91,7 +91,7 @@ export default function Home() {
             />
           </div>
           <div
-            className="inline-flex"
+            className="inline-flex relative"
             style={{ flexGrow: "1.3", flexBasis: "0" }}
           >
             <img
@@ -99,6 +99,13 @@ export default function Home() {
               alt="right"
               className="bg-cover w-full"
             />
+            <Link
+              href="#"
+              className="no-underline whitespace-nowrap text-gray-400 absolute left-1/2 top-1/2 font-[600] text-sm"
+              style={{ transform: "translate(-50%, -50%)" }}
+            >
+              More &gt;
+            </Link>
           </div>
         </div>
       </div>
@@ -171,6 +178,41 @@ export default function Home() {
         <Link
           className="mr-auto ml-auto no-underline text-white bg-black pt-2 pb-2 pr-10 pl-10"
           href="#"
+        >
+          更多
+        </Link>
+      </div>
+      <div className="bg-intro-3 w-full h-[35rem] bg-cover bg-center flex flex-col text-center pt-[5rem]">
+        <div className="relative">
+          <h2 className="text-3xl z-[1000] relative text-white">
+            金融基础术语
+          </h2>
+          <h2 className="relative text-intro-3-color text-[2.5rem] bottom-6 z-0">
+            Financial basic terms
+          </h2>
+          <p className="bottom-7 relative text-sm text-white">
+            提供金融术语的字典或词典，包括定义、使用场景和例子
+          </p>
+        </div>
+        <div className="grid grid-cols-2 w-[57%] m-auto mt-0 mb-0 gap-3">
+          <div className="border-[10px] border-solid border-white bg-econ-term bg-center bg-cover object-cover text-white p-5 gap-5 flex flex-col pt-20">
+            <h2>流动比率 (Current Ratio)</h2>
+            <p className="whitespace-pre-wrap text-sm text-left">
+              流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
+              流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。
+            </p>
+          </div>
+          <div className="border-[10px] border-solid border-white bg-econ-term bg-center bg-cover object-cover text-white p-5 gap-5 flex flex-col pt-20">
+            <h2>流动比率 (Current Ratio)</h2>
+            <p className="whitespace-pre-wrap text-sm text-left">
+              流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
+              流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。
+            </p>
+          </div>
+        </div>
+        <Link
+          href="#"
+          className="no-underline text-white pt-2 pb-2 pr-12 pl-12 border-solid border-[1.5px] border-white w-[fit-content] ml-auto mr-auto mt-16"
         >
           更多
         </Link>
