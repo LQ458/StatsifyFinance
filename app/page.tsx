@@ -217,6 +217,91 @@ export default function Home() {
           更多
         </Link>
       </div>
+      <div className="bg-intro-4 w-full h-[60rem] bg-cover bg-center flex flex-col text-center pt-[5rem]">
+        <div className="relative">
+          <h2 className="text-3xl z-[1000] relative">最新文章</h2>
+          <h2 className="relative text-intro-4-color text-[3rem] bottom-10 z-0">
+            Latest article
+          </h2>
+          <p className="bottom-11 relative text-sm">
+            金融市场动态、基础知识文章和深入分析
+          </p>
+        </div>
+        <div className="grid grid-cols-2 grid-rows-2 w-[60%] m-auto mt-0 mb-0 gap-8">
+          <Link
+            href="#"
+            className="flex flex-col bg-white p-4 gap-3 border-solid border-intro-4-stroke border-[1.5px] h-[22rem] hover:shadow-2xl transition-shadow duration-300 no-underline text-black"
+          >
+            <img
+              src="https://picsum.photos/id/277/800/560"
+              alt="pic1"
+              width="100%"
+              height="70%"
+              className="object-cover self-center"
+            />
+            <h2 className="text-lg text-left font-[500]">
+              英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？
+            </h2>
+            <p className="text-left text-gray-400 text-xs">
+              2024-06-01 20:18:18
+            </p>
+          </Link>
+          <Link
+            href="#"
+            className="flex flex-col bg-white p-4 gap-3 border-solid border-intro-4-stroke border-[1.5px] h-[22rem] hover:shadow-2xl transition-shadow duration-300 no-underline text-black"
+          >
+            <img
+              src="https://picsum.photos/id/277/800/560"
+              alt="pic1"
+              width="100%"
+              height="70%"
+              className="object-cover self-center"
+            />
+            <h2 className="text-lg text-left font-[500]">
+              英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？
+            </h2>
+            <p className="text-left text-gray-400 text-xs">
+              2024-06-01 20:18:18
+            </p>
+          </Link>
+          <Link
+            href="#"
+            className="flex flex-col bg-white p-4 gap-3 border-solid border-intro-4-stroke border-[1.5px] h-[22rem] hover:shadow-2xl transition-shadow duration-300 no-underline text-black"
+          >
+            <img
+              src="https://picsum.photos/id/277/800/560"
+              alt="pic1"
+              width="100%"
+              height="70%"
+              className="object-cover self-center"
+            />
+            <h2 className="text-lg text-left font-[500]">
+              英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？
+            </h2>
+            <p className="text-left text-gray-400 text-xs">
+              2024-06-01 20:18:18
+            </p>
+          </Link>
+          <Link
+            href="#"
+            className="flex flex-col bg-white p-4 gap-3 border-solid border-intro-4-stroke border-[1.5px] h-[22rem] hover:shadow-2xl transition-shadow duration-300 no-underline text-black"
+          >
+            <img
+              src="https://picsum.photos/id/277/800/560"
+              alt="pic1"
+              width="100%"
+              height="70%"
+              className="object-cover self-center"
+            />
+            <h2 className="text-lg text-left font-[500]">
+              英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？英伟达拆股在即！什么意思？
+            </h2>
+            <p className="text-left text-gray-400 text-xs">
+              2024-06-01 20:18:18
+            </p>
+          </Link>
+        </div>
+      </div>
       <Footer />
     </main>
   );
