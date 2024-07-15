@@ -217,7 +217,7 @@ export default function Home() {
           更多
         </Link>
       </div>
-      <div className="bg-intro-4 w-full h-[60rem] bg-cover bg-center flex flex-col text-center pt-[5rem]">
+      <div className="bg-intro-4 w-full h-[70rem] bg-cover bg-center flex flex-col text-center pt-[5rem]">
         <div className="relative">
           <h2 className="text-3xl z-[1000] relative">最新文章</h2>
           <h2 className="relative text-intro-4-color text-[3rem] bottom-10 z-0">
@@ -301,6 +301,12 @@ export default function Home() {
             </p>
           </Link>
         </div>
+        <Link
+          className="mr-auto ml-auto no-underline text-white bg-black pt-2 pb-2 pr-10 pl-10 mt-16"
+          href="#"
+        >
+          更多
+        </Link>
       </div>
       <Footer />
     </main>
