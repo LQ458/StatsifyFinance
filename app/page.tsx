@@ -114,6 +114,66 @@ export default function Home() {
             影响力巨大的投资者就像金融世界的摇滚明星
           </p>
         </div>
+        <div className="grid grid-cols-4 w-[70%] m-auto mt-0 mb-0">
+          <div className="gap-2 flex flex-col justify-center">
+            <img
+              src="https://picsum.photos/id/277/200/200"
+              alt="pic1"
+              width="90%"
+              height="70%"
+              className="rounded-lg object-cover self-center"
+            />
+            <div>
+              <p>沃伦·巴菲特</p>
+              <p>(Warren Buffet)</p>
+            </div>
+          </div>
+          <div className="gap-2 flex flex-col justify-center">
+            <img
+              src="https://picsum.photos/id/277/200/200"
+              alt="pic1"
+              width="90%"
+              height="70%"
+              className="rounded-lg object-cover self-center"
+            />
+            <div>
+              <p>沃伦·巴菲特</p>
+              <p>(Warren Buffet)</p>
+            </div>
+          </div>
+          <div className="gap-2 flex flex-col justify-center">
+            <img
+              src="https://picsum.photos/id/277/200/200"
+              alt="pic1"
+              width="90%"
+              height="70%"
+              className="rounded-lg object-cover self-center"
+            />
+            <div>
+              <p>沃伦·巴菲特</p>
+              <p>(Warren Buffet)</p>
+            </div>
+          </div>
+          <div className="gap-2 flex flex-col justify-center">
+            <img
+              src="https://picsum.photos/id/277/200/200"
+              alt="pic1"
+              width="90%"
+              height="70%"
+              className="rounded-lg object-cover self-center"
+            />
+            <div>
+              <p>沃伦·巴菲特</p>
+              <p>(Warren Buffet)</p>
+            </div>
+          </div>
+        </div>
+        <Link
+          className="mr-auto ml-auto no-underline text-white bg-black pt-2 pb-2 pr-10 pl-10"
+          href="#"
+        >
+          更多
+        </Link>
       </div>
       <Footer />
     </main>
