@@ -2,10 +2,17 @@ import React from "react";
 import styles from "../css/footer.module.css";
 import Image from "next/image";
 import Link from "next/link";
+type PositionType = "relative" | "fixed" | "absolute";
 
-const Footer = () => {
+interface FooterProps {
+  position: PositionType;
+}
+
+const Footer: React.FC<FooterProps> = ({ position }) => {
   return (
-    <div className="bg-footer-color w-[100%] grid grid-cols-2 pt-4 pb-4">
+    <div
+      className={`bg-footer-color w-[100%] grid grid-cols-2 pt-4 pb-4 ${position}`}
+    >
       <div className="text-footer-tcolor m-[auto] ml-14 text-footer-font">
         <p>© 2024 StatsifyFinance. All Rights Reserved.</p>
       </div>
