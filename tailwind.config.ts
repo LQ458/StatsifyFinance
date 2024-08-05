@@ -17,13 +17,15 @@ const config: Config = {
       },
       colors: {
         // 在这里添加自定义颜色
-        "topbar-color": "rgba(0, 0, 0, 0.9)",
-        "footer-color": "rgba(40, 40, 40, 1)",
+        "topbar-color": "rgb(9, 10, 12)",
+        "footer-color": "#090A0C",
         "grey-color": "rgba(255, 255, 255, 0.3)",
         "learn-button": "rgba(2,2,23,0.7)",
         "intro-3-color": "rgba(255, 255, 255, 0.05)",
         "intro-4-color": "rgba(0, 0, 0, 0.05)",
         "intro-4-stroke": "rgb(224, 225, 227)",
+        "menu-color": "rgb(49,49,49)",
+        "footer-tcolor": "rgba(255, 255, 255, 0.3)",
       },
       fontSize: {
         "footer-font": "0.8em",
