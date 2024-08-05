@@ -14,6 +14,7 @@ const config: Config = {
         "intro-3": "url('/intro3.png')",
         "econ-term": "url('/econTerm.png')",
         "intro-4": "url('/intro4.png')",
+        "login-bg": "url('/login-bg.png')",
       },
       colors: {
         // 在这里添加自定义颜色
