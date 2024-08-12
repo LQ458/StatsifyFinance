@@ -19,6 +19,8 @@ const config: Config = {
       colors: {
         // 在这里添加自定义颜色
         "topbar-color": "rgb(9, 10, 12)",
+        "topbar-border-color": "#1C1D21",
+        "input-bg-color": "#666666",
         "footer-color": "#090A0C",
         "grey-color": "rgba(255, 255, 255, 0.3)",
         "learn-button": "rgba(2,2,23,0.7)",
