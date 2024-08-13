@@ -51,7 +51,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
           href="/"
           className="flex gap-2 text-[16px] text-white self-center no-underline"
         >
-          <img src="/logo-gold.svg" width={20} height={20} alt="" />
+          <img src="/logo-gold.svg" width={20} alt="" />
           Statsify Finance
         </Link>
         <div className="flex gap-32">
