@@ -19,19 +19,19 @@ const Footer: React.FC<FooterProps> = ({ position }) => {
         </div>
         <div className="grid grid-cols-5 self-center gap-[10px] text-footer-font">
           <Link href="https://weibo.com">
-            <Image src="./weibo.svg" width={28} height={28} alt="Weibo" />
+            <Image src="/weibo.svg" width={28} height={28} alt="Weibo" />
           </Link>
           <Link href="https://twitter.com">
-            <Image src="./twitter.svg" width={28} height={28} alt="Twitter" />
+            <Image src="/twitter.svg" width={28} height={28} alt="Twitter" />
           </Link>
           <Link href="https://facebook.com">
-            <Image src="./facebook.svg" width={28} height={28} alt="Facebook" />
+            <Image src="/facebook.svg" width={28} height={28} alt="Facebook" />
           </Link>
           <Link href="https://weixin.qq.com">
-            <Image src="./weChat.svg" width={28} height={28} alt="WeChat" />
+            <Image src="/weChat.svg" width={28} height={28} alt="WeChat" />
           </Link>
           <Link href="https://linkedin.com">
-            <Image src="./linkedin.svg" width={28} height={28} alt="LinkedIn" />
+            <Image src="/linkedin.svg" width={28} height={28} alt="LinkedIn" />
           </Link>
         </div>
       </div>

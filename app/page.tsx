@@ -27,8 +27,8 @@ export default function Home() {
                 <p className="text-[#666666] text-[14px]">Vocabs for the week</p>
                 <p className="text-[#666666] text-[14px]">more &gt;</p>
               </div>
-              <div className="grid grid-cols-2 max-w-[886px]">
-                <div className="relative group">
+              <div className="flex max-w-[886px]">
+                <div className="relative group flex-1">
                   <div className="flex flex-row h-[50px] leading-[50px]">
                     <div className="w-[86px] h-[100%] bg-[#3f4044] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150">
                       <p className="text-[12px] h-[100%] text-center text-[#525356]">vocab<span className="text-[28px] text-[#666666] italic font-[600]">1</span></p>
@@ -47,7 +47,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="relative group">
+                <div className="relative group flex-1">
                   <div className="flex flex-row h-[50px] leading-[50px] border-l border-black">
                     <div className="w-[86px] h-[100%] bg-[#3f4044] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150">
                       <p className="text-[12px] h-[100%] text-center text-[#525356]">vocab<span className="text-[28px] text-[#666666] italic font-[600]">2</span></p>

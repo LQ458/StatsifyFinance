@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.format-html{
+    
+}
+.learn-slider .swiper-slide{
+    padding:30px 70px;
+}

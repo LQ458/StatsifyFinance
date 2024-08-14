@@ -15,6 +15,7 @@ const config: Config = {
         "econ-term": "url('/econTerm.png')",
         "intro-4": "url('/intro4.png')",
         "login-bg": "url('/login-bg.png')",
+        "analysis-bg": "url('/analysis-bg.png')"
       },
       colors: {
         // 在这里添加自定义颜色
