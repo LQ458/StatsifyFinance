@@ -73,8 +73,8 @@ export default function Home() {
             <img
               src="/icon.png"
               alt="icon"
-              width="736px"
-              height="736px"
+              width="600px"
+              height="600px"
               className="m-auto ml-0"
             />
           </div>
