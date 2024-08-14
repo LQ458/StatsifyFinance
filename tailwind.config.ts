@@ -31,6 +31,9 @@ const config: Config = {
       fontSize: {
         "footer-font": "0.8em",
       },
+      screens: {
+        "3xl": "1600px",
+      },
     },
   },
   plugins: [],

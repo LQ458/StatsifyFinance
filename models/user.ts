@@ -18,6 +18,14 @@ const userSchema = new Schema({
   originalPassword: {
     type: String,
     required: true,
+    validate: {
+      validator: function (v: string) {
+        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/.test(
+          v,
+        );
+      },
+      message: (props: { value: any }) => `${props.value} is not valid`,
+    },
   },
   password: {
     type: String,
