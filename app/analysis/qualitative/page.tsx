@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 import styles from "@/css/analysis.module.css";
 import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider"
 import Str2html from "@/components/str2html";
+import { IoIosArrowDown } from "react-icons/io";
 // 定义对象类型
 interface Item {
   title: string;
@@ -124,8 +125,8 @@ const Qualitative = () => {
         </div>
         <div className="flex flex-grow">
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px]">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]" onClick={handleNext}>定量分析指标</h1>
-            <p className="text-[#B8B8B8] text-[16px]" onClick={handlePrev}>在金融分析中用于评估投资的性能、风险和回报。<br/>
+            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">定量分析指标</h1>
+            <p className="text-[#B8B8B8] text-[16px]">在金融分析中用于评估投资的性能、风险和回报。<br/>
               这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。</p>
             
             <div className="mt-[30px] text-left">
@@ -140,6 +141,8 @@ const Qualitative = () => {
               </div>
               <div className={`${styles.tabContent}`}>
                 <LearnSlider ref={swiperRef} className={`${styles.slider} learn-slider`} items={dataArray} onChange={handleChange} />
+                <div onClick={() => handlePrev()} className={`${styles['custom-prev']}`}><IoIosArrowDown className={`text-[22px] rotate-[90deg]`} /></div>
+                <div onClick={() => handleNext()} className={`${styles['custom-next']}`}><IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} /></div>
               </div>              
             </div>
             <div className={`${styles['custom-pagination']}`}>

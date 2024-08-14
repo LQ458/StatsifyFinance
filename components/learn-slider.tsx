@@ -56,13 +56,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>((props, ref) 
       <Swiper
         // install Swiper modules
         ref={swiperRef}
-        modules={[Navigation, Pagination, EffectCards]}
+        modules={[Navigation, EffectCards]}
         effect="Cards"
         spaceBetween={0} // 设置滑块之间的间距为0px
         slidesPerView={1} // 设置每次显示的滑块数量
         initialSlide={2}  // 从索引为2的滑块（即第3个滑块）开始显示
-        navigation
-        pagination={{ clickable: true }}
         onSlideChange={(v) => onChange(v)}
         onSwiper={(swiper) => console.log(swiper)}
         className={`${className}`}

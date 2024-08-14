@@ -29,6 +29,7 @@
 }
 
 .tabContent{
+    position: relative;
     min-height: 400px;
     background: #1D1E20;
     color: #999;
@@ -75,4 +76,29 @@
 }
 .custom-pagination li.active{
     border-top: 4px solid #FFD700
+}
+
+.custom-prev,
+.custom-next{
+    position: absolute;
+    top: 50%;
+    z-index: 100;
+    transform: translateY(-50%);
+    width:36px;
+    height:36px;
+    display: flex;
+    background: rgba(255, 255, 255, .1);
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.custom-prev:hover,
+.custom-next:hover{
+    background: #FFD700;
+}
+.custom-prev{
+    left:16px
+}
+.custom-next{
+    right:16px
 }
