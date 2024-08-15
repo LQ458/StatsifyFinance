@@ -1,7 +1,7 @@
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
-import styles from "../css/analysis.module.css";
+import styles from "../css/learn.module.css";
 
 const Quantitative = () => {
   return (

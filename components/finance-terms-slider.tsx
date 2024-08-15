@@ -1,7 +1,7 @@
 "use client"
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react"
-import styles from "@/css/learn.module.css";
+import styles from "@/css/finance-terms.module.css";
 import { Navigation, Pagination, EffectCards } from 'swiper/modules';
 import Str2html from "./str2html";
 
@@ -15,8 +15,9 @@ import Image from "next/image"
 
 // 定义对象类型
 interface Item {
-    title: string;
-    content: string;
+  title: string;
+  cover: string;
+  content: string;
 }
 
 interface ChangeData {
@@ -27,8 +28,8 @@ interface ChangeData {
 
 interface sliderProps {
   className: string;  // 给slider最外层的class
-  items: Item[]; // 需要轮播的数据
-  sliderIndex: number; // 激活第几项,数组下标记数方式
+  items: Item[][]; // 需要轮播的数据
+  sliderIndex?: number; // 激活第几项,数组下标记数方式
   onChange: (data: ChangeData) => void; // 当slider改变时触发的回调
 }
 
@@ -40,7 +41,7 @@ export interface SwiperComponentHandle {
 
 const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>((props, ref) => {
   const { className, items, onChange, sliderIndex=0 } = props;
-  const swiperRef = useRef(null);
+  const swiperRef = useRef(null);  
 
   useImperativeHandle(ref, () => ({
     slideNext() {
@@ -68,14 +69,22 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>((props, ref) 
         onSlideChange={(swiper) => onChange(swiper)}
         onSwiper={(swiper) => onChange(swiper)}
         className={`${className}`}
-          >
-        {items.map((item, idx) => (
-          <SwiperSlide key={idx} className="w-full h-full">
+      >
+        {items.map((page, index) => (
+        <SwiperSlide key={index}>
             <div className={`${styles['slide-item']}`}>
-              <Str2html htmlString={item.content} />
-            </div>
-          </SwiperSlide>
-        ))}        
+              <ul>
+              {page.map((item, idx) => (
+                <li>
+                  <img src={item.cover} width="100%"  alt="" />
+                  <p>{item.content}</p>
+                  <h4><Str2html htmlString={item.title} /></h4>
+                </li>
+              ))}
+                </ul>
+          </div>
+        </SwiperSlide>
+      ))}
       </Swiper>
     </>
   )
