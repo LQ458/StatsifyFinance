@@ -43,10 +43,16 @@ const Menu = () => {
           </div>
         )}
       </div>
-      <Link className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black" href="#">
+      <Link
+        className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black"
+        href="#"
+      >
         <h4 className="font-[400] self-center">资讯</h4>
       </Link>
-      <Link className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black" href="/finance-terms">
+      <Link
+        className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black"
+        href="/finance-terms"
+      >
         <h4 className="font-[400] self-center">金融基础术语</h4>
       </Link>
     </div>

@@ -1,9 +1,9 @@
-.search{
-    width:240px;   
-    opacity: 1;
-    transition: all 0.3s;
+.search {
+  width: 240px;
+  opacity: 1;
+  transition: all 0.3s;
 }
-.searchText{
-    color:#aaa;
-    transition: color 0.3s;
+.searchText {
+  color: #aaa;
+  transition: color 0.3s;
 }

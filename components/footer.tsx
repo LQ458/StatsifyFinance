@@ -10,10 +10,10 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ position }) => {
   return (
-    <div className={`bg-footer-color w-[100%] h-[60px] border-t border-topbar-border-color ${position} flex-grow-0 flex-shrink-0`}>
-      <div
-        className="flex justify-between max-w-[1920px] min-w-[1100px] mx-auto h-[100%] px-[60px]"
-      >
+    <div
+      className={`bg-footer-color w-[100%] h-[60px] border-t border-topbar-border-color ${position} flex-grow-0 flex-shrink-0`}
+    >
+      <div className="flex justify-between max-w-[1920px] min-w-[1100px] mx-auto h-[100%] px-[60px]">
         <div className="text-footer-tcolor self-center text-[12px]">
           <p>© 2024 StatsifyFinance. All Rights Reserved.</p>
         </div>
@@ -36,7 +36,6 @@ const Footer: React.FC<FooterProps> = ({ position }) => {
         </div>
       </div>
     </div>
-    
   );
 };
 

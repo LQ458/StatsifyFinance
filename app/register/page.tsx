@@ -19,6 +19,48 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validateInput = () => {
+      switch (true) {
+        case !UserReg.test(username):
+          alert("用户名格式错误");
+          return false;
+        case !PassReg.test(password):
+          alert("密码格式错误");
+          return false;
+        case password !== repassword:
+          alert("两次密码不一致");
+          return false;
+        case email === "":
+          alert("邮箱不能为空");
+          return false;
+        default:
+          return true;
+      }
+    };
+
+    if (!validateInput()) {
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        username: username,
+        password: password,
+        email: email,
+      });
+
+      const res = await axios.post(`/api/register?${params.toString()}`);
+      if (res.data.message === "User created successfully") {
+        alert("注册成功");
+        window.location.href = "/login";
+      } else {
+        alert("注册失败");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("注册失败");
+    }
   };
 
   return (
@@ -42,7 +84,7 @@ const Register = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="用户名"
-                    className="bg-transparent placeholder-[#999999] text-[#999999] outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
                 <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
@@ -62,7 +104,7 @@ const Register = () => {
                     type="password"
                     placeholder="密码"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-transparent placeholder-[#999999] text-[#999999] outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
                 <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
@@ -82,7 +124,7 @@ const Register = () => {
                     value={repassword}
                     onChange={(e) => setRepassword(e.target.value)}
                     placeholder="再次输入密码"
-                    className="bg-transparent placeholder-[#999999] text-[#999999] outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>
@@ -92,12 +134,13 @@ const Register = () => {
                   <input
                     type="email"
                     value={email}
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="请输入邮箱，用于将来找回密码"
-                    className="bg-transparent placeholder-[#999999] text-[#999999] outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
-                <div className="flex flex-row align-middle justify-center gap-1">
+                {/* <div className="flex flex-row align-middle justify-center gap-1">
                   <Image
                     src={"/imp.svg"}
                     alt="important"
@@ -108,12 +151,12 @@ const Register = () => {
                   <p className="text-red-600 m-auto text-sm">
                     请填写正确格式电子邮箱
                   </p>
-                </div>
+                </div> */}
               </div>
               <div className="flex flex-row">
                 <button
                   type="submit"
-                  className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 w-[calc(48%+17px)] cursor-pointer"
+                  className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 w-[48%] cursor-pointer"
                 >
                   <p className="text-white m-auto">注册</p>
                 </button>

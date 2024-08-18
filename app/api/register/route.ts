@@ -1,14 +1,17 @@
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
+import DBconnect from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  await DBconnect();
   const { username, password, email } = Object.fromEntries(
     ["username", "password", "email"].map((key) => [
       key,
       req.nextUrl.searchParams.get(key),
     ]),
   );
+  console.log(username, password, email);
   if (!password || !username || !email) {
     return NextResponse.json(
       { error: "Please fill in all fields" },
@@ -24,7 +27,11 @@ export async function POST(req: NextRequest) {
       originalPassword: password,
       admin: false,
     });
-    const { password: _, originalPassword: __, ...userWithoutPassword } = user.toObject();
+    const {
+      password: _,
+      originalPassword: __,
+      ...userWithoutPassword
+    } = user.toObject();
 
     return NextResponse.json(
       { message: "User created successfully", user: userWithoutPassword },
@@ -41,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: errorMessage }, { status: 403 });
     }
     return NextResponse.json(
-      { error: "An unexpected error occurred" },
+      { error: "An unexpected error occurred", message: error.message },
       { status: 500 },
     );
   }

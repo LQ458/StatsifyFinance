@@ -4,7 +4,7 @@ import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import styles from "@/css/learn.module.css";
-import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider"
+import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
 import Str2html from "@/components/str2html";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
@@ -14,15 +14,16 @@ interface Item {
   content: string;
 }
 interface ChangeData {
-  activeIndex: number; 
+  activeIndex: number;
   isBeginning: boolean;
   isEnd: boolean;
 }
 
-const dataArray: Item[] = [{
-  title: `流动比率<br/>
+const dataArray: Item[] = [
+  {
+    title: `流动比率<br/>
   Current Ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>111</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>111</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -34,11 +35,12 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-},{
-  title: `速动比率<br/>
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+  {
+    title: `速动比率<br/>
   The acid-test ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>222</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>222</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -50,11 +52,12 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-},{
-  title: `现金比率<br/>
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p><p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+  {
+    title: `现金比率<br/>
   The cash ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>333</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>333</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -66,11 +69,12 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-},{
-  title: `经营现金流比率<br/>
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+  {
+    title: `经营现金流比率<br/>
   The operating cash flow ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -82,11 +86,12 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-},{
-  title: `经营现金流比率<br/>
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+  {
+    title: `经营现金流比率<br/>
   The operating cash flow ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -98,11 +103,12 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-},{
-  title: `经营现金流比率<br/>
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+  {
+    title: `经营现金流比率<br/>
   The operating cash flow ratio`,
-  content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>444</p>
   <p></p>
   <p><strong>示例：</strong></p>
   <p>假设某企业的财务报表提供了以下数据：</p>
@@ -114,23 +120,23 @@ const dataArray: Item[] = [{
   <p>/ $60,000 = 2</p>
   <p></p>
   <p><strong>解释：</strong></p>
-  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`
-}]
+  <p>流动比率为2表示该企业的流动资产是其流动负债的两倍，表明企业在短期内有较好的偿债能力。</p>`,
+  },
+];
 
 const Qualitative = () => {
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
-  const handleChange = (newData:ChangeData) => {
+  const handleChange = (newData: ChangeData) => {
     // console.log('handleChange::', newData)
-    const {activeIndex, isBeginning, isEnd} = newData
+    const { activeIndex, isBeginning, isEnd } = newData;
     setCurrent(activeIndex);
     setNoPrev(isBeginning);
     setNoNext(isEnd);
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef(null);
-
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -150,8 +156,8 @@ const Qualitative = () => {
     }
   };
   const tabChange = (idx: number, evt: any) => {
-    handleSlideTo(idx)
-  }
+    handleSlideTo(idx);
+  };
 
   useEffect(() => {
     tabScrollCenter();
@@ -159,14 +165,14 @@ const Qualitative = () => {
 
   const tabScrollCenter = () => {
     if (tabRef.current) {
-      const li = tabRef.current.querySelectorAll('li')
-      if (current > (li.length / 2)) {
-        li[li.length-1].scrollIntoView()
+      const li = tabRef.current.querySelectorAll("li");
+      if (current > li.length / 2) {
+        li[li.length - 1].scrollIntoView();
       } else {
-        li[0].scrollIntoView()
+        li[0].scrollIntoView();
       }
     }
-  }
+  };
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
@@ -179,37 +185,66 @@ const Qualitative = () => {
         </div>
         <div className="flex flex-grow">
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">定量分析指标</h1>
-            <p className="text-[#B8B8B8] text-[16px]">在金融分析中用于评估投资的性能、风险和回报。<br/>
-              这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。</p>
-            
+            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
+              定量分析指标
+            </h1>
+            <p className="text-[#B8B8B8] text-[16px]">
+              在金融分析中用于评估投资的性能、风险和回报。
+              <br />
+              这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。
+            </p>
+
             <div className="mt-[30px] text-left">
               <div className={`${styles.tab}`}>
                 <ul ref={tabRef}>
                   {dataArray.map((item, idx) => (
-                    <li key={idx} className={`${current === idx ? styles['active'] : ''}`} onClick={(e) => tabChange(idx, e)}>
+                    <li
+                      key={idx}
+                      className={`${current === idx ? styles["active"] : ""}`}
+                      onClick={(e) => tabChange(idx, e)}
+                    >
                       <Str2html htmlString={item.title} />
                     </li>
                   ))}
                 </ul>
               </div>
               <div className={`${styles.tabContent}`}>
-                <LearnSlider ref={swiperRef} className={`${styles.slider}`} items={dataArray} onChange={handleChange} sliderIndex={1} />
-                <div onClick={() => handlePrev()} className={`${styles['custom-prev']} ${noPrev ? styles['disabled'] : ''}`}><IoIosArrowDown className={`text-[22px] rotate-[90deg]`} /></div>
-                <div onClick={() => handleNext()} className={`${styles['custom-next']} ${noNext ? styles['disabled'] : ''}`}><IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} /></div>
-              </div>              
+                <LearnSlider
+                  ref={swiperRef}
+                  className={`${styles.slider}`}
+                  items={dataArray}
+                  onChange={handleChange}
+                  sliderIndex={1}
+                />
+                <div
+                  onClick={() => handlePrev()}
+                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                >
+                  <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
+                </div>
+                <div
+                  onClick={() => handleNext()}
+                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                >
+                  <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+                </div>
+              </div>
             </div>
-            <div className={`${styles['custom-pagination']}`}>
-                <ul>
-                  {dataArray.map((item, idx) => (
-                      <li key={idx} className={`${current === idx ? styles['active'] : ''}`} onClick={() => handleSlideTo(idx)}></li>
-                  ))} 
-                </ul>
+            <div className={`${styles["custom-pagination"]}`}>
+              <ul>
+                {dataArray.map((item, idx) => (
+                  <li
+                    key={idx}
+                    className={`${current === idx ? styles["active"] : ""}`}
+                    onClick={() => handleSlideTo(idx)}
+                  ></li>
+                ))}
+              </ul>
             </div>
           </div>
           <div className="fixed-left">
-            <ul className={`${styles['sub-nav']}`}>
-              <li className={`${styles['active']}`}>
+            <ul className={`${styles["sub-nav"]}`}>
+              <li className={`${styles["active"]}`}>
                 <Link href="#">流动性比率</Link>
               </li>
               <li>
@@ -223,8 +258,7 @@ const Qualitative = () => {
               </li>
             </ul>
           </div>
-        </div>       
-        
+        </div>
       </div>
       <Footer position="relative" />
     </main>
