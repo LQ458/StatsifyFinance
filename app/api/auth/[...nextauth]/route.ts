@@ -9,7 +9,7 @@ type Credentials = {
   password: string;
 };
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const handler = NextAuth({
   providers: [
     Credentials({
       name: "credentials",
@@ -72,3 +72,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
+
+export { handler as GET, handler as POST };

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "./Providers";
 
 export const metadata: Metadata = {
   title: "Statsify Finance",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="m-0">{children}</body>
+      <AuthProvider>
+        <body className="m-0">{children}</body>
+      </AuthProvider>
     </html>
   );
 }
