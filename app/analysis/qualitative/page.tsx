@@ -160,23 +160,24 @@ const Qualitative = () => {
   };
 
   useEffect(() => {
+    const tabScrollCenter = () => {
+      if (tabRef.current) {
+        const li = (tabRef.current as HTMLElement).querySelectorAll("li");
+        if (current > li.length / 2) {
+          li[li.length - 1].scrollIntoView();
+        } else {
+          li[0].scrollIntoView();
+        }
+      }
+    };
+
     tabScrollCenter();
   }, [current]);
 
-  const tabScrollCenter = () => {
-    if (tabRef.current) {
-      const li = tabRef.current.querySelectorAll("li");
-      if (current > li.length / 2) {
-        li[li.length - 1].scrollIntoView();
-      } else {
-        li[0].scrollIntoView();
-      }
-    }
-  };
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
-      <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
+      <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px] pt-[20px]">
         <div className={`${styles.nav} w-full`}>
           <ul>
             <li className={`${styles.active}`}>定量</li>

@@ -35,7 +35,7 @@ const Menu = () => {
               <h4 className="self-center font-[400]">分析</h4>
             </Link>
             <Link
-              href="#"
+              href="/strategy"
               className="justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition"
             >
               <h4 className="self-center font-[400]">策略</h4>
@@ -45,7 +45,7 @@ const Menu = () => {
       </div>
       <Link
         className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black"
-        href="#"
+        href="/news"
       >
         <h4 className="font-[400] self-center">资讯</h4>
       </Link>

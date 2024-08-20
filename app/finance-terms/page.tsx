@@ -158,7 +158,7 @@ const Qualitative = () => {
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
-      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto px-[60px]">
+      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto px-[60px] pt-[80px]">
         <div className="flex flex-grow">
           <div className="w-[1180px] mx-auto text-center self-center translate-y-[-60px] finance-terms-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">

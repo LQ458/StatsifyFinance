@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
 import React from "react";
@@ -15,7 +16,7 @@ interface TopbarProps {
 const Topbar: React.FC<TopbarProps> = ({ position }) => {
   const [isSearch, setSearchState] = useState(false);
   const [keywords, setKeywords] = useState("");
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   // 切换搜索状态的函数
   const searchIconClick = () => {
     if (inputRef.current) {
@@ -38,7 +39,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
     }
   };
   // 搜索关键字发生改变
-  const keywordsChange = (event) => {
+  const keywordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeywords(event.target.value);
   };
   return (
@@ -59,6 +60,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             <div className="flex self-center relative">
               <input
                 ref={inputRef}
+                placeholder="Search"
                 type="text"
                 value={keywords}
                 onChange={keywordsChange}
