@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
-import styles from "../css/menu.module.css";
+import styles from "../src/css/menu.module.css";
 
 const Menu = () => {
   const [rotate, setRotate] = useState(false);
@@ -29,7 +29,7 @@ const Menu = () => {
         {rotate && (
           <div className="absolute bg-menu-color top-[59px] grid-rows-2 left-0 right-0 grid p-0">
             <Link
-              href="/analysis/quantitative"
+              href="/analysis"
               className="justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition"
             >
               <h4 className="self-center font-[400]">分析</h4>

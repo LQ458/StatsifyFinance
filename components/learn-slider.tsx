@@ -1,7 +1,7 @@
 "use client";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import styles from "@/css/learn.module.css";
+import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
 

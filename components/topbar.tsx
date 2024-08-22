@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import Menu from "./menu";
-import styles from "../css/topbar.module.css";
+import styles from "../src/css/topbar.module.css";
 type PositionType = "relative" | "fixed" | "absolute";
 
 interface TopbarProps {

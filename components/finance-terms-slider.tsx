@@ -1,7 +1,7 @@
 "use client";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import styles from "@/css/finance-terms.module.css";
+import styles from "@/src/css/finance-terms.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
 

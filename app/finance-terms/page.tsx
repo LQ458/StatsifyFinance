@@ -3,7 +3,7 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import styles from "@/css/finance-terms.module.css";
+import styles from "@/src/css/finance-terms.module.css";
 import Slider, {
   SwiperComponentHandle,
 } from "@/components/finance-terms-slider";
