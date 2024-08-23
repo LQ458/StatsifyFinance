@@ -38,12 +38,12 @@ interface Mapping {
   value: string;
 }
 
-const Analysis = () => {
+const Strategy = () => {
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const [curSubTopic, setCurSubTopic] = useState("flow");
-  const [curTopic, setCurTopic] = useState("quan");
+  const [curTopic, setCurTopic] = useState("strat");
   const [dataArray, setDataArray] = useState<Item[]>(flowDataArray);
   const [topicList, setTopicList] = useState(quanList);
   const [curArrayMap, setCurArrayMap] = useState<Map[]>(quanArrayMap);
@@ -94,14 +94,13 @@ const Analysis = () => {
   }, [current]);
 
   useEffect(() => {
-    // 使用简称从 curArrayMap 中获取 data 数组
+    // 使用简称从 quanArrayMap 中获取 data 数组
     const dataMapping = curArrayMap.find((map) => map.title === curSubTopic);
     const data = dataMapping ? dataMapping.content : quanArrayMap[0].content;
 
     setDataArray(data);
   }, [curSubTopic, curArrayMap, curMap]);
 
-  //辅助函数
   function findKeyByValue(map: Mapping[], value: string): string | undefined {
     for (const item of map) {
       if (item.value === value) {
@@ -113,17 +112,23 @@ const Analysis = () => {
 
   useEffect(() => {
     switch (curTopic) {
-      case "quan":
+      case "strat":
         setTopicList(quanList);
         setCurArrayMap(quanArrayMap);
         setCurMap(quanMap);
         setCurSubTopic("flow");
         break;
-      case "qual":
+      case "investor":
         setTopicList(qualList);
         setCurArrayMap(qualArrayMap);
         setCurMap(qualMap);
         setCurSubTopic("esg");
+        break;
+      case "riskMng":
+        setTopicList(qualList);
+        setCurArrayMap(qualArrayMap);
+        setCurMap(qualMap);
+        setCurSubTopic("risk");
         break;
     }
   }, [curTopic]);
@@ -135,32 +140,34 @@ const Analysis = () => {
         <div className={`${styles.nav} w-full`}>
           <ul>
             <li
-              onClick={() => setCurTopic("quan")}
-              className={`${curTopic === "quan" && styles.active}`}
+              onClick={() => setCurTopic("strat")}
+              className={`${curTopic === "strat" && styles.active}`}
             >
-              定量
+              交易策略
             </li>
             <li
-              onClick={() => setCurTopic("qual")}
-              className={`${curTopic === "qual" && styles.active}`}
+              onClick={() => setCurTopic("investor")}
+              className={`${curTopic === "investor" && styles.active}`}
             >
-              定性
+              投资者
+            </li>
+            <li
+              onClick={() => setCurTopic("riskMng")}
+              className={`${curTopic === "riskMng" && styles.active}`}
+            >
+              风控
             </li>
           </ul>
         </div>
         <div className="flex flex-grow">
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              {curTopic === "quan" ? "定量分析指标" : "定性分析指标"}
+              定量分析指标
             </h1>
             <p className="text-[#B8B8B8] text-[16px]">
-              {curTopic === "quan"
-                ? "在金融分析中用于评估投资的性能、风险和回报。"
-                : "在金融分析中用于评估企业的非财务方面，如管理质量、品牌价值和市场竞争力。"}
+              在金融分析中用于评估投资的性能、风险和回报。
               <br />
-              {curTopic === "quan"
-                ? "这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。"
-                : "这些指标基于主观判断和经验，帮助投资者和分析师全面了解企业的整体状况。"}
+              这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。
             </p>
 
             <div className="mt-[30px] text-left">
@@ -240,4 +247,4 @@ const Analysis = () => {
   );
 };
 
-export default Analysis;
+export default Strategy;
