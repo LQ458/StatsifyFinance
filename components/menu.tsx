@@ -1,11 +1,14 @@
+"use client";
 import React from "react";
 import { useState } from "react";
+import { usePathname } from 'next/navigation';
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
 import styles from "../src/css/menu.module.css";
 
 const Menu = () => {
   const [rotate, setRotate] = useState(false);
+  const pathname = usePathname();
 
   return (
     <div className="flex">
@@ -30,13 +33,13 @@ const Menu = () => {
           <div className="absolute bg-menu-color top-[59px] grid-rows-2 left-0 right-0 grid p-0">
             <Link
               href="/analysis"
-              className="justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition"
+              className={`${pathname === '/analysis' ? styles.current : ''} relative justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition`}
             >
               <h4 className="self-center font-[400]">分析</h4>
             </Link>
             <Link
               href="/strategy"
-              className="justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition"
+              className={`${pathname === '/strategy' ? styles.current : ''} relative justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition`}
             >
               <h4 className="self-center font-[400]">策略</h4>
             </Link>
@@ -44,13 +47,13 @@ const Menu = () => {
         )}
       </div>
       <Link
-        className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black"
+        className={`${pathname === '/news' ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
         href="/news"
       >
         <h4 className="font-[400] self-center">资讯</h4>
       </Link>
       <Link
-        className="text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black"
+        className={`${pathname === '/finance-terms' ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
         href="/finance-terms"
       >
         <h4 className="font-[400] self-center">金融基础术语</h4>
