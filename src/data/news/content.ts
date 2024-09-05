@@ -1,11 +1,10 @@
 interface Item {
+  id: number,
+  fid: number,
   title: string;
+  cover: string;
   content: string;
-}
-interface Map {
-  id: number;
-  fid: number;
-  content: Item[];
+  createTime: string;
 }
 
 interface Mapping {
@@ -14,10 +13,58 @@ interface Mapping {
 }
 
 
-const list1: Item[] = [  
+const list: Item[] = [  
   {
+    id: 1,
+    fid: 1,
     title: "技术因素（Technological, T）",
+    cover: `/img.png`,
     content: `
+    <p><strong>定义：</strong></p>
+    <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
+    <p><strong>功能和作用：</strong></p>
+    <p><img src="/img.png"/></p>
+    <ul>
+      <li>技术进步：评估技术进步对企业产品和服务的影响。</li>
+      <li>研发活动：衡量研发投入对企业创新能力的影响。</li>
+      <li>自动化水平：识别自动化水平对企业生产效率的影响。</li>
+      <li>技术创新：评估技术创新对企业市场竞争力的影响。</li>
+    </ul>
+    <p><strong>示例：</strong></p>
+    <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
+    <p><strong>定义：</strong></p>
+    <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
+    <p><strong>功能和作用：</strong></p>
+    <ul>
+      <li>技术进步：评估技术进步对企业产品和服务的影响。</li>
+      <li>研发活动：衡量研发投入对企业创新能力的影响。</li>
+      <li>自动化水平：识别自动化水平对企业生产效率的影响。</li>
+      <li>技术创新：评估技术创新对企业市场竞争力的影响。</li>
+    </ul>
+    <p><strong>示例：</strong></p>
+    <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
+    <p><strong>定义：</strong></p>
+    <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
+    <p><strong>功能和作用：</strong></p>
+    <ul>
+      <li>技术进步：评估技术进步对企业产品和服务的影响。</li>
+      <li>研发活动：衡量研发投入对企业创新能力的影响。</li>
+      <li>自动化水平：识别自动化水平对企业生产效率的影响。</li>
+      <li>技术创新：评估技术创新对企业市场竞争力的影响。</li>
+    </ul>
+    <p><strong>示例：</strong></p>
+    <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
+    <p><strong>定义：</strong></p>
+    <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
+    <p><strong>功能和作用：</strong></p>
+    <ul>
+      <li>技术进步：评估技术进步对企业产品和服务的影响。</li>
+      <li>研发活动：衡量研发投入对企业创新能力的影响。</li>
+      <li>自动化水平：识别自动化水平对企业生产效率的影响。</li>
+      <li>技术创新：评估技术创新对企业市场竞争力的影响。</li>
+    </ul>
+    <p><strong>示例：</strong></p>
+    <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
     <p><strong>定义：</strong></p>
     <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
     <p><strong>功能和作用：</strong></p>
@@ -30,9 +77,13 @@ const list1: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 2,
+    fid: 1,
     title: "环境因素（Environmental, E）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>环境因素包括环境保护法规、气候变化、资源稀缺和可持续发展等。这些因素影响企业的运营成本和社会责任。</p>
@@ -46,9 +97,13 @@ const list1: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司实施了环保措施，减少了碳排放，提升了企业的社会责任形象。</p>
     `,
+    createTime:'2024-09-01 12:10:52'
   },
   {
+    id: 3,
+    fid: 1,
     title: "法律因素（Legal, L）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>法律因素包括劳动法、消费者保护法、知识产权法和反垄断法等。这些因素影响企业的合规成本和法律风险。</p>
@@ -62,12 +117,13 @@ const list1: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司严格遵守知识产权法，保护了自身的创新成果，提升了市场竞争力。</p>
     `,
+    createTime:'2024-09-01 10:12:52'
   },
-];
-
-const list2: Item[] = [
   {
+    id: 4,
+    fid: 2,
     title: "222政治因素（Political, P）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>政治因素包括政府政策、政治稳定性、税收政策、贸易法规和政府干预等。这些因素影响企业的运营环境和战略决策。</p>
@@ -81,9 +137,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某国政府出台了支持高科技产业的优惠政策，这为相关企业提供了发展机会。</p>
     `,
+    createTime:'2024-09-02 12:12:52'
   },
   {
+    id: 5,
+    fid: 2,
     title: "经济因素（Economic, E）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>经济因素包括经济增长、通货膨胀率、利率、失业率和消费者支出等。这些因素影响企业的市场需求和运营成本。</p>
@@ -97,9 +157,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某国经济快速增长，消费者支出增加，这为企业提供了扩展市场的机会。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 6,
+    fid: 2,
     title: "社会因素（Social, S）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>社会因素包括人口结构、文化态度、社会价值观、生活方式和教育水平等。这些因素影响企业的市场定位和消费者行为。</p>
@@ -113,9 +177,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某地区的年轻人口增加，对高科技产品的需求上升，这为相关企业提供了市场机会。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 7,
+    fid: 2,
     title: "技术因素（Technological, T）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
@@ -129,9 +197,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 8,
+    fid: 2,
     title: "环境因素（Environmental, E）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>环境因素包括环境保护法规、气候变化、资源稀缺和可持续发展等。这些因素影响企业的运营成本和社会责任。</p>
@@ -145,9 +217,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司实施了环保措施，减少了碳排放，提升了企业的社会责任形象。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 9,
+    fid: 3,
     title: "法律因素（Legal, L）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>法律因素包括劳动法、消费者保护法、知识产权法和反垄断法等。这些因素影响企业的合规成本和法律风险。</p>
@@ -161,12 +237,13 @@ const list2: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司严格遵守知识产权法，保护了自身的创新成果，提升了市场竞争力。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
-];
-
-const list3: Item[] = [
   {
+    id: 10,
+    fid: 3,
     title: "333政治因素（Political, P）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>政治因素包括政府政策、政治稳定性、税收政策、贸易法规和政府干预等。这些因素影响企业的运营环境和战略决策。</p>
@@ -180,9 +257,13 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某国政府出台了支持高科技产业的优惠政策，这为相关企业提供了发展机会。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 11,
+    fid: 3,
     title: "经济因素（Economic, E）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>经济因素包括经济增长、通货膨胀率、利率、失业率和消费者支出等。这些因素影响企业的市场需求和运营成本。</p>
@@ -196,9 +277,13 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某国经济快速增长，消费者支出增加，这为企业提供了扩展市场的机会。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 12,
+    fid: 3,
     title: "社会因素（Social, S）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>社会因素包括人口结构、文化态度、社会价值观、生活方式和教育水平等。这些因素影响企业的市场定位和消费者行为。</p>
@@ -212,9 +297,13 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某地区的年轻人口增加，对高科技产品的需求上升，这为相关企业提供了市场机会。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 13,
+    fid: 3,
     title: "技术因素（Technological, T）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
@@ -228,9 +317,13 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司采用了最新的自动化生产技术，显著提高了生产效率和产品质量。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 14,
+    fid: 3,
     title: "环境因素（Environmental, E）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>环境因素包括环境保护法规、气候变化、资源稀缺和可持续发展等。这些因素影响企业的运营成本和社会责任。</p>
@@ -244,9 +337,13 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司实施了环保措施，减少了碳排放，提升了企业的社会责任形象。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
   {
+    id: 15,
+    fid: 3,
     title: "法律因素（Legal, L）",
+    cover: `/img.png`,
     content: `
     <p><strong>定义：</strong></p>
     <p>法律因素包括劳动法、消费者保护法、知识产权法和反垄断法等。这些因素影响企业的合规成本和法律风险。</p>
@@ -260,6 +357,7 @@ const list3: Item[] = [
     <p><strong>示例：</strong></p>
     <p>某公司严格遵守知识产权法，保护了自身的创新成果，提升了市场竞争力。</p>
     `,
+    createTime:'2024-09-01 12:12:52'
   },
 ];
 
@@ -269,13 +367,6 @@ const category: Mapping[] = [
   { id: 3, value: "资讯分类三" },
 ];
 
-
-
-const list: Map[] = [
-  { id: 1, fid: 1, content: list1 },
-  { id: 2, fid: 2, content: list2 },
-  { id: 3, fid: 3, content: list3 },
-];
 
 export {
   category,

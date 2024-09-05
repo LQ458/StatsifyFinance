@@ -16,7 +16,7 @@ const flowDataArray: Item[] = [
   {
     title: `流动比率<br/>
     Current Ratio`,
-    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong>111</p>
+    content: `<p><strong>公式：流动比率 = 流动资产 / 流动负债</strong></p>
     <p></p>
     <p><strong>示例：</strong></p>
     <p>假设某企业的财务报表提供了以下数据：</p>
@@ -211,18 +211,19 @@ const efficiencyDataArray: Item[] = [
 
 const profitDataArray: Item[] = [
   {
-    title: `存货周转天数比率<br/>Days Sales in Inventory Ratio`,
-    content: `<p><strong>公式：存货周转天数比率 = 365天 / 存货周转率</strong></p>
+    title: `毛利率<br/>（The gross margin ratio）`,
+    content: `<p><strong>公式：毛利率 = 毛利润 / 净销售额</strong></p>
       <p></p>
       <p><strong>示例：</strong></p>
       <p>假设某企业的财务报表提供了以下数据：</p>
-      <p>- 存货周转率：8</p>
+      <p>- 毛利润：$300,000</p>
+      <p>- 净销售额：$1,000,000</p>
       <p></p>
-      <p><strong>根据存货周转天数比率的公式：</strong></p>
-      <p>存货周转天数比率 = 365天 / 8 ≈ 45.63天</p>
+      <p><strong>根据毛利率的公式：</strong></p>
+      <p>毛利率 = $300,000 / $1,000,000 = 0.3</p>
       <p></p>
       <p><strong>解释：</strong></p>
-      <p>存货周转天数比率为45.63天表示企业平均持有存货45.63天后再出售，表明企业的存货管理周期较短。</p>`,
+      <p>毛利率为0.3（或30%）表示企业每一美元的销售收入产生了30美分的毛利润，表明企业的销售成本管理较为有效。</p>`,
   },
   {
     title: `营业利润率<br/>Operating Margin Ratio`,
@@ -411,7 +412,7 @@ const macroDataArray: Item[] = [
 
 const quanList = [
   "流动性比率",
-  "负债比率",
+  "杠杆财务比率",
   "效率比率",
   "盈利能力比率",
   "市值比率",
@@ -421,7 +422,7 @@ const quanList = [
 
 const quanMap: Mapping[] = [
   { key: "flow", value: "流动性比率" },
-  { key: "lever", value: "负债比率" },
+  { key: "lever", value: "杠杆财务比率" },
   { key: "efficiency", value: "效率比率" },
   { key: "profit", value: "盈利能力比率" },
   { key: "market", value: "市值比率" },

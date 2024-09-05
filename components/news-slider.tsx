@@ -1,9 +1,10 @@
 "use client";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import styles from "@/src/css/finance-terms.module.css";
+import styles from "@/src/css/news.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
+import { useRouter} from 'next/navigation';
 
 // Import Swiper styles
 import "swiper/css";
@@ -15,6 +16,8 @@ import Image from "next/image";
 
 // 定义对象类型
 interface Item {
+  id: number,
+  fid: number,
   title: string;
   cover: string;
   content: string;
@@ -43,6 +46,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0 } = props;
     const swiperRef = useRef(null);
+    const router = useRouter();
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -55,6 +59,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
         swiperRef.current?.swiper?.slideTo(index);
       },
     }));
+
+    const goDetails = (data: Item) => {
+      const {id, fid} = data
+      router.push(`/news/details?category=${fid}&id=${id}`)
+    }
 
     return (
       <>
@@ -76,9 +85,10 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
               <div className={`${styles["slide-item"]}`}>
                 <ul>
                   {page.map((item, idx) => (
-                    <li>
-                      {/* <img src={item.cover} width="100%" alt="" /> */}
-                      <p>{item.content}</p>
+                    <li key={idx}
+                    onClick={() => goDetails(item)}
+                    >
+                      <img src={item.cover} width="100%" alt="" />
                       <h4>
                         <Str2html htmlString={item.title} />
                       </h4>
