@@ -97,7 +97,7 @@ const Strategy = () => {
   ];
 
   const navClick: EventHandler = (id: number) => {
-    setCurrentNav(id)
+    // setCurrentNav(id)
     if (id === 1) {
       router.push(`/strategy/risk-manage`)
     }

@@ -3,13 +3,13 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import styles from "@/src/css/learn.module.css";
-import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
+import styles from "@/src/css/investor.module.css";
+import InvestorSlider, { SwiperComponentHandle } from "@/components/investor-slider";
 import Str2html from "@/components/str2html";
 import MainNav from "@/components/main-nav";
 import {
   list
-} from "@/src/data/strategy/trade";
+} from "@/src/data/strategy/investor";
 import {
   mainNavList
 } from "@/src/data/strategy/mainNav";
@@ -98,10 +98,41 @@ const Strategy = () => {
             影响力巨大的投资者就像金融世界的摇滚明星
             </p>
 
-            <div className="mt-[30px] text-left">
-              
-              
-            </div>            
+            <div className="mt-[30px] text-left">              
+              <div className="h-[510px]">
+                <InvestorSlider
+                  ref={swiperRef}
+                  className={`${styles.slider}`}
+                  items={list}
+                  onChange={handleChange}
+                  sliderIndex={1}
+                />
+                <div
+                  onClick={() => handlePrev()}
+                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                >
+                  <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
+                </div>
+                <div
+                  onClick={() => handleNext()}
+                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                >
+                  <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+                </div>
+              </div>
+            </div>
+            <div className={`${styles["custom-pagination"]}`}>
+              <ul>
+                {list.map((item, idx) => (
+                  <li
+                    key={idx}
+                    className={`${current === idx ? styles["active"] : ""}`}
+                    onClick={() => handleSlideTo(idx)}
+                  ></li>
+                ))}
+              </ul>
+            </div>
+
           </div>          
         </div>
       </div>

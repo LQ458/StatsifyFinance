@@ -104,7 +104,7 @@ const Strategy = () => {
   ];
 
   const navClick: EventHandler = (id: number) => {
-    setCurrentNav(id)
+    // setCurrentNav(id)
     if (id === 1) {
       router.push(`/strategy/risk-manage`)
     }
@@ -214,7 +214,7 @@ const Strategy = () => {
   const data = genData(14);
 
   const chartOption: echarts.EChartsOption = {
-    height:410,
+    height:580,
     backgroundColor:'#1d1e20',
     tooltip: {
       trigger: 'item',
@@ -238,8 +238,8 @@ const Strategy = () => {
     legend: {
       type: 'scroll',
       orient: 'vertical',
-      right: 50,
-      top: 30,
+      right: 80,
+      top: 120,
       bottom: 20,
       data: data.legendData,
       textStyle:{
@@ -281,7 +281,7 @@ const Strategy = () => {
 是一颗璀璨的明珠，闪耀着创新与智慧的光芒
             </p>
 
-            <div className="mt-[30px] text-left">
+            <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20]">
               <EChartComponent option={chartOption} />
             </div>
             
