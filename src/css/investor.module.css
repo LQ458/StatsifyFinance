@@ -157,3 +157,52 @@
   height: 100%;
   color: #fff;
 }
+
+.modal{
+  position: fixed;
+  left:50%;
+  top:50%;
+  width:1000px;  
+  height:600px;  
+  z-index: 1000;
+  color:#999;  
+  font-size: 16px;
+  line-height: 32px;
+  margin:-300px 0 0 -500px;
+  visibility: hidden;
+  opacity: 0;
+  transition: .2s all;
+}
+.modal::before{
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:rgba(0, 0, 0, .7);
+  z-index: 1000;
+}
+.modal-content{
+  position: relative;
+  background: #1D1E20;
+  height: 100%;
+  padding:60px 50px;
+  overflow-y: auto;
+  z-index: 1100;
+}
+.modal-close{
+  position: absolute;
+  right:-51px;
+  top:0;
+  width:50px;
+  height:50px;
+  background: #1D1E20 url('/icon-close.png') center center no-repeat;
+  background-size: 16px;
+  cursor: pointer;
+  z-index: 1100;
+}
+.modal-close:hover{
+  background-color: rgba(255, 215, 0, 0.7);
+}
+.active{
+  visibility: visible;
+  opacity: 1;
+}
