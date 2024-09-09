@@ -74,10 +74,10 @@
   height: 400px;
 }
 .slider .slide-item {
-  margin: 30px 70px;
+  padding: 30px;
   overflow: hidden;
   overflow-y: auto;
-  height: calc(100% - 60px);
+  height: 100%;
 }
 /* 自定义指示器 */
 .custom-pagination {
@@ -126,10 +126,10 @@
   color: #333;
 }
 .custom-prev {
-  left: 16px;
+  left: -56px;
 }
 .custom-next {
-  right: 16px;
+  right: -56px;
 }
 .custom-prev.disabled,
 .custom-next.disabled {

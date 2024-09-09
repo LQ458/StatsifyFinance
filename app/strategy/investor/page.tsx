@@ -5,7 +5,6 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/investor.module.css";
 import InvestorSlider, { SwiperComponentHandle } from "@/components/investor-slider";
-import Str2html from "@/components/str2html";
 import MainNav from "@/components/main-nav";
 import {
   list
@@ -15,23 +14,10 @@ import {
 } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 
-// 定义对象类型
-interface Item {
-  title: string;
-  content: string;
-}
 interface ChangeData {
   activeIndex: number;
   isBeginning: boolean;
   isEnd: boolean;
-}
-interface Map {
-  title: string;
-  content: Item[];
-}
-interface Mapping {
-  key: string;
-  value: string;
 }
 
 const Strategy = () => {
@@ -63,9 +49,6 @@ const Strategy = () => {
     if (swiperRef.current) {
       swiperRef.current.slideTo(index);
     }
-  };
-  const tabChange = (idx: number, evt: any) => {
-    handleSlideTo(idx);
   };
 
   useEffect(() => {

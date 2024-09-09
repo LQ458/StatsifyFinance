@@ -16,10 +16,8 @@ import Image from "next/image";
 
 // 定义对象类型
 interface Item {
-  id: number,
-  fid: number,
-  title: string;
-  cover: string;
+  name: string;
+  picture: string;
   content: string;
 }
 
@@ -31,7 +29,7 @@ interface ChangeData {
 
 interface sliderProps {
   className: string; // 给slider最外层的class
-  items: Item[][]; // 需要轮播的数据
+  items: Item[]; // 需要轮播的数据
   sliderIndex?: number; // 激活第几项,数组下标记数方式
   onChange: (data: ChangeData) => void; // 当slider改变时触发的回调
 }

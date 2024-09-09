@@ -40,7 +40,7 @@ interface EventHandler {
   (id: number): void;
 }
 
-const Strategy = () => {
+const RiskManage = () => {
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
@@ -143,7 +143,7 @@ const Strategy = () => {
                   className={`${styles.slider}`}
                   items={list}
                   onChange={handleChange}
-                  sliderIndex={1}
+                  sliderIndex={0}
                 />
                 <div
                   onClick={() => handlePrev()}
@@ -181,4 +181,4 @@ const Strategy = () => {
   );
 };
 
-export default Strategy;
+export default RiskManage;

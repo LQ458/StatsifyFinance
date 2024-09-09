@@ -1,74 +1,3 @@
-/* 主导航 */
-.nav {
-  height: 60px;
-  line-height: 60px;
-}
-.nav ul {
-  display: flex;
-}
-.nav ul li {
-  color: #fff;
-  padding: 0 25px;
-  font-size: 14px;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-.nav ul li:hover {
-  background-color: rgba(255, 215, 0, 0.3);
-}
-.nav ul li.active {
-  border-bottom: 2px solid #ffd700;
-}
-/* 切换卡 */
-.tab {
-  background: rgba(255, 255, 255, 0.3);
-  height: 80px;
-}
-.tab ul {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-}
-.tab ul::-webkit-scrollbar {
-  display: none;
-}
-.tab li {
-  color: #fff;
-  border-right: 1px solid #000;
-  display: flex;
-  padding: 0 30px;
-  align-items: center;
-  white-space: nowrap;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-.tab li:last-child {
-  border-right: 0;
-}
-.tab li:hover {
-  background-color: rgba(255, 215, 0, 0.3);
-}
-.tab li.active {
-  border-bottom: 2px solid #ffd700;
-}
-
-.tabContent {
-  position: relative;
-  min-height: 400px;
-  background: #1d1e20;
-  color: #999;
-  font-size: 16px;
-  line-height: 24px;
-}
-.tabContent p {
-  min-height: 24px;
-}
-
 /* 内容页面高度 */
 .slider {
   /* height: 400px; */
@@ -139,26 +68,6 @@
   cursor: default;
 }
 
-/* 左侧子导航 */
-.sub-nav li {
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 1px;
-}
-.sub-nav li:hover {
-  background: rgba(255, 215, 0, 0.3);
-}
-.sub-nav li.active {
-  border-left: 2px solid #ffd700;
-}
-.sub-nav li a {
-  display: block;
-  height: 100%;
-  color: #fff;
-}
-
 .modal{
   position: fixed;
   left:50%;
@@ -185,9 +94,12 @@
   position: relative;
   background: #1D1E20;
   height: 100%;
-  padding:60px 50px;
+  padding:40px 50px;
   overflow-y: auto;
   z-index: 1100;
+}
+.modal-content p{
+  min-height: 32px;
 }
 .modal-close{
   position: absolute;
