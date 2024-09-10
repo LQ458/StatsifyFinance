@@ -132,7 +132,7 @@ interface Item {
       },
       {
         name: `雷·达里奥（Ray Dalio）`,
-        picture: `/Ray-Dalio.jpeg`,
+        picture: `/Ray-Dalio.png`,
         content: `
         <p>雷·达里奥（Ray Dalio）是美国的一位著名投资家、对冲基金经理，被誉为“桥水基金之父”。他是桥水联合基金（Bridgewater Associates）的创始人和联合首席投资官，该基金是世界上最大的对冲基金之一，在他的领导下实现了显著的增长。</p>
         <p></p>
@@ -194,7 +194,7 @@ interface Item {
       },
       {
         name: `杰西·利弗莫尔（Jesse Livermore）`,
-        picture: `/Jesse-Livermore.jpeg`,
+        picture: `/Jesse-Livermore.png`,
         content: `
         <p>杰西·利弗莫尔（Jesse Livermore）是美国的一位著名投机家，被誉为“投机之王”。他以其在股票和商品市场上的巨大成功与失败而闻名，成为了20世纪初最传奇的投机者之一。</p>
         <p></p>

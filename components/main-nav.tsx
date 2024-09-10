@@ -15,12 +15,12 @@ interface ChildComponentProps {
 
 const mainNav : React.FC<ChildComponentProps> = ({navItems}) => {
   const pathname = usePathname();
-  console.log('pathname:::', pathname)
+  // console.log('pathname:::', pathname)
   return (
     <div className={`${styles.nav} w-full`}>
       <ul> 
-        {navItems.map(item => (
-          <li className={`${pathname.indexOf(item.path) > -1 ? styles.active : ''}`}>
+        {navItems.map((item,idx) => (
+          <li key={idx} className={`${pathname.indexOf(item.path) > -1 ? styles.active : ''}`}>
             <Link passHref href={item.path}>
               {item.value}
               </Link>

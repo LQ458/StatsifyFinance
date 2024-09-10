@@ -47,6 +47,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const router = useRouter();
     const [isShow, setShowstate] = useState(false);
     const [intro, setIntro] = useState('');
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -61,12 +62,15 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     }));
 
     const handleClick = (content:string) => {
-      console.log('content::', content);
       setIntro(content)
       setShowstate(true)
     };
     const handleClose = () => {
       setShowstate(false)
+      scrollRef?.current?.scrollTo({
+        top: 0,  
+        behavior: 'smooth' 
+      });
     }
 
     return (
@@ -103,7 +107,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
         </Swiper>
         <div className={`${styles.modal} ${isShow ? styles.active : ''}`}>
           <div className={`${styles['modal-close']}`} onClick={() => handleClose()} ></div>
-          <div className={`${styles['modal-content']}`}>
+          <div ref={scrollRef} className={`${styles['modal-content']}`}>
             <Str2html htmlString={intro} />
           </div>          
         </div>

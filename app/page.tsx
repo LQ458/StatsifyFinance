@@ -7,8 +7,17 @@ export default function Home() {
   return (
     <main className="bg-intro-color flex flex-col h-screen">
       <Topbar position="relative" />
-      <div className="w-full flex-grow">
-        <div className="flex flex-row justify-center align-middle max-w-[1920px] min-w-[1100px] mx-auto h-[100%]">
+      <div className="w-full flex-grow relative">
+        <div className="abrazine">
+          <div className="ball-list">
+            <ul>
+              <li style={{background:'red', boxShadow: '0 0 50px 50px red'}}></li>
+              <li style={{background:'blue', boxShadow: '0 0 50px 50px blue'}}></li>
+              <li style={{background:'green', boxShadow: '0 0 50px 50px green'}}></li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-row justify-center align-middle max-w-[1920px] min-w-[1100px] mx-auto h-[100%] relative z-10">
           <div className="self-center flex flex-col gap-[160px] flex-grow pl-[120px] -mt-[50px]">
             <div className="flex flex-col gap-5">
               <h1 className="text-white font-[400] text-[32px]">
