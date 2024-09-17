@@ -112,26 +112,6 @@
   cursor: default;
 }
 
-/* 左侧子导航 */
-.sub-nav li {
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 1px;
-}
-.sub-nav li:hover {
-  background: rgba(255, 215, 0, 0.3);
-}
-.sub-nav li.active {
-  border-left: 2px solid #ffd700;
-}
-.sub-nav li a {
-  display: block;
-  height: 100%;
-  color: #fff;
-}
-
 .newsContent{
   margin-top: 20px;
   background:#1D1E20;
@@ -149,6 +129,6 @@
   padding-top: 40px;
   font-size: 16px;
   line-height: 36px;
-  color: #999;
+  color: #ccc;
   overflow-y: auto;
 }

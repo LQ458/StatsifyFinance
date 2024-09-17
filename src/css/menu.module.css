@@ -11,7 +11,7 @@
   color: white;
   transition: transform 0.3s;
 }
-
+.current h4{font-weight: bold;}
 .current:after{
   content: '';
   position: absolute;

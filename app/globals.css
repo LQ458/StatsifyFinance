@@ -10,6 +10,99 @@
   transform: translateY(-50%);
   margin-left: -900px;
 }
+@media screen and (max-width: 5120px) {
+  .fixed-left {
+    margin-left: -1100px;
+  }
+  .container {
+    width: 1920px;
+  }
+  .container .swiper{
+    height:700px;
+  }
+  .news-container {
+    width: 1500px;
+  }
+  .news-container .swiper{
+    height:700px;
+  }
+  .finance-terms-container {
+    width: 1800px;
+  }
+  .finance-terms-container .swiper {
+    height: 670px;
+  }
+  .finance-terms-container .swiper .swiper-slide ul li p {
+    font-size: 16px;
+    line-height: 32px;
+    padding:20px;
+  }
+  .investor-container{
+    width:1500px;
+  }
+}
+@media screen and (max-width: 2560px) {
+  .fixed-left {
+    margin-left: -900px;
+  }
+  .container {
+    width: 1200px;
+  }
+  .container .swiper{
+    height:450px;
+  }
+  .news-container {
+    width: 1200px;
+  }
+  .news-container .swiper{
+    height:462px;
+  }
+  .finance-terms-container {
+    width: 1500px;
+  }
+  .finance-terms-container .swiper {
+    height: 546px;
+  }
+  .finance-terms-container .swiper .swiper-slide ul li p {
+    font-size: 16px;
+    line-height: 32px;
+    padding:20px;
+  }
+  .investor-container{
+    width:1200px;
+  }
+}
+@media screen and (max-width: 1920px) {
+  .fixed-left {
+    margin-left: -840px;
+  }
+  .container {
+    width: 1000px;
+  }
+  .container .swiper{
+    height:450px;
+  }
+  .news-container {
+    width: 1000px;
+  }
+  .news-container .swiper{
+    height:456px;
+  }
+  .finance-terms-container {
+    width: 1180px;
+  }
+  .finance-terms-container .swiper {
+    height: 456px;
+  }
+  .finance-terms-container .swiper .swiper-slide ul li p {
+    font-size: 14px;
+    line-height: 24px;
+    padding:10px;
+  }  
+  .investor-container{
+    width:1000px;
+  }
+}
 @media screen and (max-width: 1800px) {
   .fixed-left {
     margin-left: -840px;
@@ -19,12 +112,18 @@
   .fixed-left {
     margin-left: -780px;
   }
+  .news-container {
+    width: 900px;
+  }
 }
 @media screen and (max-width: 1560px) {
   .fixed-left {
     margin-left: -720px;
   }
   .container {
+    width: 850px;
+  }
+  .news-container {
     width: 850px;
   }
 }
@@ -35,6 +134,9 @@
   .container {
     width: 850px;
   }
+  .news-container {
+    width: 800px;
+  }
 }
 @media screen and (max-width: 1320px) {
   .fixed-left {
@@ -42,6 +144,9 @@
   }
   .container {
     width: 740px;
+  }
+  .news-container {
+    width: 700px;
   }
   /* 金融基础术语 */
   .finance-terms-container {
@@ -144,6 +249,6 @@
   box-shadow: 0 0 50px 50px red;
 }
 @keyframes rotate{
-  from{transform: rotate(0) scale(0.5);}
+  from{transform: rotate(0) scale(0.8);}
   to{ transform: rotate(360deg) scale(1.2);}
 }

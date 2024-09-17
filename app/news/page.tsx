@@ -5,10 +5,10 @@ import React from "react";
 import { useRouter, useSearchParams} from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/news.module.css";
+import SideNav from "@/components/side-nav";
 import Slider, {
   SwiperComponentHandle,
 } from "@/components/news-slider";
-import Str2html from "@/components/str2html";
 import { IoIosArrowDown } from "react-icons/io";
 import {
   category,
@@ -29,7 +29,6 @@ interface Item {
 }
 
 interface twoDimension extends Array<Item[]> {}
-
 
 const news: React.FC = () => {
   const router = useRouter();
@@ -117,12 +116,14 @@ const news: React.FC = () => {
     setNavData(currentNav)
   }, [currentNav]);
 
+  
+
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1000px] mx-auto px-[60px] pt-[80px]">
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] news-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
             金融市场动态、基础知识和深入分析
             </h1>
@@ -165,26 +166,7 @@ const news: React.FC = () => {
             </div>
           </div>
           <div className="fixed-left">
-            <ul className={`${styles["sub-nav"]}`}>
-              {category &&
-                category.map((item, idx) => (
-                  <React.Fragment key={idx}>
-                    <li
-                      className={`${currentNav === item.id && styles["active"]}`}
-                    >
-                      <button
-                        onClick={() =>
-                          switchNav(item.id)
-                        }  
-                        type="button"
-                        className="text-white w-full"
-                      >
-                        {item.value}
-                      </button>
-                    </li>
-                  </React.Fragment>
-                ))}
-            </ul>
+            <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ switchNav } />            
           </div>
         </div>
       </div>

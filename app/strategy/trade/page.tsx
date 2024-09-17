@@ -120,7 +120,7 @@ const Strategy = () => {
                   className={`${styles.slider}`}
                   items={list}
                   onChange={handleChange}
-                  sliderIndex={1}
+                  sliderIndex={0}
                 />
                 <div
                   onClick={() => handlePrev()}

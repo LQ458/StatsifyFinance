@@ -183,7 +183,7 @@ const Analysis = () => {
                   className={`${styles.slider}`}
                   items={dataArray}
                   onChange={handleChange}
-                  sliderIndex={1}
+                  sliderIndex={0}
                 />
                 <div
                   onClick={() => handlePrev()}

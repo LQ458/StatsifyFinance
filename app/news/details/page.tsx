@@ -29,31 +29,23 @@ const newsDetails = () => {
   const searchParams = useSearchParams()
   const [cat, setCategory] = useState<Mapping>({});
   const [news, setNews] = useState<Item>({});
-  const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
-  const [noNext, setNoNext] = useState(false); // 默认还有下一页
   // 获取地址栏category参数，用于跳转到指定分类
   let id = searchParams.get('id')
   let cId = searchParams.get('category')
 
   // 类似于vue的mounted
   useEffect(() => {
-    console.log('cId:::', cId) 
-    console.log('idididid:::', id) 
     category.map(item => { 
       if (cId && (parseInt(cId) === item.id)) {
-        console.log('sdfsdfsdfsdf') 
         setCategory(item)
       }
     })
 
     list.map(item => {      
         if (id && (parseInt(id) === item.id)) {
-          console.log('dddd') 
           setNews(item)
         }
     })
-    console.log('cat:::', cat) 
-    console.log('news:::', news) 
   }, []);
 
 
