@@ -1,5 +1,7 @@
 /* 主导航 */
 .nav {
+  max-width: 1800px;
+  margin: 0 auto;
   height: 60px;
   line-height: 60px;
 }

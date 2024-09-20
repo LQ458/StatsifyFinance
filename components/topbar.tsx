@@ -2,7 +2,8 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, KeyboardEvent } from "react";
+import { useRouter, useSearchParams} from 'next/navigation';
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import Menu from "./menu";
@@ -14,16 +15,30 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ position }) => {
+  const searchParams = useSearchParams()
   const [isSearch, setSearchState] = useState(false);
   const [keywords, setKeywords] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
+  let urlKeywords = searchParams.get('keywords') || ''
+  
+  useEffect(() => {
+    if(urlKeywords){
+      setSearchState(true);
+      setKeywords(urlKeywords);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  }, []);
   // 切换搜索状态的函数
   const searchIconClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
     if (keywords.trim() !== "") {
-      alert(`搜索关键字：${keywords}`);
+      // alert(`搜索关键字：${keywords}`);
+      // router.push(`/search?keywords=${keywords}&random=${new Date().getTime()}`)
+      window.location.href = `/search?keywords=${keywords}&random=${new Date().getTime()}`
     } else {
       setSearchState((isSearch) => {
         return !isSearch;
@@ -38,6 +53,11 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
       });
     }
   };
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+      searchIconClick();
+    }
+  };  
   // 搜索关键字发生改变
   const keywordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeywords(event.target.value);
@@ -65,6 +85,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
                 value={keywords}
                 onChange={keywordsChange}
                 onBlur={handleBlur}
+                onKeyPress={handleKeyPress}
                 className={`${isSearch ? styles.search : "w-0 opacity-0"} h-[30px] px-[8px] focus:outline-0 pr-[30px] rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300`}
               />
               <button

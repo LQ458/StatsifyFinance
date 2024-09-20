@@ -11,6 +11,10 @@
   margin-left: -900px;
 }
 @media screen and (max-width: 5120px) {
+  .bg-login-bg,
+  .bg-analysis-bg{
+    max-width: 100%;
+  }
   .fixed-left {
     margin-left: -1100px;
   }
@@ -42,6 +46,10 @@
   }
 }
 @media screen and (max-width: 2560px) {
+  .bg-login-bg,
+  .bg-analysis-bg{
+    max-width: 100%;
+  }
   .fixed-left {
     margin-left: -900px;
   }

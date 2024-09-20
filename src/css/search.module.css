@@ -1,0 +1,26 @@
+.newsContent{
+  margin-top: 20px;
+  background:#1D1E20;
+  min-height: 100px;
+  padding:60px 50px;
+}
+
+.newsMain{
+  padding-top: 40px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #999;
+}
+.newsMain li {
+  margin-bottom: 24px;
+}
+.newsMain li a{
+  color: #999;
+}
+.newsMain li a:hover{
+  color:#FFD700;
+  text-decoration: none;
+}
+.newsMain li a div{
+  display: inline;
+}
