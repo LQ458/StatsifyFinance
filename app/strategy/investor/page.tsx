@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { useSearchParams} from 'next/navigation';
 import styles from "@/src/css/investor.module.css";
 import InvestorSlider, { SwiperComponentHandle } from "@/components/investor-slider";
 import MainNav from "@/components/main-nav";
@@ -32,6 +33,20 @@ const Strategy = () => {
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef(null);
+  const searchParams = useSearchParams()
+
+
+  useEffect(() => {
+    let index = searchParams.get('index')
+    if(index){
+      const sIndex = Number(index)
+      if (!isNaN(sIndex)) {
+        if(sIndex >= 0 && sIndex <= list.length - 1){
+          handleSlideTo(sIndex);
+        }
+      }
+    }
+  }, []);
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -88,7 +103,7 @@ const Strategy = () => {
                   className={`${styles.slider}`}
                   items={list}
                   onChange={handleChange}
-                  sliderIndex={1}
+                  sliderIndex={0}
                 />
                 <div
                   onClick={() => handlePrev()}

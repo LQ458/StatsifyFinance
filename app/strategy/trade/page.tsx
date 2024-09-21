@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { useRouter, useSearchParams} from 'next/navigation';
 import styles from "@/src/css/learn.module.css";
 import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
 import Str2html from "@/components/str2html";
@@ -46,6 +47,20 @@ const Strategy = () => {
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef(null);
+  const searchParams = useSearchParams()
+
+
+  useEffect(() => {
+    let index = searchParams.get('index')
+    if(index){
+      const sIndex = Number(index)
+      if (!isNaN(sIndex)) {
+        if(sIndex >= 0 && sIndex <= list.length - 1){
+          handleSlideTo(sIndex);
+        }
+      }
+    }
+  }, []);
 
   const handleNext = () => {
     if (swiperRef.current) {
