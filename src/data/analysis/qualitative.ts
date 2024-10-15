@@ -13,7 +13,7 @@ interface Mapping {
 }
 const ESGDataArray: Item[] = [
   {
-    title: "环境（Environmental, E）",
+    title: "环境（Environmental）",
     content: `
     <p><strong>定义：</strong></p>
     <p>环境指标评估企业在环境保护和可持续发展方面的实践和政策。它涵盖了企业如何管理其对自然资源的影响、如何减少碳排放、如何处理废弃物以及如何节约能源等。</p>
@@ -29,7 +29,7 @@ const ESGDataArray: Item[] = [
     `,
   },
   {
-    title: "社会（Social, S）",
+    title: "社会（Social）",
     content: `
     <p><strong>定义：</strong></p>
     <p>社会指标评估企业在员工福利、社区关系和社会责任方面的表现。它涵盖了企业如何对待员工、如何对社区产生积极影响以及如何承担社会责任等方面。</p>
@@ -45,7 +45,7 @@ const ESGDataArray: Item[] = [
     `,
   },
   {
-    title: "公司治理（Governance, G）",
+    title: "公司治理（Governence）",
     content: `
     <p><strong>定义：</strong></p>
     <p>公司治理指标评估企业的管理架构、治理政策和透明度。它涵盖了企业的董事会结构、管理层的独立性、股东权利和公司透明度等方面。</p>
@@ -70,7 +70,7 @@ const ESGDataArray: Item[] = [
 
 const SWOTDataArray: Item[] = [
   {
-    title: "优势（Strengths, S）",
+    title: "优势（Strengths）",
     content: `
     <p><strong>定义：</strong></p>
     <p>优势是企业内部的积极因素，可以帮助企业在市场中取得成功。这些因素包括资源、能力、品牌声誉、技术优势等。</p>
@@ -86,7 +86,7 @@ const SWOTDataArray: Item[] = [
     `,
   },
   {
-    title: "劣势（Weaknesses, W）",
+    title: "劣势（Weaknesses）",
     content: `
     <p><strong>定义：</strong></p>
     <p>劣势是企业内部的消极因素，可能会阻碍企业的发展。这些因素包括资源不足、管理不善、品牌弱势、技术落后等。</p>
@@ -102,7 +102,7 @@ const SWOTDataArray: Item[] = [
     `,
   },
   {
-    title: "机会（Opportunities, O）",
+    title: "机会（Opportunities）",
     content: `
     <p><strong>定义：</strong></p>
     <p>机会是外部市场中的积极因素，可以帮助企业扩展和发展。这些因素包括市场增长、政策支持、技术进步、消费者需求变化等。</p>
@@ -118,7 +118,7 @@ const SWOTDataArray: Item[] = [
     `,
   },
   {
-    title: "威胁（Threats, T）",
+    title: "威胁（Threats）",
     content: `
     <p><strong>定义：</strong></p>
     <p>威胁是外部市场中的消极因素，可能会对企业造成不利影响。这些因素包括市场竞争、政策变化、技术替代、经济衰退等。</p>
@@ -137,7 +137,7 @@ const SWOTDataArray: Item[] = [
 
 const PESTELDataArray: Item[] = [
   {
-    title: "政治因素（Political, P）",
+    title: "政治因素（Political）",
     content: `
     <p><strong>定义：</strong></p>
     <p>政治因素包括政府政策、政治稳定性、税收政策、贸易法规和政府干预等。这些因素影响企业的运营环境和战略决策。</p>
@@ -153,7 +153,7 @@ const PESTELDataArray: Item[] = [
     `,
   },
   {
-    title: "经济因素（Economic, E）",
+    title: "经济因素（Economic）",
     content: `
     <p><strong>定义：</strong></p>
     <p>经济因素包括经济增长、通货膨胀率、利率、失业率和消费者支出等。这些因素影响企业的市场需求和运营成本。</p>
@@ -169,7 +169,7 @@ const PESTELDataArray: Item[] = [
     `,
   },
   {
-    title: "社会因素（Social, S）",
+    title: "社会因素（Social）",
     content: `
     <p><strong>定义：</strong></p>
     <p>社会因素包括人口结构、文化态度、社会价值观、生活方式和教育水平等。这些因素影响企业的市场定位和消费者行为。</p>
@@ -185,7 +185,7 @@ const PESTELDataArray: Item[] = [
     `,
   },
   {
-    title: "技术因素（Technological, T）",
+    title: "技术因素（Technological）",
     content: `
     <p><strong>定义：</strong></p>
     <p>技术因素包括技术进步、研发活动、自动化水平和技术创新等。这些因素影响企业的生产效率和市场竞争力。</p>
@@ -201,7 +201,7 @@ const PESTELDataArray: Item[] = [
     `,
   },
   {
-    title: "环境因素（Environmental, E）",
+    title: "环境因素（Environmental）",
     content: `
     <p><strong>定义：</strong></p>
     <p>环境因素包括环境保护法规、气候变化、资源稀缺和可持续发展等。这些因素影响企业的运营成本和社会责任。</p>
@@ -217,7 +217,7 @@ const PESTELDataArray: Item[] = [
     `,
   },
   {
-    title: "法律因素（Legal, L）",
+    title: "法律因素（Legal）",
     content: `
     <p><strong>定义：</strong></p>
     <p>法律因素包括劳动法、消费者保护法、知识产权法和反垄断法等。这些因素影响企业的合规成本和法律风险。</p>
