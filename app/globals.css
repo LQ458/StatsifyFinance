@@ -200,7 +200,7 @@
 }
 
 /* 高度适配 */
-@media screen and (max-height: 1000px) {
+@media screen and (max-height: 900px) {
   .container,
   .investor-container,
   .news-container,
@@ -215,6 +215,12 @@
     top:266px;
     transform: translateY(0);
   }
+}
+
+/* 给所有背景图背景色 */
+.bg-analysis-bg,
+.bg-login-bg{
+  background-color: #000;
 }
 
 
