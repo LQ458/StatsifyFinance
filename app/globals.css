@@ -172,9 +172,8 @@
 @media screen and (max-width: 1200px) {
   .fixed-left {
     margin-left: 0;
-    left: 0;
+    left: -220px;
     padding-right: 1px;
-    transform: translate(-100%, -50%);
     transition: 0.3s all;
   }
   .fixed-left::before {
@@ -193,12 +192,31 @@
     border-radius: 0;
   }
   .fixed-left:hover {
-    transform: translate(0%, -50%);
+    left:0;
   }
   .fixed-left:hover::before {
     color: #ffd700;
   }
 }
+
+/* 高度适配 */
+@media screen and (max-height: 1000px) {
+  .container,
+  .investor-container,
+  .news-container,
+  .finance-terms-container
+   {
+    padding-top:60px;
+    padding-bottom:60px;
+  }
+  /* 左侧菜单取消fixed定位 */
+  .fixed-left{
+    position: absolute;
+    top:266px;
+    transform: translateY(0);
+  }
+}
+
 
 /* WebKit 浏览器 (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {

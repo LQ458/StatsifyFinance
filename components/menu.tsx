@@ -23,7 +23,7 @@ const Menu = () => {
           <h4
             className={`font-[400] self-center text-white group-hover:text-white`}
           >
-            Learn
+            学习
           </h4>
           <IoIosArrowDown
             className={`self-center relative ${rotate ? styles.iconRotate : styles.iconOriginal} text-[16px] transition`}

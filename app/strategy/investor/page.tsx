@@ -70,10 +70,14 @@ const Strategy = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current > li.length / 2) {
-          li[li.length - 1].scrollIntoView();
+        if (current >= li.length / 2) {          
+          tabRef.current?.scrollTo({
+            left: tabRef.current?.scrollWidth
+          });
         } else {
-          li[0].scrollIntoView();
+          tabRef.current?.scrollTo({
+            left: 0
+          });
         }
       }
     };
