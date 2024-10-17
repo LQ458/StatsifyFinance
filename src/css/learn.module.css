@@ -4,6 +4,8 @@
   margin: 0 auto;
   height: 60px;
   line-height: 60px;
+  position: relative;
+  z-index: 10;
 }
 .nav ul {
   display: flex;
