@@ -1,6 +1,8 @@
+.main{
+  width: calc(100% - 275px)
+}
 .tabContent {
   position: relative;
-  min-height: 400px;
   color: #999;
   font-size: 16px;
   line-height: 24px;
@@ -100,10 +102,10 @@
   color: #333;
 }
 .custom-prev {
-  left: -76px;
+  left: -56px;
 }
 .custom-next {
-  right: -76px;
+  right: -56px;
 }
 .custom-prev.disabled,
 .custom-next.disabled {
@@ -131,4 +133,11 @@
   line-height: 36px;
   color: #ccc;
   overflow-y: auto;
+}
+
+/* 左侧子导航 */
+.left-side{
+  width:200px;
+  margin-right: 75px;
+  position: relative;
 }

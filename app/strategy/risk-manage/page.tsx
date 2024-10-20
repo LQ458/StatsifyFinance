@@ -132,65 +132,68 @@ const RiskManage = () => {
       <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              风险控制
-            </h1>
-            <p className="text-[#B8B8B8] text-[16px]">
-            通过系统的方法和策略，对可能影响投资回报和安全的风险进行识别、量化、监测和管理，<br />
-以最小化投资损失并确保投资组合的稳定性和持续性
-            </p>
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
+            <div className={`${styles["left-side"]}`}>
+              <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />         
+            </div>
+            <div className={`${styles["main"]}`}>
+              <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
+                风险控制
+              </h1>
+              <p className="text-[#B8B8B8] text-[16px]">
+              通过系统的方法和策略，对可能影响投资回报和安全的风险进行识别、量化、监测和管理，<br />
+  以最小化投资损失并确保投资组合的稳定性和持续性
+              </p>
 
-            <div className="mt-[30px] text-left">
-              <div className={`${styles.tab}`}>
-                <ul ref={tabRef}>
+              <div className="mt-[30px] text-left">
+                <div className={`${styles.tab}`}>
+                  <ul ref={tabRef}>
+                    {list.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className={`${current === idx ? styles["active"] : ""}`}
+                        onClick={(e) => tabChange(idx, e)}
+                      >
+                        <Str2html htmlString={item.title} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={`${styles.tabContent}`}>
+                  <LearnSlider
+                    ref={swiperRef}
+                    className={`${styles.slider}`}
+                    items={list}
+                    onChange={handleChange}
+                    sliderIndex={0}
+                  />
+                  <div
+                    onClick={() => handlePrev()}
+                    className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
+                  </div>
+                  <div
+                    onClick={() => handleNext()}
+                    className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+                  </div>
+                </div>
+              </div>
+              <div className={`${styles["custom-pagination"]}`}>
+                <ul>
                   {list.map((item, idx) => (
                     <li
                       key={idx}
                       className={`${current === idx ? styles["active"] : ""}`}
-                      onClick={(e) => tabChange(idx, e)}
-                    >
-                      <Str2html htmlString={item.title} />
-                    </li>
+                      onClick={() => handleSlideTo(idx)}
+                    ></li>
                   ))}
                 </ul>
               </div>
-              <div className={`${styles.tabContent}`}>
-                <LearnSlider
-                  ref={swiperRef}
-                  className={`${styles.slider}`}
-                  items={list}
-                  onChange={handleChange}
-                  sliderIndex={0}
-                />
-                <div
-                  onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
-                </div>
-                <div
-                  onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
-                </div>
-              </div>
             </div>
-            <div className={`${styles["custom-pagination"]}`}>
-              <ul>
-                {list.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className={`${current === idx ? styles["active"] : ""}`}
-                    onClick={() => handleSlideTo(idx)}
-                  ></li>
-                ))}
-              </ul>
-            </div>
-          </div>  
-          <div className="fixed-left">
-            <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />
+            
           </div>
         </div>
       </div>

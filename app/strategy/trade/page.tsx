@@ -109,7 +109,7 @@ const Strategy = () => {
       <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
               交易策略
             </h1>

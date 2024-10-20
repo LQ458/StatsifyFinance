@@ -141,8 +141,23 @@
   pointer-events: none;
   cursor: default;
 }
+.main{
+  width: calc(100% - 275px)
+}
 
 /* 左侧子导航 */
+.left-side{
+  width:200px;
+  margin-right: 75px;
+  position: relative;
+}
+.sub-nav{
+  position: absolute;
+  top: 50%;
+  left:0;
+  right:0;
+  transform: translateY(-50%);
+}
 .sub-nav li {
   height: 50px;
   line-height: 50px;

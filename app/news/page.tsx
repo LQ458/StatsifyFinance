@@ -121,53 +121,57 @@ const news: React.FC = () => {
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
-      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1000px] mx-auto px-[60px] pt-[80px]">
+      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px] pt-[80px]">
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] news-container">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-            金融市场动态、基础知识和深入分析
-            </h1>
-            <p className="text-[#B8B8B8] text-[16px]">
-            开启投资跃升之路
-            </p>
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] news-container flex">
+            <div className={`${styles["left-side"]}`}>
+              <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ switchNav } />            
+            </div>
+            <div className={`${styles["main"]}`}>
+              <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
+              金融市场动态、基础知识和深入分析
+              </h1>
+              <p className="text-[#B8B8B8] text-[16px]">
+              开启投资跃升之路
+              </p>
 
-            <div className="mt-[30px] text-left">
-              <div className={`${styles.tabContent}`}>
-                <Slider
-                  ref={swiperRef}
-                  className={`${styles.slider}`}
-                  items={pages}
-                  onChange={handleChange}
-                />
-                <div
-                  onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
-                </div>
-                <div
-                  onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+              <div className="mt-[30px] text-left">
+                <div className={`${styles.tabContent}`}>
+                  <Slider
+                    ref={swiperRef}
+                    className={`${styles.slider}`}
+                    items={pages}
+                    onChange={handleChange}
+                  />
+                  <div
+                    onClick={() => handlePrev()}
+                    className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
+                  </div>
+                  <div
+                    onClick={() => handleNext()}
+                    className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+                  </div>
                 </div>
               </div>
+              <div className={`${styles["custom-pagination"]}`}>
+                <ul>
+                  {pages.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className={`${current === idx ? styles["active"] : ""}`}
+                      onClick={() => handleSlideTo(idx)}
+                    ></li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className={`${styles["custom-pagination"]}`}>
-              <ul>
-                {pages.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className={`${current === idx ? styles["active"] : ""}`}
-                    onClick={() => handleSlideTo(idx)}
-                  ></li>
-                ))}
-              </ul>
-            </div>
+            
           </div>
-          <div className="fixed-left">
-            <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ switchNav } />            
-          </div>
+          
         </div>
       </div>
       <Footer position="relative" />

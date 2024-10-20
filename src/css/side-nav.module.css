@@ -1,4 +1,11 @@
 /* 左侧子导航 */
+.sub-nav{
+  position: absolute;
+  top: 50%;
+  left:0;
+  right:0;
+  transform: translateY(-50%);
+}
 .sub-nav li {
   height: 50px;
   line-height: 50px;

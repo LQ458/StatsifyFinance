@@ -63,7 +63,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
     setKeywords(event.target.value);
   };
   return (
-    <div className="w-[100%] bg-topbar-color border-b border-topbar-border-color h-[60px] ${position} z-[10000] flex-grow-0 flex-shrink-0">
+    <div className="w-[100%] min-w-[1100px] bg-topbar-color border-b border-topbar-border-color h-[60px] ${position} z-[10000] flex-grow-0 flex-shrink-0">
       <div
         className={`flex justify-between max-w-[1920px] min-w-[1100px] mx-auto h-[100%] px-[60px]`}
       >

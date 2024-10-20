@@ -4,6 +4,7 @@ import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useRouter} from 'next/navigation';
+import styles from "@/src/css/learn.module.css";
 import MainNav from "@/components/main-nav";
 import SideNav from "@/components/side-nav";
 import EChartComponent from '@/components/echarts';
@@ -197,21 +198,24 @@ const IndustrySectors = () => {
       <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-            行业分类
-            </h1>
-            <p className="text-[#B8B8B8] text-[16px]">
-            14个行业分类，每个行业都是经济巨轮的重要组成部分，<br/>
-是一颗璀璨的明珠，闪耀着创新与智慧的光芒
-            </p>
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
+            <div className={`${styles["left-side"]}`}>
+              <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />         
+            </div>
+            <div className={`${styles["main"]}`}>
+              <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
+              行业分类
+              </h1>
+              <p className="text-[#B8B8B8] text-[16px]">
+              14个行业分类，每个行业都是经济巨轮的重要组成部分，<br/>
+  是一颗璀璨的明珠，闪耀着创新与智慧的光芒
+              </p>
 
-            <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20]">
-              <EChartComponent option={chartOption} />
-            </div>            
-          </div>  
-          <div className="fixed-left">
-            <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />
+              <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20]">
+                <EChartComponent option={chartOption} />
+              </div>            
+            </div>
+            
           </div>
         </div>
       </div>

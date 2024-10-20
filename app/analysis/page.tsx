@@ -153,90 +153,95 @@ const Analysis = () => {
           </ul>
         </div>
         <div className="flex flex-grow">
-          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] container">
-            <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              {curTopic === "quan" ? "定量分析指标" : "定性分析指标"}
-            </h1>
-            <p className="text-[#B8B8B8] text-[16px]">
-              {curTopic === "quan"
-                ? "在金融分析中用于评估投资的性能、风险和回报。"
-                : "在金融分析中用于评估企业的非财务方面，如管理质量、品牌价值和市场竞争力。"}
-              <br />
-              {curTopic === "quan"
-                ? "这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。"
-                : "这些指标基于主观判断和经验，帮助投资者和分析师全面了解企业的整体状况。"}
-            </p>
+          <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
+            <div className={`${styles["left-side"]}`}>
+              <div className={`${styles["sub-nav"]}`}>
+                <ul>
+                  {topicList &&
+                    topicList.map((item, idx) => (
+                      <React.Fragment key={idx}>
+                        <li
+                          className={`${curSubTopic === findKeyByValue(curMap, item) && styles["active"]}`}
+                        >
+                          <button
+                            onClick={() =>
+                              setCurSubTopic(findKeyByValue(curMap, item) || "flow")
+                            }
+                            type="button"
+                            className="text-white w-full"
+                          >
+                            {item}
+                          </button>
+                        </li>
+                      </React.Fragment>
+                    ))}
+                </ul>
+              </div>
+            </div>
+            <div className={`${styles["main"]}`}>
+              <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
+                {curTopic === "quan" ? "定量分析指标" : "定性分析指标"}
+              </h1>
+              <p className="text-[#B8B8B8] text-[16px]">
+                {curTopic === "quan"
+                  ? "在金融分析中用于评估投资的性能、风险和回报。"
+                  : "在金融分析中用于评估企业的非财务方面，如管理质量、品牌价值和市场竞争力。"}
+                <br />
+                {curTopic === "quan"
+                  ? "这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。"
+                  : "这些指标基于主观判断和经验，帮助投资者和分析师全面了解企业的整体状况。"}
+              </p>
 
-            <div className="mt-[30px] text-left">
-              <div className={`${styles.tab}`}>
-                <ul ref={tabRef}>
+              <div className="mt-[30px] text-left">
+                <div className={`${styles.tab}`}>
+                  <ul ref={tabRef}>
+                    {dataArray.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className={`${current === idx ? styles["active"] : ""}`}
+                        onClick={(e) => tabChange(idx, e)}
+                      >
+                        <Str2html htmlString={item.title} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={`${styles.tabContent}`}>
+                  <LearnSlider
+                    ref={swiperRef}
+                    className={`${styles.slider}`}
+                    items={dataArray}
+                    onChange={handleChange}
+                    sliderIndex={0}
+                  />
+                  <div
+                    onClick={() => handlePrev()}
+                    className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
+                  </div>
+                  <div
+                    onClick={() => handleNext()}
+                    className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  >
+                    <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
+                  </div>
+                </div>
+              </div>
+              <div className={`${styles["custom-pagination"]}`}>
+                <ul>
                   {dataArray.map((item, idx) => (
                     <li
                       key={idx}
                       className={`${current === idx ? styles["active"] : ""}`}
-                      onClick={(e) => tabChange(idx, e)}
-                    >
-                      <Str2html htmlString={item.title} />
-                    </li>
+                      onClick={() => handleSlideTo(idx)}
+                    ></li>
                   ))}
                 </ul>
               </div>
-              <div className={`${styles.tabContent}`}>
-                <LearnSlider
-                  ref={swiperRef}
-                  className={`${styles.slider}`}
-                  items={dataArray}
-                  onChange={handleChange}
-                  sliderIndex={0}
-                />
-                <div
-                  onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
-                </div>
-                <div
-                  onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
-                >
-                  <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
-                </div>
-              </div>
-            </div>
-            <div className={`${styles["custom-pagination"]}`}>
-              <ul>
-                {dataArray.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className={`${current === idx ? styles["active"] : ""}`}
-                    onClick={() => handleSlideTo(idx)}
-                  ></li>
-                ))}
-              </ul>
-            </div>
+            </div>            
           </div>
-          <div className="fixed-left">
-            <ul className={`${styles["sub-nav"]}`}>
-              {topicList &&
-                topicList.map((item, idx) => (
-                  <React.Fragment key={idx}>
-                    <li
-                      className={`${curSubTopic === findKeyByValue(curMap, item) && styles["active"]}`}
-                    >
-                      <button
-                        onClick={() =>
-                          setCurSubTopic(findKeyByValue(curMap, item) || "flow")
-                        }
-                        type="button"
-                        className="text-white w-full"
-                      >
-                        {item}
-                      </button>
-                    </li>
-                  </React.Fragment>
-                ))}
-            </ul>
-          </div>
+          
         </div>
       </div>
       <Footer position="relative" />
