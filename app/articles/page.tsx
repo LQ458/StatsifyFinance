@@ -30,7 +30,7 @@ interface Item {
 
 interface twoDimension extends Array<Item[]> {}
 
-const news: React.FC = () => {
+const News: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams()
   const [current, setCurrent] = useState(0);
@@ -179,4 +179,4 @@ const news: React.FC = () => {
   );
 };
 
-export default news;
+export default News;

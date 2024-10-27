@@ -21,7 +21,7 @@ interface Item {
   createTime: string;
 }
 
-const search = () => {
+const Search = () => {
   const searchParams = useSearchParams()
   const [serarchList, setSerarchList] = useState<Item[]>([]);
   // 获取地址栏keywords参数
@@ -66,4 +66,4 @@ const search = () => {
   );
 };
 
-export default search;
+export default Search;

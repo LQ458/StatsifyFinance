@@ -121,7 +121,7 @@ const Qualitative = () => {
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const swiperRef = useRef<SwiperComponentHandle>(null);
-  const tabRef = useRef(null);
+  const tabRef = useRef<HTMLUListElement>(null);
   const pageNum = 8; // 每页显示多少个
 
   const pages = [];

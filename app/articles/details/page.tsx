@@ -25,10 +25,19 @@ interface Mapping {
   value: string;
 }
 
-const newsDetails = () => {
+const NewsDetails = () => {
   const searchParams = useSearchParams()
-  const [cat, setCategory] = useState<Mapping>({});
-  const [news, setNews] = useState<Item>({});
+  const [cat, setCategory] = useState<Mapping>({
+    id:0,
+    value:''
+  });
+  const [news, setNews] = useState<Item>({
+    id:0,
+    title:'',
+    cover:'',
+    content:'',
+    createTime:''
+  });
   // 获取地址栏category参数，用于跳转到指定分类
   let id = searchParams.get('id')
   let cId = searchParams.get('category')
@@ -71,4 +80,4 @@ const newsDetails = () => {
   );
 };
 
-export default newsDetails;
+export default NewsDetails;

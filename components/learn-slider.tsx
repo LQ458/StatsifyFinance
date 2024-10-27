@@ -1,6 +1,6 @@
 "use client";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
@@ -41,7 +41,7 @@ export interface SwiperComponentHandle {
 const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0 } = props;
-    const swiperRef = useRef(null);
+    const swiperRef = useRef<SwiperRef>(null);
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -82,5 +82,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-
+LearnSlider.displayName = 'LearnSlider';
 export default LearnSlider;

@@ -149,7 +149,7 @@ const IndustrySectors = () => {
         color:'#ffffff',
         fontSize:12
       },
-      formatter: function (params) {
+      formatter: function (params: any) {
           var data = params.data;
           var tooltipContent = `<div style="padding: 10px;"><strong>${params.name}</strong><br>`;
           if (data.categories) {

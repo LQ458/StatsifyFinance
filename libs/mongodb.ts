@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Connect to MongoDB
-export default async function DBconnect() {
+async function DBconnect() {
   try {
     if (process.env.MONGODB_URL) {
       if (mongoose.connection.readyState === 1) {
@@ -14,4 +14,16 @@ export default async function DBconnect() {
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
   }
+}
+
+async function DBdisconnect(){
+  try {
+    mongoose.disconnect();
+  } catch (error) {
+    console.error("Error disconnect to MongoDB:", error);
+  }
+}
+
+export {
+  DBconnect, DBdisconnect
 }

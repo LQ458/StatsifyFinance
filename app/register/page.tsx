@@ -67,7 +67,7 @@ const Register = () => {
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex-grow w-full flex bg-login-bg bg-cover bg-center">
-        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2">
+        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2 min-w-[800px]">
           <div className="flex flex-col m-12 ml-28 mr-14 gap-5">
             <h1 className="text-white text-lg">注册</h1>
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>

@@ -1,6 +1,6 @@
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
-import DBconnect from "@/libs/mongodb";
+import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       originalPassword: __,
       ...userWithoutPassword
     } = user.toObject();
-
+    DBdisconnect()
     return NextResponse.json(
       { message: "User created successfully", user: userWithoutPassword },
       { status: 201 },

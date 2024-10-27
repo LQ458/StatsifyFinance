@@ -55,7 +55,7 @@ const Analysis = () => {
     setNoNext(isEnd);
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
-  const tabRef = useRef(null);
+  const tabRef = useRef<HTMLUListElement>(null);
 
   const handleNext = () => {
     if (swiperRef.current) {
