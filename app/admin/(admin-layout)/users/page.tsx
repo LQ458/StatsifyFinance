@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button, Form, Input, Table, Card } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import PageContainer from '../../_components/PageContainer';
+import PageContainer from '../../_components/page-container';
 
 function UsersPage() {
   return (

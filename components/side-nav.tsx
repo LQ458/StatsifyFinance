@@ -3,14 +3,14 @@ import React from "react";
 import styles from "../src/css/side-nav.module.css";
 
 interface NavItem {
-  id: number;
-  value: string;
+  _id: string;
+  title: string;
 }
 
 interface ChildComponentProps {
-  currentNav: number;
+  currentNav: string;
   navItems: NavItem[]; 
-  onItemClick: (id: number) => void;
+  onItemClick: (id: string) => void;
 }
 
 
@@ -22,16 +22,16 @@ const sideNav : React.FC<ChildComponentProps> = ({currentNav, navItems, onItemCl
           navItems.map((item, idx) => (
             <React.Fragment key={idx}>
               <li
-                className={`${currentNav === item.id && styles["active"]}`}
+                className={`${currentNav === item._id && styles["active"]}`}
               >
                 <button
                   onClick={() =>
-                    onItemClick(item.id)
+                    onItemClick(item._id)
                   }  
                   type="button"
                   className="text-white w-full"
                 >
-                  {item.value}
+                  {item.title}
                 </button>
               </li>
             </React.Fragment>

@@ -7,6 +7,10 @@ const articlesSchema = new Schema({
     type: String,
     required: true    
   },
+  category: {
+    type: String,
+    required: true    
+  },
   desc: {
     type: String,
     required: true,

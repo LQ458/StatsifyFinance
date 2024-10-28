@@ -1,5 +1,5 @@
 import React from 'react';
-import AntdContainer from './_components/AntdContainer';
+import AntdContainer from './_components/antd-container';
 
 function AdminLayout({ children }: any) {
   return (

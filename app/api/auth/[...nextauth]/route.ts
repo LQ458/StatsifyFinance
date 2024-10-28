@@ -28,8 +28,11 @@ const handler = NextAuth({
           if (!passwordsMatch) {
             return null;
           }
-          const {_id:id, admin, email, image} = user
+          const { _id: id, admin, email, image } = user
+          delete user.originalPassword
+          delete user.password
           return {
+            ...user,
             id, admin, email, image, username
           };
         } catch (error) {

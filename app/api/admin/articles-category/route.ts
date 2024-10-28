@@ -1,4 +1,4 @@
-import Articles from "@/models/articles";
+import Articles from "@/models/articles-category";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
   try {
     await DBconnect();
     const query = title ? { title: { $regex: title, $options: 'i' } } : {}; // 如果传入 title 则模糊查询，否则查询全部
-    const data = await Articles.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
+    const data = await Articles.find(query).sort({ order: 1 }).skip((page - 1) * per).limit(per);
     const totalCount = await Articles.countDocuments();
     const total = Math.ceil(totalCount / per);
     return NextResponse.json({

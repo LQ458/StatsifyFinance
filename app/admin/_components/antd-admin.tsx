@@ -30,7 +30,10 @@ function AntdAdmin({ children }: any) {
             mode='inline'
             defaultSelectedKeys={['1']}
             onClick={({ key }) => {
-              nav.push(key);
+              if ( key ) {
+                console.log('key:::', key)
+                nav.push(key);
+              }              
             }}
             items={[
               {
@@ -44,9 +47,21 @@ function AntdAdmin({ children }: any) {
                 label: '用户管理',
               },
               {
-                key: '/admin/articles',
+                key: '',
                 icon: <UploadOutlined />,
                 label: '文章管理',
+                children: [
+                  {
+                    key: '/admin/articles-category',
+                    icon: <UserOutlined />,
+                    label: '分类管理',
+                  },
+                  {
+                    key: '/admin/articles',
+                    icon: <UserOutlined />,
+                    label: '文章列表',
+                  }
+                ]
               },
             ]}
           />

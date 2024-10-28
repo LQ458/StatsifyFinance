@@ -47,7 +47,7 @@ const Menu = () => {
         )}
       </div>
       <Link
-        className={`${pathname === '/articles' ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
+        className={`${pathname.indexOf('/articles') > -1 ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
         href="/articles"
       >
         <h4 className="font-[400] self-center">资讯</h4>

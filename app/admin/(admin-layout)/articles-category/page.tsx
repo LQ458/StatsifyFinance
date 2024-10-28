@@ -5,7 +5,7 @@ import {
   Card,
   Form,
   Input,
-  Select,
+  InputNumber,
   Table,
   Modal,
   Space,
@@ -30,18 +30,11 @@ type Article = {
   desc: string;
   image: string;
   content: string;
-  category: string;
-};
-type Category = {
-  _id: string;
-  title: string;
 };
 
 function ArticlePage() {
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Article[]>([]);
-  const [category, setCategory] = useState<Category[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
   const [myForm] = Form.useForm(); // 获取Form组件
 
   // 图片路径
@@ -61,7 +54,7 @@ function ArticlePage() {
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/articles?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/articles-category?page=${query.page}&per=${query.per}&title=${query.title}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -78,29 +71,15 @@ function ArticlePage() {
     }
   }, [open]);
 
-  // 查询所有分类
-  const getGategory = async () => {
-    await fetch(
-      `/api/admin/articles-category?page=1&per=1000`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setCategory(res.data.list);        
-      });
-  }
-
   return (
     <Card
-      title='文章管理'
+      title='分类管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
-            onClick={async () => {
-              getGategory()
-              setOpen(true)
-            }}
+            onClick={() => setOpen(true)}
           />
         </>
       }
@@ -143,39 +122,14 @@ function ArticlePage() {
             render(v, r, i) {
               return i + 1;
             },
-          },          
+          },
           {
-            title: '标题',
+            title: '分类名',
             dataIndex: 'title',
           },
           {
-            title: '分类',
-            dataIndex: 'category',
-            width: 80,
-          },
-          {
-            title: '封面',
-            align: 'center',
-            width: '100px',
-            // dataIndex: 'title',
-            render(v, r) {
-              return (
-                <img
-                  src={r.image}
-                  style={{
-                    display: 'block',
-                    margin: '8px auto',
-                    width: '80px',
-                    maxHeight: '80px',
-                  }}
-                  alt={r.title}
-                />
-              );
-            },
-          },
-          {
-            title: '简介',
-            dataIndex: 'desc',
+            title: '排序',
+            dataIndex: 'order',
           },
           {
             title: '操作',
@@ -187,12 +141,10 @@ function ArticlePage() {
                     icon={<EditOutlined />}
                     type='primary'
                     onClick={() => {
-                      getGategory();
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
                       setHtml(r.content);
-                      setSelectedValue(r.category)
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -200,7 +152,7 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      await fetch('/api/admin/articles/' + r._id, {
+                      await fetch('/api/admin/articles-category/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
                       setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
@@ -228,7 +180,7 @@ function ArticlePage() {
         onOk={() => {
           myForm.submit();
         }}
-        width={'75vw'}
+        width={'400px'}
       >
         <Form
           preserve={false} // 和modal结合使用的时候需要加上它，否则不会销毁
@@ -238,12 +190,12 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              await fetch('/api/admin/articles/' + currentId, {
+              await fetch('/api/admin/articles-category/' + currentId, {
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
                 method: 'PUT',
               }).then((res) => res.json());
             } else {
-              await fetch('/api/admin/articles', {
+              await fetch('/api/admin/articles-category', {
                 method: 'POST',
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
               }).then((res) => res.json());
@@ -255,42 +207,19 @@ function ArticlePage() {
           }}
         >
           <Form.Item
-            label='标题'
+            label='分类名'
             name='title'
             rules={[
               {
                 required: true,
-                message: '标题不能为空',
+                message: '分类名不能为空',
               },
             ]}
           >
-            <Input placeholder='请输入标题' />
+            <Input placeholder='请输入分类名' />
           </Form.Item>
-          <Form.Item
-            label='分类'
-            name='category'
-            rules={[
-              {
-                required: true,
-                message: '分类不能为空',
-              },
-            ]}>
-            <Select value={selectedValue}>
-              {
-                category && category.map(item => (
-                  <Select.Option key={item._id} value={item._id}>{item.title}</Select.Option>
-                ))
-              }              
-            </Select>
-          </Form.Item>
-          <Form.Item label='简介' name='desc'>
-            <Input.TextArea placeholder='请输入简介' />
-          </Form.Item>
-          <Form.Item label='封面'>
-            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
-          <Form.Item label='详情'>
-            <MyEditor html={html} setHtml={setHtml} />
+          <Form.Item label='排序' name='order'>
+            <InputNumber style={{ width: '100%' }} min="1" max="100" step="1" placeholder='请输入排序数，越小越靠前' />
           </Form.Item>
         </Form>
       </Modal>

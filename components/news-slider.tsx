@@ -16,11 +16,19 @@ import Image from "next/image";
 
 // 定义对象类型
 interface Item {
-  id: number,
-  fid: number,
+  _id: number;
+  category: string;
   title: string;
-  cover: string;
+  desc: string;
+  image: string;
   content: string;
+  createdAt: string;
+}
+
+interface Category {
+  _id: string;
+  title: string;
+  order: number;
 }
 
 interface ChangeData {
@@ -32,6 +40,7 @@ interface ChangeData {
 interface sliderProps {
   className: string; // 给slider最外层的class
   items: Item[][]; // 需要轮播的数据
+  category: Category; //分类信息
   sliderIndex?: number; // 激活第几项,数组下标记数方式
   onChange: (data: ChangeData) => void; // 当slider改变时触发的回调
 }
@@ -44,7 +53,7 @@ export interface SwiperComponentHandle {
 
 const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
-    const { className, items, onChange, sliderIndex = 0 } = props;
+    const { className, items, onChange, sliderIndex = 0, category } = props;
     const swiperRef = useRef<SwiperRef>(null);
     const router = useRouter();
 
@@ -61,8 +70,8 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     }));
 
     const goDetails = (data: Item) => {
-      const {id, fid} = data
-      router.push(`/news/details?category=${fid}&id=${id}`)
+      const {_id, category:categoryId} = data
+      router.push(`/articles/details?category=${categoryId}&id=${_id}&category-name=${category.title}`)
     }
 
     return (
@@ -88,7 +97,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                     <li key={idx}
                     onClick={() => goDetails(item)}
                     >
-                      <img src={item.cover} width="100%" alt="" />
+                      <div className={`${styles["cover"]}`}><img src={item.image} width="100%" alt="" /></div>
                       <h4>
                         <Str2html htmlString={item.title} />
                       </h4>

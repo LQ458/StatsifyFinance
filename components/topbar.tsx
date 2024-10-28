@@ -132,7 +132,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             </Link>
             :
             <div className="flex self-center relative text-white text-[14px]">
-              欢迎{admin? '管理员':'普通用户'}: {username}! <a href="javascript:;" className="mx-[10px] hover:text-yellow-400" onClick={quit}>退出登录</a> { admin ? <a className="hover:text-yellow-400" href="javascript:;" onClick={manage}>管理</a> : '' }
+              欢迎{admin? '管理员':'普通用户'}: {username}! <a href="#" className="mx-[10px] hover:text-yellow-400" onClick={quit}>退出登录</a> { admin ? <a className="hover:text-yellow-400" href="#" onClick={manage}>管理</a> : '' }
               </div>
             }
           </div>

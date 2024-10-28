@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
-import PageContainer from '../../_components/PageContainer';
+import PageContainer from '../../_components/page-container';
 import {  useSession } from "next-auth/react";
 
 function Dashboard() {

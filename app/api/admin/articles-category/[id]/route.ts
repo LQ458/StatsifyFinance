@@ -1,4 +1,4 @@
-import Articles from "@/models/articles";
+import Articles from "@/models/articles-category";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -46,25 +46,4 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
   } finally {
     DBdisconnect();
   }
-};
-
-export const GET = async (req: NextRequest, { params }: any) => {
-  const { id } = params;  
-  try {
-    await DBconnect();    
-    const data = await Articles.find({_id: id});
-    return NextResponse.json({
-      success: true,
-      errorMessage: '',
-      data: {
-        list: data[0],
-      },
-    });
-
-  } catch (error) {
-    console.error("发生错误:", error);
-  } finally {
-    // DBdisconnect();
-  }
-
 };
