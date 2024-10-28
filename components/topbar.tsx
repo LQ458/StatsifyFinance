@@ -39,8 +39,8 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
   useEffect(() => {
     console.log('session::',session)
     if(!session) return
-    const {admin, email, image, username} = session?.user as any
-    setUsername(username)
+    const {admin, email, image, name} = session?.user as any
+    setUsername(name)
     setAdmin(admin)
 
   }, [session]);

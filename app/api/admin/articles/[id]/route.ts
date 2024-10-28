@@ -1,10 +1,24 @@
 import Articles from "@/models/articles";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
 
 export const PUT = async (req: NextRequest, { params }: any) => {
   const { id } = params; // 路由中传递的参数
   const data = await req.json(); // 请求体中传递的数据
+  const cookieName = 'next-auth.session-token'
+  const token = await getToken({
+    req, cookieName,
+    secret: process?.env?.AUTH_SECRET    
+  });
+  console.log('管理员验证,isAdmin::::', token?.admin) 
+  if(!Boolean(token?.admin)){
+    // 没有权限
+    return NextResponse.json({
+      success: false,
+      errorMessage: '您没有权限操作此功能!',
+    });
+  }
   try {
     await DBconnect();
     await Articles.findByIdAndUpdate(

@@ -19,7 +19,7 @@ const handler = NextAuth({
         const { username, password } = credentials as Credentials;
         try {
           await DBconnect();
-          const user = await User.findOne({ username });
+          const user = await User.findOne({ username },{_id:1, username: 1, password: 1, admin: 1, email: 1, image: 1});
           DBdisconnect();
           if (!user) {
             return null;
@@ -29,11 +29,10 @@ const handler = NextAuth({
             return null;
           }
           const { _id: id, admin, email, image } = user
-          delete user.originalPassword
-          delete user.password
+          user.password = null
           return {
             ...user,
-            id, admin, email, image, username
+            id, admin, email, image, name: username
           };
         } catch (error) {
           console.log("Error: ", error);
