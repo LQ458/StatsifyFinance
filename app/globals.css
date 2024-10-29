@@ -26,6 +26,9 @@
   .finance-terms-container .swiper {
     height: 670px;
   }
+  .finance-terms-container .swiper .swiper-slide ul li {
+    height:320px;
+  }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 16px;
     line-height: 32px;
@@ -58,6 +61,9 @@
   .finance-terms-container .swiper {
     height: 546px;
   }
+  .finance-terms-container .swiper .swiper-slide ul li {
+    height:260px;
+  }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 16px;
     line-height: 32px;
@@ -86,6 +92,9 @@
   .finance-terms-container .swiper {
     height: 456px;
   }
+  .finance-terms-container .swiper .swiper-slide ul li {
+    height:218px;
+  }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 14px;
     line-height: 24px;
@@ -110,7 +119,7 @@
   }
   .news-container .swiper .swiper-slide ul li {
     height:215px;
-  }
+  }  
 }
 @media screen and (max-width: 1560px) {  
   .learn-container {

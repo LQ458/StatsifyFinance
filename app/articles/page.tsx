@@ -2,7 +2,7 @@
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useSearchParams} from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/news.module.css";
 import SideNav from "@/components/side-nav";
@@ -10,9 +10,6 @@ import Slider, {
   SwiperComponentHandle,
 } from "@/components/news-slider";
 import { IoIosArrowDown } from "react-icons/io";
-import {
-  category  
-} from "@/src/data/news/content";
 
 interface ChangeData {
   activeIndex: number;
@@ -20,7 +17,7 @@ interface ChangeData {
   isEnd: boolean;
 }
 interface Item {
-  _id: number;
+  _id: string;
   category: string;
   title: string;
   desc: string;
@@ -39,7 +36,6 @@ interface Category {
 interface twoDimension extends Array<Item[]> {}
 
 const News: React.FC = () => {
-  const router = useRouter();
   const searchParams = useSearchParams()
   const [current, setCurrent] = useState(0);
   const [currentNav, setCurrentNav] = useState('');

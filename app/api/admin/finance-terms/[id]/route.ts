@@ -1,4 +1,4 @@
-import Articles from "@/models/articles";
+import FinanceTerms from "@/models/finance-terms";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from 'next-auth/jwt';
@@ -21,7 +21,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await Articles.findByIdAndUpdate(
+    await FinanceTerms.findByIdAndUpdate(
       id,
       data,
       { new: true }
@@ -56,7 +56,7 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await Articles.findByIdAndDelete(
+    await FinanceTerms.findByIdAndDelete(
       id);
     // await prisma.article.delete({
     //   where: { id },
@@ -74,7 +74,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
   const { id } = params;  
   try {
     await DBconnect();    
-    const data = await Articles.find({_id: id});
+    const data = await FinanceTerms.find({_id: id});
     return NextResponse.json({
       success: true,
       errorMessage: '',

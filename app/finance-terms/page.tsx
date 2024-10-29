@@ -12,9 +12,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
 // 定义对象类型
 interface Item {
+  _id: string;
   title: string;
-  cover: string;
+  enTitle: string;
+  image: string;
   content: string;
+  createdAt: string;
 }
 interface ChangeData {
   activeIndex: number;
@@ -22,111 +25,38 @@ interface ChangeData {
   isEnd: boolean;
 }
 
-const dataArray: Item[] = [
-  {
-    title: `资产<br/>
-  Asset`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `债务<br/>
-  liabilty`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `现金比率<br/>
-  The cash ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-  {
-    title: `经营现金流比率<br/>
-  The operating cash flow ratio`,
-    cover: `/img.png`,
-    content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
-  流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
-  },
-];
-
 const Qualitative = () => {
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
+  const [list, setList] = useState<Item[]>([]);
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
   const pageNum = 8; // 每页显示多少个
 
+
+  // 获取资讯数据
+  const getArticles = async () => {    
+    const response = await fetch(
+      `/api/admin/finance-terms?page=1&per=10000`
+    )
+    const list = await response.json();  
+    console.log('list::::', list)
+    setList(list.data.list) 
+  };
+
+  // 类似于vue的mounted
+  useEffect(() => {
+    const getData = async () => { 
+      await getArticles()
+    }
+    getData()
+    
+  }, []);
+
   const pages = [];
-  for (let i = 0; i < dataArray.length; i += pageNum) {
-    pages.push(dataArray.slice(i, i + pageNum));
+  for (let i = 0; i < list.length; i += pageNum) {
+    pages.push(list.slice(i, i + pageNum));
   }
 
   const handleChange = (newData: ChangeData) => {

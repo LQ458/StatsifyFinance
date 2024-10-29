@@ -16,9 +16,12 @@ import { SwiperContainer } from "swiper/element";
 
 // 定义对象类型
 interface Item {
+  _id: string;
   title: string;
-  cover: string;
+  enTitle: string;
+  image: string;
   content: string;
+  createdAt: string;
 }
 
 interface ChangeData {
@@ -78,10 +81,10 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                 <ul>
                   {page.map((item, idx) => (
                     <li key={idx}>
-                      <img src={item.cover} width="100%" alt="" />
+                      <div className={`${styles["cover"]}`}><img src={item.image} width="100%" alt="" /></div>
                       <p>{item.content}</p>
                       <h4>
-                        <Str2html htmlString={item.title} />
+                        {item.title}<br/>{item.enTitle}
                       </h4>
                     </li>
                   ))}

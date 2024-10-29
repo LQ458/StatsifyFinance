@@ -89,6 +89,11 @@ function AntdAdmin({ children }: any) {
                   }
                 ]
               },
+              {
+                key:'/admin/finance-terms',
+                icon: <FileOutlined />,
+                label: '金融基础术语管理'
+              }
             ]}
           />
         </Sider>

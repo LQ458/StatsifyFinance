@@ -1,4 +1,4 @@
-import Articles from "@/models/articles";
+import FinanceTerms from "@/models/finance-terms";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from 'next-auth/jwt';
@@ -10,9 +10,14 @@ export const GET = async (req: NextRequest) => {
   let title = (req.nextUrl.searchParams.get('title') as string) || '';
   try {
     await DBconnect();
-    const query = title ? { title: { $regex: title, $options: 'i' } } : {}; // 如果传入 title 则模糊查询，否则查询全部
-    const data = await Articles.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
-    const totalCount = await Articles.countDocuments();
+    const query = {} as any
+    if(title){
+      query['$or'] = [{title: { $regex: title, $options: 'i' }},
+                      {enTitle: { $regex: title, $options: 'i' }}]
+    }
+    console.log('query:::', query)
+    const data = await FinanceTerms.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
+    const totalCount = await FinanceTerms.countDocuments();
     const total = Math.ceil(totalCount / per);
     return NextResponse.json({
       success: true,
@@ -47,7 +52,7 @@ export const POST = async (req: NextRequest) => {
   }
   try {
     await DBconnect();
-    await Articles.create(data);
+    await FinanceTerms.create(data);
     // await prisma.article.create({
     //   data,
     // });

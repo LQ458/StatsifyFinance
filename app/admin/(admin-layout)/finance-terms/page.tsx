@@ -5,7 +5,6 @@ import {
   Card,
   Form,
   Input,
-  Select,
   Table,
   Modal,
   message,
@@ -18,39 +17,25 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import dynamic from 'next/dynamic';
 import MyUpload from '../../_components/my-upload';
 import dayjs from 'dayjs';
-// 只在客户端中引入富文本编辑器，不在编译的时候做处理
-const MyEditor = dynamic(() => import('../../_components/my-editor'), {
-  ssr: false,
-});
 
 type Article = {
   _id: string;
   title: string;
-  desc: string;
+  enTitle: string;
   image: string;
   content: string;
-  category: string;
   createdAt: string;
 };
-type Category = {
-  _id: string;
-  title: string;
-};
 
-function ArticlePage() {
+function FinanceTermsPage() {
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Article[]>([]);
-  const [category, setCategory] = useState<Category[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
   const [myForm] = Form.useForm(); // 获取Form组件
 
   // 图片路径
   const [imageUrl, setImageUrl] = useState<string>('');
-  // 编辑器内容
-  const [html, setHtml] = useState('');
 
   const [query, setQuery] = useState({
     per: 10,
@@ -64,7 +49,7 @@ function ArticlePage() {
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/articles?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/finance-terms?page=${query.page}&per=${query.per}&title=${query.title}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -77,31 +62,18 @@ function ArticlePage() {
     if (!open) {
       setCurrentId('');
       setImageUrl('');
-      setHtml('');
     }
   }, [open]);
 
-  // 查询所有分类
-  const getGategory = async () => {
-    await fetch(
-      `/api/admin/articles-category?page=1&per=1000`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setCategory(res.data.list);        
-      });
-  }
-
   return (
     <Card
-      title='文章管理'
+      title='金融基础术语管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
             onClick={async () => {
-              getGategory()
               setOpen(true)
             }}
           />
@@ -152,9 +124,8 @@ function ArticlePage() {
             dataIndex: 'title',
           },
           {
-            title: '分类',
-            dataIndex: 'category',
-            width: 80,
+            title: '英文标题',
+            dataIndex: 'enTitle',
           },
           {
             title: '封面',
@@ -176,10 +147,11 @@ function ArticlePage() {
               );
             },
           },
-          // {
-          //   title: '简介',
-          //   dataIndex: 'desc'
-          // },
+          {
+            title: '内容',
+            dataIndex: 'content',
+            width: 500,
+          },
           {
             title: '发布时间',
             dataIndex: 'createdAt',
@@ -199,12 +171,9 @@ function ArticlePage() {
                     icon={<EditOutlined />}
                     type='primary'
                     onClick={() => {
-                      getGategory();
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
-                      setHtml(r.content);
-                      setSelectedValue(r.category)
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -212,7 +181,7 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      const res = await fetch('/api/admin/articles/' + r._id, {
+                      const res = await fetch('/api/admin/finance-terms/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
                       if (!res.success) {
@@ -253,17 +222,17 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              const res = await fetch('/api/admin/articles/' + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+              const res = await fetch('/api/admin/finance-terms/' + currentId, {
+                body: JSON.stringify({ ...v, image: imageUrl }),
                 method: 'PUT',
               }).then((res) => res.json());
               if (!res.success) {
                 return message.error(res.errorMessage || '操作失败！')
               }              
             } else {
-              const res = await fetch('/api/admin/articles', {
+              const res = await fetch('/api/admin/finance-terms', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({ ...v, image: imageUrl }),
               }).then((res) => res.json());
               if (!res.success) {
                 return message.error(res.errorMessage || '操作失败！')
@@ -288,30 +257,16 @@ function ArticlePage() {
             <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
-            label='分类'
-            name='category'
-            rules={[
-              {
-                required: true,
-                message: '分类不能为空',
-              },
-            ]}>
-            <Select value={selectedValue}>
-              {
-                category && category.map(item => (
-                  <Select.Option key={item._id} value={item._id}>{item.title}</Select.Option>
-                ))
-              }              
-            </Select>
-          </Form.Item>
-          <Form.Item label='简介' name='desc'>
-            <Input.TextArea placeholder='请输入简介' />
+            label='英文标题'
+            name='enTitle'
+          >
+            <Input placeholder='请输入标题' />
+          </Form.Item>          
+          <Form.Item label='内容' name='content'>
+            <Input.TextArea placeholder='请输入内容' />
           </Form.Item>
           <Form.Item label='封面'>
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
-          <Form.Item label='详情'>
-            <MyEditor html={html} setHtml={setHtml} />
           </Form.Item>
         </Form>
       </Modal>
@@ -319,4 +274,4 @@ function ArticlePage() {
   );
 }
 
-export default ArticlePage;
+export default FinanceTermsPage;
