@@ -234,7 +234,7 @@ function ArticlePage() {
         ]}
       />
       <Modal
-        title='编辑'
+        title={`${currentId ? '编辑' : '新增'}`}
         open={open}
         onCancel={() => setOpen(false)}
         destroyOnClose={true} // 关闭窗口之后销毁
