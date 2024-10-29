@@ -7,39 +7,63 @@ import { useRouter, useSearchParams} from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/search.module.css";
 import Str2html from "@/components/str2html";
-import {
-  category,
-  list
-} from "@/src/data/news/content";
 
-interface Item {
-  id: number,
-  fid: number,
+type Article = {
+  _id: string;
   title: string;
-  cover: string;
+  desc: string;
+  image: string;
   content: string;
-  createTime: string;
-}
+  category: string;
+};
 
-const search = () => {
+const Search = () => {
   const searchParams = useSearchParams()
-  const [serarchList, setSerarchList] = useState<Item[]>([]);
-  // 获取地址栏keywords参数
-  let keywords = searchParams.get('keywords') || ''
-  let filterList: Item[] = []
+  const [serarchList, setSerarchList] = useState<Article[]>([]);
+  const [keywords, setKeywords] = useState('');
+  const [query, setQuery] = useState({
+    per: 1000,
+    page: 1
+  });
+
+
+  // 监听查询条件的改变
+  useEffect(() => {
+    
+  }, [query]);
+
+    // 监听查询条件的改变
+  // useEffect(() => {
+  //   setQuery({
+  //     page: 1,
+  //     per: 1000,
+  //     title: keywords
+  //   });
+  // }, [keywords]);
 
   // 类似于vue的mounted
   useEffect(() => {
-    list.map(item => {
-      let {title} = item
-        if (title.indexOf(keywords) > -1) {
-          let tempItem = {...item}
-          const regex = new RegExp(keywords, 'g');
-          tempItem.title = title.replace(regex, `<span style="color:#FFD700">${keywords}</span>`);
-          filterList.push(tempItem)
-        }
-    })
-    setSerarchList(filterList)
+    // 获取地址栏keywords参数
+    let keywords = searchParams.get('keywords') || ''
+    if (keywords) {      
+      fetch(
+        `/api/admin/articles?page=${query.page}&per=${query.per}&title=${keywords}`
+      )
+      .then((res) => res.json())
+      .then((res) => {
+        let filterList: Article[] = []
+        res.data.list.map((item: Article) => {
+          let {title} = item
+          if (title.indexOf(keywords) > -1) {
+            let tempItem = {...item}
+            const regex = new RegExp(keywords, 'g');
+            tempItem.title = title.replace(regex, `<span style="color:#FFD700">${keywords}</span>`);
+            filterList.push(tempItem)
+          }
+        })
+        setSerarchList(filterList);
+      });
+    }
   }, []);
 
   return (
@@ -53,7 +77,7 @@ const search = () => {
                 <ul>                
                   {serarchList.map((item, idx) => (
                     <li key={idx} >         
-                      <Link href={`/news/details?category=${item.fid}&id=${item.id}`}> <Str2html htmlString={item.title} /></Link>          
+                      <Link href={`/articles/details?category=${item.category}&id=${item._id}&category-name=返回分类`}> <Str2html htmlString={item.title} /></Link>          
                     </li>
                   ))}
                 </ul>
@@ -66,4 +90,4 @@ const search = () => {
   );
 };
 
-export default search;
+export default Search;

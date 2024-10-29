@@ -5,10 +5,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const nav = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,9 +21,12 @@ const Login = () => {
         redirect: false,
       });
       if (res?.error) {
-        alert("登录失败");
+        console.log("登录失败");
+      }else{
+        console.log("登录成功");
+        nav.push('/');        
       }
-      alert("登录成功");
+      
     } catch (error) {
       console.error("登录失败", error);
     }
@@ -31,7 +36,7 @@ const Login = () => {
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex-grow w-full flex bg-login-bg bg-cover bg-center">
-        <div className="bg-[rgba(29,30,32,0.7)] flex border-[#333333] border-solid border-[1px] self-center m-auto w-[37%] h-[27rem] border-t-[#ffd700] border-t-2">
+        <div className="bg-[rgba(29,30,32,0.7)] flex border-[#333333] border-solid border-[1px] self-center m-auto w-[37%] h-[27rem] border-t-[#ffd700] border-t-2  min-w-[600px]">
           <div className="flex flex-col m-12 ml-32 mr-32 gap-5 self-center flex-grow">
             <h1 className="text-white text-lg">登录</h1>
             <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -48,7 +53,7 @@ const Login = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="用户名"
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>
@@ -65,7 +70,7 @@ const Login = () => {
                     type="password"
                     placeholder="密码"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>

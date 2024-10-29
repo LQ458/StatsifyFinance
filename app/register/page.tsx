@@ -67,7 +67,7 @@ const Register = () => {
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex-grow w-full flex bg-login-bg bg-cover bg-center">
-        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2">
+        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2 min-w-[800px]">
           <div className="flex flex-col m-12 ml-28 mr-14 gap-5">
             <h1 className="text-white text-lg">注册</h1>
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
@@ -84,7 +84,7 @@ const Register = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="用户名"
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
                 <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
@@ -104,7 +104,7 @@ const Register = () => {
                     type="password"
                     placeholder="密码"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
                 <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
@@ -124,7 +124,7 @@ const Register = () => {
                     value={repassword}
                     onChange={(e) => setRepassword(e.target.value)}
                     placeholder="再次输入密码"
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>
@@ -137,7 +137,7 @@ const Register = () => {
                     required
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="请输入邮箱，用于将来找回密码"
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
                 {/* <div className="flex flex-row align-middle justify-center gap-1">

@@ -1,4 +1,4 @@
-import DBconnect from "../../../../libs/mongodb";
+import { DBconnect, DBdisconnect} from "../../../../libs/mongodb";
 import User from "../../../../models/user";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -10,6 +10,7 @@ type Credentials = {
 };
 
 const handler = NextAuth({
+  secret: process.env.AUTH_SECRET,
   providers: [
     Credentials({
       name: "credentials",
@@ -18,7 +19,8 @@ const handler = NextAuth({
         const { username, password } = credentials as Credentials;
         try {
           await DBconnect();
-          const user = await User.findOne({ username });
+          const user = await User.findOne({ username },{_id:1, username: 1, password: 1, admin: 1, email: 1, image: 1});
+          DBdisconnect();
           if (!user) {
             return null;
           }
@@ -26,7 +28,12 @@ const handler = NextAuth({
           if (!passwordsMatch) {
             return null;
           }
-          return user;
+          const { _id: id, admin, email, image } = user
+          user.password = null
+          return {
+            ...user,
+            id, admin, email, image, name: username
+          };
         } catch (error) {
           console.log("Error: ", error);
         }

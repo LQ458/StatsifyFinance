@@ -13,7 +13,7 @@ interface ChildComponentProps {
   navItems: NavItem[]; 
 }
 
-const mainNav : React.FC<ChildComponentProps> = ({navItems}) => {
+const MainNav : React.FC<ChildComponentProps> = ({navItems}) => {
   const pathname = usePathname();
   // console.log('pathname:::', pathname)
   return (
@@ -31,4 +31,4 @@ const mainNav : React.FC<ChildComponentProps> = ({navItems}) => {
   );
 };
 
-export default mainNav;
+export default MainNav;

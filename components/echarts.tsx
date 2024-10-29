@@ -14,6 +14,7 @@ const EChartComponent: React.FC<EChartComponentProps> = ({ option }) => {
       const chartInstance = echarts.init(chartRef.current);
 
       // Set chart options
+      // @ts-ignore
       chartInstance.setOption(option);
 
       // Handle resize

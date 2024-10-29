@@ -14,12 +14,12 @@ import {
 } from "@/src/data/strategy/mainNav";
 
 interface Mapping {
-  id: number;
-  value: string;
+  _id: string;
+  title: string;
 }
 
 interface EventHandler {
-  (id: number): void;
+  (id: string): void;
 }
 
 interface chartCategory {
@@ -28,19 +28,19 @@ interface chartCategory {
 }
 
 const IndustrySectors = () => {
-  const [currentNav, setCurrentNav] = useState(2);
+  const [currentNav, setCurrentNav] = useState('2');
   const router = useRouter();
   const category: Mapping[] = [
-    { id: 1, value: "风险控制" },
-    { id: 2, value: "行业分类" }
+    { _id: '1', title: "风险控制" },
+    { _id: '2', title: "行业分类" }
   ];
 
-  const navClick: EventHandler = (id: number) => {
+  const navClick: EventHandler = (id: string) => {
     // setCurrentNav(id)
-    if (id === 1) {
+    if (id === '1') {
       router.push(`/strategy/risk-manage`)
     }
-    if (id === 2) {
+    if (id === '2') {
       router.push(`/strategy/risk-manage/industry-sectors`)
     }    
   };
@@ -149,7 +149,7 @@ const IndustrySectors = () => {
         color:'#ffffff',
         fontSize:12
       },
-      formatter: function (params) {
+      formatter: function (params: any) {
           var data = params.data;
           var tooltipContent = `<div style="padding: 10px;"><strong>${params.name}</strong><br>`;
           if (data.categories) {

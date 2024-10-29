@@ -32,7 +32,7 @@ const Strategy = () => {
     setNoNext(isEnd);
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
-  const tabRef = useRef(null);
+  const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams()
 
 

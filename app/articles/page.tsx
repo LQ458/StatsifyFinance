@@ -11,8 +11,7 @@ import Slider, {
 } from "@/components/news-slider";
 import { IoIosArrowDown } from "react-icons/io";
 import {
-  category,
-  list
+  category  
 } from "@/src/data/news/content";
 
 interface ChangeData {
@@ -21,45 +20,82 @@ interface ChangeData {
   isEnd: boolean;
 }
 interface Item {
-  id: number;
-  fid: number;
+  _id: number;
+  category: string;
   title: string;
-  cover: string;
+  desc: string;
+  image: string;
   content: string;
+  createdAt: string;
 }
+
+interface Category {
+  _id: string;
+  title: string;
+  order: number;
+}
+
 
 interface twoDimension extends Array<Item[]> {}
 
-const news: React.FC = () => {
+const News: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams()
   const [current, setCurrent] = useState(0);
-  const [currentNav, setCurrentNav] = useState(0);
+  const [currentNav, setCurrentNav] = useState('');
   const [isNoData, setIsNoData] = useState(false);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const [pages, setPagesArray] = useState<twoDimension>([]);
+  const [list, setList] = useState<Item[]>([]);
+  const [category, setCategory] = useState<Category[]>([]);
+  const [categoryItem, setCategoryItem] = useState<Category>({
+    _id: '',
+    title: '',
+    order: 1
+  });
+
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const pageNum = 8; // 每页显示多少个
-  let firstEntry, categoryId: number = 0, dataArrayTemp: Item[] = [], pagesTemp: twoDimension = []
+  let firstEntry, categoryId: string = '', dataArrayTemp: Item[] = [], pagesTemp: twoDimension = []
   // 获取地址栏category参数，用于跳转到指定分类
   const cId = searchParams.get('category')
 
+  // 获取资讯分类
+  const getArticlesCategory = async () => {    
+    const response = await fetch(
+      `/api/admin/articles-category`
+    )
+    const list = await response.json();  
+    console.log('category::::', list)
+    setCategory(list.data.list) 
+  };
+
+  // 获取资讯数据
+  const getArticles = async () => {    
+    const response = await fetch(
+      `/api/admin/articles?page=1&per=10000`
+    )
+    const list = await response.json();  
+    console.log('list::::', list)
+    setList(list.data.list) 
+  };
+
+  
+
+  
+
+
+
   // 类似于vue的mounted
   useEffect(() => {
-    // 如果分类数小于等于0，就判定没内容
-    if (category.length <= 0) {
-      setIsNoData(true);
-    } else {
-      // 如果有分类id参数就跳过去
-      if (cId) {
-        categoryId = parseInt(cId)        
-      } else {
-        firstEntry = category[0];
-        categoryId = firstEntry['id']
-      }
-      setCurrentNav(categoryId)
+    const getData = async () => { 
+      await getArticles()
+      await getArticlesCategory()
+      console.log('category:::', category)      
     }
+    getData()    
+    
   }, []);
 
   // slide切换时改变相关控件状态
@@ -88,16 +124,16 @@ const news: React.FC = () => {
     }
   };
 
-  const switchNav = (id: number) => {
+  const switchNav = (id: string) => {
     setCurrentNav(id)
     // 切换Nav时slide回到第一页
     handleSlideTo(0)
   };
 
-  const setNavData = (id: number) => {
+  const setNavData = (id: string) => {
     list.map(item => {
-      const { fid } = item
-      if (fid === id) {
+      const { category } = item
+      if (category === id) {
         dataArrayTemp.push(item)
       }
     })
@@ -105,16 +141,50 @@ const news: React.FC = () => {
     for (let i = 0; i < dataArrayTemp.length; i += pageNum) {
       pagesTemp.push(dataArrayTemp.slice(i, i + pageNum));
     }
+    // 大于一页，设置下一页按钮状态
+    if (pagesTemp.length > 1) {
+      setNoNext(false)
+    } else {
+      setNoNext(true)
+    }
     setPagesArray(pagesTemp)
   };
 
   useEffect(() => {
-    // 0为初值，没有意义
-    if (currentNav === 0) {
+    // ''为初值，没有意义
+    if (currentNav === '') {
       return
     }
     setNavData(currentNav)
+    category.forEach(item => {
+      if (item._id === currentNav) {
+        setCategoryItem(item)
+      }
+    })
   }, [currentNav]);
+
+  useEffect(() => {
+    // 如果分类数小于等于0，就判定没内容
+    if (category.length <= 0) {
+      setIsNoData(true);
+    } else {
+      // 如果有分类id参数就跳过去
+      if (cId) {
+        categoryId = cId
+        category.forEach(item => {
+          if (item._id === cId) {
+            setCategoryItem(item)
+          }
+        })
+      } else {
+        firstEntry = category[0];
+        categoryId = firstEntry['_id']
+        setCategoryItem(firstEntry)
+      }
+      console.log('categoryId:::', categoryId)
+      setCurrentNav(categoryId)
+    }
+  }, [category]);
 
   
 
@@ -141,6 +211,7 @@ const news: React.FC = () => {
                     ref={swiperRef}
                     className={`${styles.slider}`}
                     items={pages}
+                    category = {categoryItem}
                     onChange={handleChange}
                   />
                   <div
@@ -179,4 +250,4 @@ const news: React.FC = () => {
   );
 };
 
-export default news;
+export default News;
