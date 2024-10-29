@@ -1,6 +1,8 @@
 import Articles from "@/models/articles";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+const cookieName = 'next-auth.session-token'
 
 export const GET = async (req: NextRequest) => {
   let per = (req.nextUrl.searchParams.get('per') as any) * 1 || 10;
@@ -33,6 +35,18 @@ export const GET = async (req: NextRequest) => {
 // post请求
 export const POST = async (req: NextRequest) => {
   const data = await req.json();
+  const token = await getToken({
+    req, cookieName,
+    secret: process?.env?.AUTH_SECRET    
+  });
+  console.log('管理员验证,isAdmin::::', token?.admin) 
+  if(!Boolean(token?.admin)){
+    // 没有权限
+    return NextResponse.json({
+      success: false,
+      errorMessage: '您没有权限操作此功能!',
+    });
+  }
   try {
     await DBconnect();
     await Articles.create(data);

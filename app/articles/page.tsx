@@ -144,6 +144,8 @@ const News: React.FC = () => {
     // 大于一页，设置下一页按钮状态
     if (pagesTemp.length > 1) {
       setNoNext(false)
+    } else {
+      setNoNext(true)
     }
     setPagesArray(pagesTemp)
   };

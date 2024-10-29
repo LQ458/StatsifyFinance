@@ -8,6 +8,7 @@ import {
   Select,
   Table,
   Modal,
+  message,
   Space,
   Popconfirm,
 } from 'antd';
@@ -19,6 +20,7 @@ import {
 } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
 import MyUpload from '../../_components/my-upload';
+import dayjs from 'dayjs';
 // 只在客户端中引入富文本编辑器，不在编译的时候做处理
 const MyEditor = dynamic(() => import('../../_components/my-editor'), {
   ssr: false,
@@ -173,9 +175,18 @@ function ArticlePage() {
               );
             },
           },
+          // {
+          //   title: '简介',
+          //   dataIndex: 'desc'
+          // },
           {
-            title: '简介',
-            dataIndex: 'desc',
+            title: '发布时间',
+            dataIndex: 'createdAt',
+            render(v, r) {
+              return (
+                <span>{ dayjs(r.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+              )
+            }
           },
           {
             title: '操作',
@@ -200,9 +211,12 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      await fetch('/api/admin/articles/' + r._id, {
+                      const res = await fetch('/api/admin/articles/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
+                      if (!res.success) {
+                        return message.error(res.errorMessage || '操作失败！')
+                      }  
                       setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
                     }}
                   >
@@ -238,15 +252,21 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              await fetch('/api/admin/articles/' + currentId, {
+              const res = await fetch('/api/admin/articles/' + currentId, {
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
                 method: 'PUT',
               }).then((res) => res.json());
+              if (!res.success) {
+                return message.error(res.errorMessage || '操作失败！')
+              }              
             } else {
-              await fetch('/api/admin/articles', {
+              const res = await fetch('/api/admin/articles', {
                 method: 'POST',
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
               }).then((res) => res.json());
+              if (!res.success) {
+                return message.error(res.errorMessage || '操作失败！')
+              }   
             }
 
             // 此处需要调接口

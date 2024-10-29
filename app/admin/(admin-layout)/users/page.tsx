@@ -1,61 +1,288 @@
 'use client';
-import React from 'react';
-import { Button, Form, Input, Table, Card } from 'antd';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import PageContainer from '../../_components/page-container';
+import { useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Select,
+  Switch,
+  Table,
+  Modal,
+  message,
+  Space,
+  Popconfirm,
+} from 'antd';
+import {
+  SearchOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
+import dynamic from 'next/dynamic';
+import MyUpload from '../../_components/my-upload';
+import dayjs from 'dayjs';
+// 只在客户端中引入富文本编辑器，不在编译的时候做处理
+const MyEditor = dynamic(() => import('../../_components/my-editor'), {
+  ssr: false,
+});
 
-function UsersPage() {
+type User = {
+  _id: string;
+  username: string;
+  originalPassword: string;
+  admin: string;
+  image: string;
+  email: string;
+  createdAt: string;
+};
+
+function ArticlePage() {
+  const [open, setOpen] = useState(false); // 控制modal显示隐藏
+  const [list, setList] = useState<User[]>([]);
+  const [myForm] = Form.useForm(); // 获取Form组件
+
+  // 图片路径
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [originalPassword, setOriginalPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [admin, setAdmin] = useState('');
+  
+  const [query, setQuery] = useState({
+    per: 10,
+    page: 1,
+    username: '',
+  });
+  const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
+  const [total, setTotal] = useState(0);
+  // 如果存在表示修改，不存在表示新增
+
+  // 监听查询条件的改变
+  useEffect(() => {
+    fetch(
+      `/api/admin/users?page=${query.page}&per=${query.per}&username=${query.username}`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setList(res.data.list);
+        setTotal(res.data.total);
+      });
+  }, [query]);
+
+  useEffect(() => {
+    if (!open) {
+      setCurrentId('');
+      setImageUrl('');
+      setEmail('');
+      setUsername('');
+    }
+  }, [open]);
+
   return (
     <Card
-      title='用户信息'
-      extra={
-        <>
-          <Button icon={<PlusOutlined />} type='primary' />
-        </>
-      }
+      title='用户管理'      
     >
-      <Form layout='inline'>
-        <Form.Item label='名字'>
-          <Input placeholder='请输入名字' />
+      <Form
+        layout='inline'
+        onFinish={(v) => {
+          setQuery({
+            page: 1,
+            per: 10,
+            username: v.username,
+          });
+        }}
+      >
+        <Form.Item label='用户名' name='username'>
+          <Input placeholder='请输入关键词' />
         </Form.Item>
         <Form.Item>
-          <Button icon={<SearchOutlined />} type='primary' />
+          <Button icon={<SearchOutlined />} htmlType='submit' type='primary' />
         </Form.Item>
       </Form>
       <Table
         style={{ marginTop: '8px' }}
+        dataSource={list}
+        rowKey='_id'
+        pagination={{
+          total,
+          onChange(page) {
+            setQuery({
+              ...query,
+              page,
+              per: 10,
+            });
+          },
+        }}
         columns={[
           {
             title: '序号',
+            width: 80,
+            render(v, r, i) {
+              return i + 1;
+            },
+          },          
+          {
+            title: '帐号',
+            dataIndex: 'username',
           },
           {
-            title: '名字',
+            title: '邮箱',
+            dataIndex: 'email',
           },
           {
-            title: '昵称',
-          },
-          {
-            title: '用户名',
+            title: '密码',
+            dataIndex: 'originalPassword',
           },
           {
             title: '头像',
+            align: 'center',
+            width: '100px',
+            // dataIndex: 'title',
+            render(v, r) {
+              return (
+                <img
+                  src={r.image}
+                  style={{
+                    display: 'block',
+                    margin: '8px auto',
+                    width: '80px',
+                    maxHeight: '80px',
+                  }}
+                  alt={r.username}
+                />
+              );
+            },
           },
           {
-            title: '手机号',
+            title: '角色',
+            // dataIndex: 'admin',
+            render(v, r) {
+              return (
+                <span>{r.admin ? '管理员' : '普通用户'}</span>                
+              );
+            },
           },
           {
-            title: '年龄',
-          },
-          {
-            title: '性别',
+            title: '注册时间',
+            dataIndex: 'createdAt',
+            render(v, r) {
+              return (
+                <span>{ dayjs(r.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+              )
+            }
           },
           {
             title: '操作',
+            render(v, r) {
+              return (
+                <Space>
+                  <Button
+                    size='small'
+                    icon={<EditOutlined />}
+                    type='primary'
+                    onClick={() => {
+                      setOpen(true);
+                      setCurrentId(r._id);
+                      setImageUrl(r.image);
+                      setEmail(r.email);
+                      setUsername(r.username)
+                      setOriginalPassword(r.originalPassword)
+                      setAdmin(r.admin)
+                      myForm.setFieldsValue(r);
+                    }}
+                  />
+                  <Popconfirm
+                    title='是否确认删除?'
+                    onConfirm={async () => {
+                      //
+                      const res = await fetch('/api/admin/users/' + r._id, {
+                        method: 'DELETE',
+                      }).then((res) => res.json());
+                      if (!res.success) {
+                        return message.error(res.errorMessage || '操作失败！')
+                      }  
+                      setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
+                    }}
+                  >
+                    <Button
+                      size='small'
+                      icon={<DeleteOutlined />}
+                      type='primary'
+                      danger
+                    />
+                  </Popconfirm>
+                </Space>
+              );
+            },
           },
         ]}
       />
+      <Modal
+        title='编辑'
+        open={open}
+        onCancel={() => setOpen(false)}
+        destroyOnClose={true} // 关闭窗口之后销毁
+        maskClosable={false} // 点击空白区域的时候不关闭
+        onOk={() => {
+          myForm.submit();
+        }}
+        width={'75vw'}
+      >
+        <Form
+          preserve={false} // 和modal结合使用的时候需要加上它，否则不会销毁
+          layout='vertical'
+          form={myForm}
+          onFinish={async (v) => {            
+            // 修改
+            const res = await fetch('/api/admin/users/' + currentId, {
+              body: JSON.stringify({ ...v, image: imageUrl }),
+              method: 'PUT',
+            }).then((res) => res.json());
+            if (!res.success) {
+              return message.error(res.errorMessage || '操作失败！')
+            }
+
+            // 此处需要调接口
+            setOpen(false);
+            setQuery({ ...query }); // 改变query会重新去取数据
+          }}
+        >
+          <Form.Item
+            label='用户名'
+            name='username'
+          >
+            <Input placeholder='请输入标题' readOnly />
+          </Form.Item>
+          <Form.Item
+            label='密码'
+            name='originalPassword'
+            rules={[
+              {
+                required: true,
+                message: '密码不能为空',
+              },
+            ]}
+          >
+            <Input placeholder='请输入密码' />
+          </Form.Item>
+          
+          <Form.Item label='邮箱' name='email'>
+            <Input placeholder='请输入邮箱' />
+          </Form.Item>
+          <Form.Item
+            label='管理员'
+            name='admin'
+          >
+            <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
+          </Form.Item>
+          <Form.Item label='头像'>
+            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Card>
   );
 }
 
-export default UsersPage;
+export default ArticlePage;

@@ -1,4 +1,5 @@
-import Articles from "@/models/articles";
+import User from "@/models/user";
+import bcrypt from "bcryptjs";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from 'next-auth/jwt';
@@ -7,6 +8,9 @@ const cookieName = 'next-auth.session-token'
 export const PUT = async (req: NextRequest, { params }: any) => {
   const { id } = params; // 路由中传递的参数
   const data = await req.json(); // 请求体中传递的数据
+  const { originalPassword } = data
+  const password = await bcrypt.hash(originalPassword, 10);
+  data.password = password
   const token = await getToken({
     req, cookieName,
     secret: process?.env?.AUTH_SECRET    
@@ -21,7 +25,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await Articles.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       id,
       data,
       { new: true }
@@ -58,7 +62,7 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await Articles.findByIdAndDelete(
+    await User.findByIdAndDelete(
       id);
     // await prisma.article.delete({
     //   where: { id },
@@ -78,7 +82,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
   const { id } = params;  
   try {
     await DBconnect();    
-    const data = await Articles.find({_id: id});
+    const data = await User.find({_id: id});
     return NextResponse.json({
       success: true,
       errorMessage: '',

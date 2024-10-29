@@ -53,7 +53,7 @@ const Login = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="用户名"
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>
@@ -70,7 +70,7 @@ const Login = () => {
                     type="password"
                     placeholder="密码"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-transparent placeholder-[#999999] text-black outline-none border-none flex-grow mt-auto mb-auto"
+                    className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
               </div>

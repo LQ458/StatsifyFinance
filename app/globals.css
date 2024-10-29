@@ -240,3 +240,5 @@
   from{transform: rotate(0) scale(0.8);}
   to{ transform: rotate(360deg) scale(1.2);}
 }
+
+.Js-fix-style{visibility: hidden;}

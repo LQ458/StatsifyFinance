@@ -3,6 +3,8 @@ import dayjs from 'dayjs';
 import path from 'path';
 import fs from 'fs';
 import { randomUUID } from 'crypto';
+import { getToken } from 'next-auth/jwt';
+const cookieName = 'next-auth.session-token'
 
 const saveFile = async (blob: File) => {
   const dirName = '/uploads/' + dayjs().format('YYYY-MM-DD');
@@ -18,6 +20,20 @@ const saveFile = async (blob: File) => {
 
 export const POST = async (req: NextRequest) => {
   const data = await req.formData();
+  const token = await getToken({
+    req, cookieName,
+    secret: process?.env?.AUTH_SECRET    
+  });
+  console.log('管理员验证,isAdmin::::', token?.admin) 
+  if(!Boolean(token?.admin)){
+    // 没有权限
+    return NextResponse.json({
+      success: false,
+      errorMessage: '您没有权限操作此功能!',
+    });
+  }
+
+
   const fileName = await saveFile(data.get('file') as File);
   return NextResponse.json({
     success: true,

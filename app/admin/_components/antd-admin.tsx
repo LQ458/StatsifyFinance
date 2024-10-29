@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import { Layout, Menu, Button, theme, ConfigProvider } from 'antd';
 // import zhCN from 'antd/locale/zh_CN';
 import 'antd/dist/reset.css';
@@ -13,6 +13,8 @@ import {
 } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 const { Header, Sider, Content } = Layout;
+import Link from "next/link";
+import { signOut, useSession  } from "next-auth/react";
 
 function AntdAdmin({ children }: any) {
   const [collapsed, setCollapsed] = useState(false);
@@ -20,11 +22,32 @@ function AntdAdmin({ children }: any) {
     token: { colorBgContainer },
   } = theme.useToken();
   const nav = useRouter();
+
+  // 退出
+  const quit=()=>{
+    signOut({ callbackUrl: '/' });  
+  }
+
+  useEffect(() => {
+    // 恢复页面显示
+    document.querySelector('.Js-fix-style')?.classList.remove('Js-fix-style')
+  }, []);
+
+
+
   return (
     <>
       <Layout style={{ height: '100vh' }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className='demo-logo-vertical' />
+          <div className='h-[32px] m-[16px] text-white text-[16px]'>
+            <Link
+            href="/"
+            className="flex gap-2 text-[16px] !text-white self-center no-underline !hover:text-white flex-nowrap justify-center"
+          >
+              <img src="/logo-gold.svg" width={20} alt="" />
+              <span className={`${collapsed ? 'hidden' : 'whitespace-nowrap'}`}>Statsify Finance</span>
+            </Link>
+          </div>
           <Menu
             theme='dark'
             mode='inline'
@@ -78,6 +101,7 @@ function AntdAdmin({ children }: any) {
                 height: 64,
               }}
             />
+            <div className='float-right pr-5'><a href="#" onClick={quit}>退出登录</a></div>
           </Header>
           <Content
             style={{

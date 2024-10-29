@@ -130,10 +130,10 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             >
               <FaRegUserCircle className="text-[24px] self-center" />
             </Link>
-            :
-            <div className="flex self-center relative text-white text-[14px]">
-              欢迎{admin? '管理员':'普通用户'}: {username}! <a href="#" className="mx-[10px] hover:text-yellow-400" onClick={quit}>退出登录</a> { admin ? <a className="hover:text-yellow-400" href="#" onClick={manage}>管理</a> : '' }
-              </div>
+              :
+              <div className="flex self-center relative text-white text-[14px]">
+                {admin? '管理员':'您好'}：{username} <a href="#" className="mx-[15px] text-yellow-400 hover:text-yellow-300" onClick={quit}>退出登录</a> { admin ? <a className=" text-yellow-400 hover:text-yellow-300" href="#" onClick={manage}>管理</a> : '' }
+              </div>            
             }
           </div>
         </div>
