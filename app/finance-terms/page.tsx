@@ -24,15 +24,15 @@ interface ChangeData {
 
 const dataArray: Item[] = [
   {
-    title: `流动比率<br/>
-  Current Ratio`,
+    title: `资产<br/>
+  Asset`,
     cover: `/img.png`,
     content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
   流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
   },
   {
-    title: `速动比率<br/>
-  The acid-test ratio`,
+    title: `债务<br/>
+  liabilty`,
     cover: `/img.png`,
     content: `流动比率是企业流动资产与流动负债的比率，反映企业偿还短期债务的能力。
   流动比率高表明企业在短期内有足够的资产来偿还短期负债，通常认为流动比率在2:1左右较为理想。`,
