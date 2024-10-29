@@ -32,19 +32,19 @@ interface Map {
   content: Item[];
 }
 interface Mapping {
-  id: number;
-  value: string;
+  _id: string;
+  title: string;
 }
 
 interface EventHandler {
-  (id: number): void;
+  (id: string): void;
 }
 
 const RiskManage = () => {
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
-  const [currentNav, setCurrentNav] = useState(1); // 默认选中第一个分类
+  const [currentNav, setCurrentNav] = useState('1'); // 默认选中第一个分类
   const router = useRouter();
   const handleChange = (newData: ChangeData) => {
     const { activeIndex, isBeginning, isEnd } = newData;
@@ -110,16 +110,16 @@ const RiskManage = () => {
   }, [current]);
 
   const category: Mapping[] = [
-    { id: 1, value: "风险控制" },
-    { id: 2, value: "行业分类" }
+    { _id: '1', title: "风险控制" },
+    { _id: '2', title: "行业分类" }
   ];
 
-  const navClick: EventHandler = (id: number) => {
+  const navClick: EventHandler = (id: string) => {
     // setCurrentNav(id)
-    if (id === 1) {
+    if (id === '1') {
       router.push(`/strategy/risk-manage`)
     }
-    if (id === 2) {
+    if (id === '2') {
       router.push(`/strategy/risk-manage/industry-sectors`)
     }
     

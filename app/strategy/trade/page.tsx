@@ -106,7 +106,7 @@ const Strategy = () => {
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
-      <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
+      <div className="flex flex-grow flex-col w-full bg-strategy-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
         <div className="flex flex-grow">
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container">

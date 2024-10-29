@@ -16,6 +16,7 @@ const config: Config = {
         "intro-4": "url('/intro4.png')",
         "login-bg": "url('/login-bg.png')",
         "analysis-bg": "url('/analysis-bg.png')",
+        "strategy-bg": "url('/strategy-bg.png')",
       },
       colors: {
         // 在这里添加自定义颜色

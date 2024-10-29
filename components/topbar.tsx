@@ -104,7 +104,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             <div className="flex self-center relative">
               <input
                 ref={inputRef}
-                placeholder="Search"
+                placeholder="关键字"
                 type="text"
                 value={keywords}
                 onChange={keywordsChange}
