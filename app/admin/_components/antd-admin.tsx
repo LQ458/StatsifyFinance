@@ -9,6 +9,9 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  FileOutlined,
+  FileTextOutlined,
+  MenuOutlined,
   DashboardOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -71,17 +74,17 @@ function AntdAdmin({ children }: any) {
               },
               {
                 key: '',
-                icon: <UploadOutlined />,
+                icon: <FileOutlined />,
                 label: '文章管理',
                 children: [
                   {
                     key: '/admin/articles-category',
-                    icon: <UserOutlined />,
+                    icon: <MenuOutlined />,
                     label: '分类管理',
                   },
                   {
                     key: '/admin/articles',
-                    icon: <UserOutlined />,
+                    icon: <FileTextOutlined />,
                     label: '文章列表',
                   }
                 ]
