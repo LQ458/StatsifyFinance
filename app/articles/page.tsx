@@ -60,7 +60,7 @@ const News: React.FC = () => {
   // 获取资讯分类
   const getArticlesCategory = async () => {    
     const response = await fetch(
-      `/api/admin/articles-category`
+      `/api/admin/category?type=articles`
     )
     const list = await response.json();  
     console.log('category::::', list)

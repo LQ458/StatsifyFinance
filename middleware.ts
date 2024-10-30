@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
-  console.log('中间件执行了',req.nextUrl.pathname); 
+  // console.log('中间件执行了',req.nextUrl.pathname); 
   
   if (req.nextUrl.pathname.startsWith('/admin')) {   
     const cookieName = 'next-auth.session-token'

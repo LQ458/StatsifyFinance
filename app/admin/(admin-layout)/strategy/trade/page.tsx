@@ -19,10 +19,10 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
-import MyUpload from '../../_components/my-upload';
+import MyUpload from '../../../_components/my-upload';
 import dayjs from 'dayjs';
 // 只在客户端中引入富文本编辑器，不在编译的时候做处理
-const MyEditor = dynamic(() => import('../../_components/my-editor'), {
+const MyEditor = dynamic(() => import('../../../_components/my-editor'), {
   ssr: false,
 });
 
@@ -41,9 +41,6 @@ type Category = {
 };
 
 function ArticlePage() {
-  const per = 10;
-  const page = 1;
-
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Article[]>([]);
   const [category, setCategory] = useState<Category[]>([]);
@@ -56,8 +53,8 @@ function ArticlePage() {
   const [html, setHtml] = useState('');
 
   const [query, setQuery] = useState({
-    per,
-    page,
+    per: 10,
+    page: 1,
     title: '',
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
@@ -84,32 +81,27 @@ function ArticlePage() {
     }
   }, [open]);
 
-  useEffect(() => {
-    getGategory()
-  }, []);
-
-  
-
   // 查询所有分类
   const getGategory = async () => {
     await fetch(
-      `/api/admin/category?page=1&per=1000&type=articles`
+      `/api/admin/articles-category?page=1&per=1000`
     )
       .then((res) => res.json())
       .then((res) => {
-        setCategory(res.data.list);
+        setCategory(res.data.list);        
       });
   }
 
   return (
     <Card
-      title='资讯管理'
+      title='交易策略管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
-            onClick={async () => {              
+            onClick={async () => {
+              getGategory()
               setOpen(true)
             }}
           />
@@ -120,8 +112,8 @@ function ArticlePage() {
         layout='inline'
         onFinish={(v) => {
           setQuery({
-            page,
-            per,
+            page: 1,
+            per: 10,
             title: v.title,
           });
         }}
@@ -138,13 +130,12 @@ function ArticlePage() {
         dataSource={list}
         rowKey='_id'
         pagination={{
-          pageSize:per,
           total,
           onChange(page) {
             setQuery({
               ...query,
               page,
-              per,
+              per: 10,
             });
           },
         }}
@@ -159,19 +150,11 @@ function ArticlePage() {
           {
             title: '标题',
             dataIndex: 'title',
-            width: 200,
           },
           {
             title: '分类',
-            render(v, r) {
-              let categoryStr = ''
-              category.forEach(item => {
-                if (item._id === v.category) {
-                  categoryStr = item.title
-                }
-              })
-              return categoryStr
-            },
+            dataIndex: 'category',
+            width: 80,
           },
           {
             title: '封面',
@@ -235,7 +218,7 @@ function ArticlePage() {
                       if (!res.success) {
                         return message.error(res.errorMessage || '操作失败！')
                       }  
-                      setQuery({ ...query, per, page }); // 重制查询条件，重新获取数据
+                      setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
                     }}
                   >
                     <Button

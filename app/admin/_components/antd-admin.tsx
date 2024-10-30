@@ -59,7 +59,7 @@ function AntdAdmin({ children }: any) {
               if ( key ) {
                 console.log('key:::', key)
                 nav.push(key);
-              }              
+              }
             }}
             items={[
               {
@@ -73,9 +73,9 @@ function AntdAdmin({ children }: any) {
                 label: '用户管理',
               },
               {
-                key: '',
+                key: 'articles',
                 icon: <FileOutlined />,
-                label: '文章管理',
+                label: '资讯管理',
                 children: [
                   {
                     key: '/admin/articles-category',
@@ -85,7 +85,7 @@ function AntdAdmin({ children }: any) {
                   {
                     key: '/admin/articles',
                     icon: <FileTextOutlined />,
-                    label: '文章列表',
+                    label: '资讯列表',
                   }
                 ]
               },
@@ -93,6 +93,52 @@ function AntdAdmin({ children }: any) {
                 key:'/admin/finance-terms',
                 icon: <FileOutlined />,
                 label: '金融基础术语管理'
+              },
+              {
+                key:'learn',
+                icon: <FileOutlined />,
+                label: '学习管理',
+                children: [
+                  {
+                    key: 'analysis',
+                    icon: <MenuOutlined />,
+                    label: '分析管理',
+                    children: [
+                      {
+                        key: '/admin/analysis-category',
+                        icon: <MenuOutlined />,
+                        label: '分类管理',
+                      },
+                      {
+                        key: '/admin/analysis',
+                        icon: <FileTextOutlined />,
+                        label: '分析列表',
+                      }
+                    ]
+                  },
+                  {
+                    key: 'strategy',
+                    icon: <FileTextOutlined />,
+                    label: '策略管理',
+                    children: [
+                      {
+                        key: '/admin/strategy/trade',
+                        icon: <MenuOutlined />,
+                        label: '交易策略',
+                      },
+                      {
+                        key: '/admin/strategy/investor',
+                        icon: <MenuOutlined />,
+                        label: '投资者',
+                      },
+                      {
+                        key: '/admin/strategy/risk-manage',
+                        icon: <FileTextOutlined />,
+                        label: '风险控制',
+                      }
+                    ]
+                  }
+                ]
               }
             ]}
           />

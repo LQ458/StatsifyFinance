@@ -1,4 +1,4 @@
-import Articles from "@/models/articles-category";
+import Category from "@/models/category";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,7 +7,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   const data = await req.json(); // 请求体中传递的数据
   try {
     await DBconnect();
-    await Articles.findByIdAndUpdate(
+    await Category.findByIdAndUpdate(
       id,
       data,
       { new: true }
@@ -32,7 +32,7 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
   const { id } = params;
   try {
     await DBconnect();
-    await Articles.findByIdAndDelete(
+    await Category.findByIdAndDelete(
       id);
     // await prisma.article.delete({
     //   where: { id },

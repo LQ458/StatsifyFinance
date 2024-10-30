@@ -17,34 +17,29 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import dynamic from 'next/dynamic';
-import MyUpload from '../../_components/my-upload';
-// 只在客户端中引入富文本编辑器，不在编译的时候做处理
-const MyEditor = dynamic(() => import('../../_components/my-editor'), {
-  ssr: false,
-});
 
-type Article = {
+type Category = {
   _id: string;
   title: string;
   desc: string;
+  type: string;
   image: string;
   content: string;
 };
 
-function ArticlePage() {
+function CategoryPage() {
+  const per = 10;
+  const page = 1;
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
-  const [list, setList] = useState<Article[]>([]);
+  const [list, setList] = useState<Category[]>([]);
   const [myForm] = Form.useForm(); // 获取Form组件
 
-  // 图片路径
-  const [imageUrl, setImageUrl] = useState<string>('');
   // 编辑器内容
   const [html, setHtml] = useState('');
 
   const [query, setQuery] = useState({
-    per: 10,
-    page: 1,
+    per,
+    page,
     title: '',
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
@@ -54,7 +49,7 @@ function ArticlePage() {
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/articles-category?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/category?page=${query.page}&per=${query.per}&title=${query.title}&type=articles`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -66,8 +61,6 @@ function ArticlePage() {
   useEffect(() => {
     if (!open) {
       setCurrentId('');
-      setImageUrl('');
-      setHtml('');
     }
   }, [open]);
 
@@ -88,8 +81,8 @@ function ArticlePage() {
         layout='inline'
         onFinish={(v) => {
           setQuery({
-            page: 1,
-            per: 10,
+            page,
+            per,
             title: v.title,
           });
         }}
@@ -106,12 +99,13 @@ function ArticlePage() {
         dataSource={list}
         rowKey='_id'
         pagination={{
+          pageSize:per,
           total,
           onChange(page) {
             setQuery({
               ...query,
               page,
-              per: 10,
+              per
             });
           },
         }}
@@ -143,8 +137,6 @@ function ArticlePage() {
                     onClick={() => {
                       setOpen(true);
                       setCurrentId(r._id);
-                      setImageUrl(r.image);
-                      setHtml(r.content);
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -152,10 +144,10 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      await fetch('/api/admin/articles-category/' + r._id, {
+                      await fetch('/api/admin/category/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
-                      setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
+                      setQuery({ ...query, per, page }); // 重制查询条件，重新获取数据
                     }}
                   >
                     <Button
@@ -172,7 +164,7 @@ function ArticlePage() {
         ]}
       />
       <Modal
-        title='编辑'
+        title={`${currentId ? '编辑' : '新增'}`}
         open={open}
         onCancel={() => setOpen(false)}
         destroyOnClose={true} // 关闭窗口之后销毁
@@ -190,14 +182,14 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              await fetch('/api/admin/articles-category/' + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+              await fetch('/api/admin/category/' + currentId, {
+                body: JSON.stringify({ ...v }),
                 method: 'PUT',
               }).then((res) => res.json());
             } else {
-              await fetch('/api/admin/articles-category', {
+              await fetch('/api/admin/category', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({ ...v, type: "articles" }),
               }).then((res) => res.json());
             }
 
@@ -227,4 +219,4 @@ function ArticlePage() {
   );
 }
 
-export default ArticlePage;
+export default CategoryPage;

@@ -2,7 +2,7 @@ import mongoose, { now } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const articlesCategorySchema = new Schema({
+const categorySchema = new Schema({
   title: {
     type: String,
     required: true    
@@ -10,6 +10,10 @@ const articlesCategorySchema = new Schema({
   order: {
     type: Number,
     default: 1
+  },
+  type: {
+    type: String,
+    required: true    
   },
   createdAt: {
     type: Date,
@@ -21,5 +25,5 @@ const articlesCategorySchema = new Schema({
   }
 });
 
-const ArticlesCategory = mongoose.models.ArticlesCategory || mongoose.model("ArticlesCategory", articlesCategorySchema);
-export default ArticlesCategory;
+const Category = mongoose.models.Category || mongoose.model("Category", categorySchema);
+export default Category;

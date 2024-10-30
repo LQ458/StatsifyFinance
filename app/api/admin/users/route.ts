@@ -12,8 +12,7 @@ export const GET = async (req: NextRequest) => {
     await DBconnect();
     const query = username ? { username: { $regex: username, $options: 'i' } } : {}; // 如果传入 title 则模糊查询，否则查询全部
     const data = await User.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
-    const totalCount = await User.countDocuments();
-    const total = Math.ceil(totalCount / per);
+    const total = await User.countDocuments(query);
     return NextResponse.json({
       success: true,
       errorMessage: '',

@@ -5,9 +5,11 @@ import {
   Card,
   Form,
   Input,
+  InputNumber,
   Table,
+  Tabs,
+  TabsProps,
   Modal,
-  message,
   Space,
   Popconfirm,
 } from 'antd';
@@ -17,27 +19,24 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import MyUpload from '../../_components/my-upload';
-import dayjs from 'dayjs';
 
-type Article = {
+type Category = {
   _id: string;
   title: string;
-  enTitle: string;
+  desc: string;
+  type: string;
   image: string;
   content: string;
-  createdAt: string;
 };
 
-function FinanceTermsPage() {
+function CategoryPage() {
   const per = 10;
   const page = 1;
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
-  const [list, setList] = useState<Article[]>([]);
+  const [list, setList] = useState<Category[]>([]);
   const [myForm] = Form.useForm(); // 获取Form组件
-
-  // 图片路径
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [searchForm] = Form.useForm();
+  const [tabVal, setTabVal] = useState('quantitative');  
 
   const [query, setQuery] = useState({
     per,
@@ -46,12 +45,32 @@ function FinanceTermsPage() {
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
-  // 如果存在表示修改，不存在表示新增
+
+  const onChange = (key: string) => {
+    searchForm.resetFields();
+    setTabVal(key)
+    setQuery({
+      page: 1,
+      per,
+      title:''
+    })
+  };
+  
+  const items: TabsProps['items'] = [
+    {
+      key: 'quantitative',
+      label: '定量'
+    },
+    {
+      key: 'qualitative',
+      label: '定性'
+    }
+  ];
 
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/finance-terms?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/category?page=${query.page}&per=${query.per}&title=${query.title}&type=${tabVal}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -63,26 +82,25 @@ function FinanceTermsPage() {
   useEffect(() => {
     if (!open) {
       setCurrentId('');
-      setImageUrl('');
     }
   }, [open]);
 
   return (
     <Card
-      title='金融基础术语管理'
+      title='分析-分类管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
-            onClick={async () => {
-              setOpen(true)
-            }}
+            onClick={() => setOpen(true)}
           />
         </>
       }
     >
+      <Tabs defaultActiveKey={tabVal} items={items} onChange={onChange} />
       <Form
+        form={searchForm}
         layout='inline'
         onFinish={(v) => {
           setQuery({
@@ -110,7 +128,7 @@ function FinanceTermsPage() {
             setQuery({
               ...query,
               page,
-              per,
+              per
             });
           },
         }}
@@ -121,48 +139,18 @@ function FinanceTermsPage() {
             render(v, r, i) {
               return i + 1;
             },
-          },          
+          },
           {
-            title: '标题',
+            title: '分类名',
             dataIndex: 'title',
           },
           {
-            title: '英文标题',
-            dataIndex: 'enTitle',
+            title: '类别',
+            dataIndex: 'type'
           },
           {
-            title: '封面',
-            align: 'center',
-            width: '100px',
-            // dataIndex: 'title',
-            render(v, r) {
-              return (
-                <img
-                  src={r.image}
-                  style={{
-                    display: 'block',
-                    margin: '8px auto',
-                    width: '80px',
-                    maxHeight: '80px',
-                  }}
-                  alt={r.title}
-                />
-              );
-            },
-          },
-          {
-            title: '内容',
-            dataIndex: 'content',
-            width: 500,
-          },
-          {
-            title: '发布时间',
-            dataIndex: 'createdAt',
-            render(v, r) {
-              return (
-                <span>{ dayjs(r.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-              )
-            }
+            title: '排序',
+            dataIndex: 'order',
           },
           {
             title: '操作',
@@ -176,7 +164,6 @@ function FinanceTermsPage() {
                     onClick={() => {
                       setOpen(true);
                       setCurrentId(r._id);
-                      setImageUrl(r.image);
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -184,12 +171,9 @@ function FinanceTermsPage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      const res = await fetch('/api/admin/finance-terms/' + r._id, {
+                      await fetch('/api/admin/category/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
-                      if (!res.success) {
-                        return message.error(res.errorMessage || '操作失败！')
-                      }  
                       setQuery({ ...query, per, page }); // 重制查询条件，重新获取数据
                     }}
                   >
@@ -215,7 +199,7 @@ function FinanceTermsPage() {
         onOk={() => {
           myForm.submit();
         }}
-        width={'75vw'}
+        width={'400px'}
       >
         <Form
           preserve={false} // 和modal结合使用的时候需要加上它，否则不会销毁
@@ -225,21 +209,15 @@ function FinanceTermsPage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              const res = await fetch('/api/admin/finance-terms/' + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl }),
+              await fetch('/api/admin/category/' + currentId, {
+                body: JSON.stringify({ ...v }),
                 method: 'PUT',
               }).then((res) => res.json());
-              if (!res.success) {
-                return message.error(res.errorMessage || '操作失败！')
-              }              
             } else {
-              const res = await fetch('/api/admin/finance-terms', {
+              await fetch('/api/admin/category', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl }),
+                body: JSON.stringify({ ...v, type: tabVal }),
               }).then((res) => res.json());
-              if (!res.success) {
-                return message.error(res.errorMessage || '操作失败！')
-              }   
             }
 
             // 此处需要调接口
@@ -248,28 +226,19 @@ function FinanceTermsPage() {
           }}
         >
           <Form.Item
-            label='标题'
+            label='分类名'
             name='title'
             rules={[
               {
                 required: true,
-                message: '标题不能为空',
+                message: '分类名不能为空',
               },
             ]}
           >
-            <Input placeholder='请输入标题' />
+            <Input placeholder='请输入分类名' />
           </Form.Item>
-          <Form.Item
-            label='英文标题'
-            name='enTitle'
-          >
-            <Input placeholder='请输入标题' />
-          </Form.Item>          
-          <Form.Item label='内容' name='content'>
-            <Input.TextArea placeholder='请输入内容' />
-          </Form.Item>
-          <Form.Item label='封面'>
-            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          <Form.Item label='排序' name='order'>
+            <InputNumber style={{ width: '100%' }} min="1" max="100" step="1" placeholder='请输入排序数，越小越靠前' />
           </Form.Item>
         </Form>
       </Modal>
@@ -277,4 +246,4 @@ function FinanceTermsPage() {
   );
 }
 
-export default FinanceTermsPage;
+export default CategoryPage;

@@ -17,8 +17,7 @@ export const GET = async (req: NextRequest) => {
     }
     console.log('query:::', query)
     const data = await FinanceTerms.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
-    const totalCount = await FinanceTerms.countDocuments();
-    const total = Math.ceil(totalCount / per);
+    const total = await FinanceTerms.countDocuments(query);
     return NextResponse.json({
       success: true,
       errorMessage: '',

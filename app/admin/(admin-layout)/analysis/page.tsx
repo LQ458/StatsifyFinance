@@ -7,6 +7,8 @@ import {
   Input,
   Select,
   Table,
+  Tabs,
+  TabsProps,
   Modal,
   message,
   Space,
@@ -49,6 +51,8 @@ function ArticlePage() {
   const [category, setCategory] = useState<Category[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
   const [myForm] = Form.useForm(); // 获取Form组件
+  const [searchForm] = Form.useForm();
+  const [tabVal, setTabVal] = useState('quantitative'); 
 
   // 图片路径
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -62,12 +66,32 @@ function ArticlePage() {
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
-  // 如果存在表示修改，不存在表示新增
+
+  const onChange = (key: string) => {
+    searchForm.resetFields();
+    setTabVal(key)
+    setQuery({
+      page: 1,
+      per,
+      title:''
+    })
+  };
+  
+  const items: TabsProps['items'] = [
+    {
+      key: 'quantitative',
+      label: '定量'
+    },
+    {
+      key: 'qualitative',
+      label: '定性'
+    }
+  ];
 
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/articles?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/analysis?page=${query.page}&per=${query.per}&title=${query.title}&type=${tabVal}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -93,7 +117,7 @@ function ArticlePage() {
   // 查询所有分类
   const getGategory = async () => {
     await fetch(
-      `/api/admin/category?page=1&per=1000&type=articles`
+      `/api/admin/category?page=1&per=1000&type=${tabVal}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -103,20 +127,23 @@ function ArticlePage() {
 
   return (
     <Card
-      title='资讯管理'
+      title='分析-内容管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
-            onClick={async () => {              
+            onClick={async () => {    
+              getGategory()
               setOpen(true)
             }}
           />
         </>
       }
     >
+      <Tabs defaultActiveKey={tabVal} items={items} onChange={onChange} />
       <Form
+        form={searchForm}
         layout='inline'
         onFinish={(v) => {
           setQuery({
@@ -229,7 +256,7 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      const res = await fetch('/api/admin/articles/' + r._id, {
+                      const res = await fetch('/api/admin/analysis/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
                       if (!res.success) {
@@ -270,7 +297,7 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              const res = await fetch('/api/admin/articles/' + currentId, {
+              const res = await fetch('/api/admin/analysis/' + currentId, {
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
                 method: 'PUT',
               }).then((res) => res.json());
@@ -278,9 +305,9 @@ function ArticlePage() {
                 return message.error(res.errorMessage || '操作失败！')
               }              
             } else {
-              const res = await fetch('/api/admin/articles', {
+              const res = await fetch('/api/admin/analysis', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({ ...v, image: imageUrl, content: html, type: tabVal }),
               }).then((res) => res.json());
               if (!res.success) {
                 return message.error(res.errorMessage || '操作失败！')

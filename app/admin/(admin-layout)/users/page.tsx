@@ -19,13 +19,8 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import dynamic from 'next/dynamic';
 import MyUpload from '../../_components/my-upload';
 import dayjs from 'dayjs';
-// 只在客户端中引入富文本编辑器，不在编译的时候做处理
-const MyEditor = dynamic(() => import('../../_components/my-editor'), {
-  ssr: false,
-});
 
 type User = {
   _id: string;
@@ -38,20 +33,18 @@ type User = {
 };
 
 function ArticlePage() {
+  const per = 10;
+  const page = 1;
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<User[]>([]);
   const [myForm] = Form.useForm(); // 获取Form组件
 
   // 图片路径
   const [imageUrl, setImageUrl] = useState<string>('');
-  const [email, setEmail] = useState('');
-  const [originalPassword, setOriginalPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [admin, setAdmin] = useState('');
   
   const [query, setQuery] = useState({
-    per: 10,
-    page: 1,
+    per,
+    page,
     username: '',
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
@@ -74,8 +67,6 @@ function ArticlePage() {
     if (!open) {
       setCurrentId('');
       setImageUrl('');
-      setEmail('');
-      setUsername('');
     }
   }, [open]);
 
@@ -87,8 +78,8 @@ function ArticlePage() {
         layout='inline'
         onFinish={(v) => {
           setQuery({
-            page: 1,
-            per: 10,
+            page,
+            per,
             username: v.username,
           });
         }}
@@ -105,12 +96,13 @@ function ArticlePage() {
         dataSource={list}
         rowKey='_id'
         pagination={{
+          pageSize:per,
           total,
           onChange(page) {
             setQuery({
               ...query,
               page,
-              per: 10,
+              per,
             });
           },
         }}
@@ -185,10 +177,6 @@ function ArticlePage() {
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
-                      setEmail(r.email);
-                      setUsername(r.username)
-                      setOriginalPassword(r.originalPassword)
-                      setAdmin(r.admin)
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -202,7 +190,7 @@ function ArticlePage() {
                       if (!res.success) {
                         return message.error(res.errorMessage || '操作失败！')
                       }  
-                      setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
+                      setQuery({ ...query, per, page }); // 重制查询条件，重新获取数据
                     }}
                   >
                     <Button
