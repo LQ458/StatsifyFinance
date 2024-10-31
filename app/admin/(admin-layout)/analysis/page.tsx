@@ -42,7 +42,7 @@ type Category = {
   title: string;
 };
 
-function ArticlePage() {
+function analysisPage() {
   const per = 10;
   const page = 1;
 
@@ -53,6 +53,7 @@ function ArticlePage() {
   const [myForm] = Form.useForm(); // 获取Form组件
   const [searchForm] = Form.useForm();
   const [tabVal, setTabVal] = useState('quantitative'); 
+  const [currentPage, setCurrentPage] = useState(1); 
 
   // 图片路径
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -75,6 +76,7 @@ function ArticlePage() {
       per,
       title:''
     })
+    setCurrentPage(1)
   };
   
   const items: TabsProps['items'] = [
@@ -91,7 +93,7 @@ function ArticlePage() {
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/analysis?page=${query.page}&per=${query.per}&title=${query.title}&type=${tabVal}`
+      `/api/admin/learn?page=${query.page}&per=${query.per}&title=${query.title}&type=${tabVal}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -161,10 +163,11 @@ function ArticlePage() {
         </Form.Item>
       </Form>
       <Table
-        style={{ marginTop: '8px' }}
+        style={{ marginTop: '16px' }}
         dataSource={list}
         rowKey='_id'
         pagination={{
+          current: currentPage,
           pageSize:per,
           total,
           onChange(page) {
@@ -173,6 +176,7 @@ function ArticlePage() {
               page,
               per,
             });
+            setCurrentPage(page)
           },
         }}
         columns={[
@@ -189,6 +193,11 @@ function ArticlePage() {
             width: 200,
           },
           {
+            title: '英文标题',
+            dataIndex: 'enTitle',
+            width: 200,
+          },
+          {
             title: '分类',
             render(v, r) {
               let categoryStr = ''
@@ -199,27 +208,7 @@ function ArticlePage() {
               })
               return categoryStr
             },
-          },
-          {
-            title: '封面',
-            align: 'center',
-            width: '100px',
-            // dataIndex: 'title',
-            render(v, r) {
-              return (
-                <img
-                  src={r.image}
-                  style={{
-                    display: 'block',
-                    margin: '8px auto',
-                    width: '80px',
-                    maxHeight: '80px',
-                  }}
-                  alt={r.title}
-                />
-              );
-            },
-          },
+          },          
           // {
           //   title: '简介',
           //   dataIndex: 'desc'
@@ -256,7 +245,7 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      const res = await fetch('/api/admin/analysis/' + r._id, {
+                      const res = await fetch('/api/admin/learn/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
                       if (!res.success) {
@@ -297,7 +286,7 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              const res = await fetch('/api/admin/analysis/' + currentId, {
+              const res = await fetch('/api/admin/learn/' + currentId, {
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
                 method: 'PUT',
               }).then((res) => res.json());
@@ -305,7 +294,7 @@ function ArticlePage() {
                 return message.error(res.errorMessage || '操作失败！')
               }              
             } else {
-              const res = await fetch('/api/admin/analysis', {
+              const res = await fetch('/api/admin/learn', {
                 method: 'POST',
                 body: JSON.stringify({ ...v, image: imageUrl, content: html, type: tabVal }),
               }).then((res) => res.json());
@@ -332,6 +321,12 @@ function ArticlePage() {
             <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
+            label='英文标题'
+            name='enTitle'
+          >
+            <Input placeholder='请输入英文标题' />
+          </Form.Item>
+          <Form.Item
             label='分类'
             name='category'
             rules={[
@@ -347,13 +342,7 @@ function ArticlePage() {
                 ))
               }              
             </Select>
-          </Form.Item>
-          <Form.Item label='简介' name='desc'>
-            <Input.TextArea placeholder='请输入简介' />
-          </Form.Item>
-          <Form.Item label='封面'>
-            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
+          </Form.Item>          
           <Form.Item label='详情'>
             <MyEditor html={html} setHtml={setHtml} />
           </Form.Item>
@@ -363,4 +352,4 @@ function ArticlePage() {
   );
 }
 
-export default ArticlePage;
+export default analysisPage;

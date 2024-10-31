@@ -3,14 +3,10 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useSearchParams} from 'next/navigation';
 import styles from "@/src/css/learn.module.css";
 import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
-import Str2html from "@/components/str2html";
 import MainNav from "@/components/main-nav";
-import {
-  list
-} from "@/src/data/strategy/trade";
 import {
   mainNavList
 } from "@/src/data/strategy/mainNav";
@@ -19,6 +15,7 @@ import { IoIosArrowDown } from "react-icons/io";
 // 定义对象类型
 interface Item {
   title: string;
+  enTitle: string;
   content: string;
 }
 interface ChangeData {
@@ -26,19 +23,14 @@ interface ChangeData {
   isBeginning: boolean;
   isEnd: boolean;
 }
-interface Map {
-  title: string;
-  content: Item[];
-}
-interface Mapping {
-  key: string;
-  value: string;
-}
 
 const Strategy = () => {
+  
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
+  const [list, setList] = useState<Item[]>([]);
   const handleChange = (newData: ChangeData) => {
     const { activeIndex, isBeginning, isEnd } = newData;
     setCurrent(activeIndex);
@@ -49,18 +41,40 @@ const Strategy = () => {
   const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams()
 
+  // 获取数据
+  const getTradeData = async () => {    
+    const response = await fetch(
+      `/api/admin/learn?page=1&per=10000&type=trade`
+    )
+    const list = await response.json();  
+    console.log('list::::', list)
+    setList(list.data.list) 
+  };
 
-  useEffect(() => {
-    let index = searchParams.get('index')
-    if(index){
-      const sIndex = Number(index)
-      if (!isNaN(sIndex)) {
-        if(sIndex >= 0 && sIndex <= list.length - 1){
-          handleSlideTo(sIndex);
+
+  useEffect(() => {    
+    const getData = async () => { 
+      await getTradeData()
+      setLoading(false)      
+    }
+    getData()
+    
+  }, []);
+
+  useEffect(() => {    
+    
+      let index = searchParams.get('index')
+      if(index){
+        const sIndex = Number(index)
+        if (!isNaN(sIndex)) {
+          if(sIndex >= 0 && sIndex <= list.length - 1){
+            handleSlideTo(sIndex);
+          }
         }
       }
-    }
-  }, []);
+    
+  }, [list]);
+
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -108,7 +122,7 @@ const Strategy = () => {
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-strategy-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
-        <div className="flex flex-grow">
+        <div className={`${loading ? 'invisible' : ''} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
               交易策略
@@ -118,6 +132,7 @@ const Strategy = () => {
               <br />
               基于历史数据和市场信号制定的交易策略
             </p>
+            
 
             <div className="mt-[30px] text-left">
               <div className={`${styles.tab}`}>
@@ -128,7 +143,7 @@ const Strategy = () => {
                       className={`${current === idx ? styles["active"] : ""}`}
                       onClick={(e) => tabChange(idx, e)}
                     >
-                      <Str2html htmlString={item.title} />
+                      {item.title}<br/>{item.enTitle}
                     </li>
                   ))}
                 </ul>
@@ -170,6 +185,7 @@ const Strategy = () => {
         </div>
       </div>
       <Footer position="relative" />
+      { loading ? <div className="global-loading bg-loading"></div> : ''}
     </main>
   );
 };

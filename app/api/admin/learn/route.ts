@@ -1,4 +1,4 @@
-import Articles from "@/models/articles";
+import Learn from "@/models/learn";
 import { DBconnect, DBdisconnect} from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from 'next-auth/jwt';
@@ -8,12 +8,24 @@ export const GET = async (req: NextRequest) => {
   let per = (req.nextUrl.searchParams.get('per') as any) * 1 || 10;
   let page = (req.nextUrl.searchParams.get('page') as any) * 1 || 1;
   let title = (req.nextUrl.searchParams.get('title') as string) || '';
+  let type = (req.nextUrl.searchParams.get('type') as string) || '';
   try {
     await DBconnect();
-    const query = title ? { title: { $regex: title, $options: 'i' } } : {}; // 如果传入 title 则模糊查询，否则查询全部
-    const data = await Articles.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
-    const totalCount = await Articles.countDocuments();
-    const total = Math.ceil(totalCount / per);
+    let query = {} // 如果传入 title 则模糊查询，否则查询全部
+    if (title) {
+      query = {
+        type,
+        $or: [{title: { $regex: title, $options: 'i' }},
+              {enTitle: { $regex: title, $options: 'i' }}]
+      };
+    } else {
+      query = {
+        type
+      };
+    }
+
+    const data = await Learn.find(query).sort({ createdAt: -1 }).skip((page - 1) * per).limit(per);
+    const total = await Learn.countDocuments(query);
     return NextResponse.json({
       success: true,
       errorMessage: '',
@@ -47,7 +59,7 @@ export const POST = async (req: NextRequest) => {
   }
   try {
     await DBconnect();
-    await Articles.create(data);
+    await Learn.create(data);
     // await prisma.article.create({
     //   data,
     // });

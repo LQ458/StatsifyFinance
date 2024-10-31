@@ -5,7 +5,6 @@ import {
   Card,
   Form,
   Input,
-  Select,
   Switch,
   Table,
   Modal,
@@ -15,7 +14,6 @@ import {
 } from 'antd';
 import {
   SearchOutlined,
-  PlusOutlined,
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
@@ -32,7 +30,7 @@ type User = {
   createdAt: string;
 };
 
-function ArticlePage() {
+function UserPage() {
   const per = 10;
   const page = 1;
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
@@ -49,7 +47,6 @@ function ArticlePage() {
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
-  // 如果存在表示修改，不存在表示新增
 
   // 监听查询条件的改变
   useEffect(() => {
@@ -92,7 +89,7 @@ function ArticlePage() {
         </Form.Item>
       </Form>
       <Table
-        style={{ marginTop: '8px' }}
+        style={{ marginTop: '16px' }}
         dataSource={list}
         rowKey='_id'
         pagination={{
@@ -273,4 +270,4 @@ function ArticlePage() {
   );
 }
 
-export default ArticlePage;
+export default UserPage;

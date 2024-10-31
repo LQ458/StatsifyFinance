@@ -46,7 +46,6 @@ function FinanceTermsPage() {
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
-  // 如果存在表示修改，不存在表示新增
 
   // 监听查询条件的改变
   useEffect(() => {
@@ -100,7 +99,7 @@ function FinanceTermsPage() {
         </Form.Item>
       </Form>
       <Table
-        style={{ marginTop: '8px' }}
+        style={{ marginTop: '16px' }}
         dataSource={list}
         rowKey='_id'
         pagination={{

@@ -37,6 +37,7 @@ function CategoryPage() {
   const [myForm] = Form.useForm(); // 获取Form组件
   const [searchForm] = Form.useForm();
   const [tabVal, setTabVal] = useState('quantitative');  
+  const [currentPage, setCurrentPage] = useState(1); 
 
   const [query, setQuery] = useState({
     per,
@@ -54,6 +55,7 @@ function CategoryPage() {
       per,
       title:''
     })
+    setCurrentPage(1)
   };
   
   const items: TabsProps['items'] = [
@@ -118,10 +120,11 @@ function CategoryPage() {
         </Form.Item>
       </Form>
       <Table
-        style={{ marginTop: '8px' }}
+        style={{ marginTop: '16px' }}
         dataSource={list}
         rowKey='_id'
         pagination={{
+          current: currentPage,
           pageSize:per,
           total,
           onChange(page) {
@@ -130,6 +133,7 @@ function CategoryPage() {
               page,
               per
             });
+            setCurrentPage(page)
           },
         }}
         columns={[

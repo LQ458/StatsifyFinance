@@ -7,6 +7,8 @@ import {
   Input,
   Select,
   Table,
+  Tabs,
+  TabsProps,
   Modal,
   message,
   Space,
@@ -35,17 +37,15 @@ type Article = {
   category: string;
   createdAt: string;
 };
-type Category = {
-  _id: string;
-  title: string;
-};
 
-function ArticlePage() {
+function analysisPage() {
+  const per = 10;
+  const page = 1;
+  const type = 'trade'
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Article[]>([]);
-  const [category, setCategory] = useState<Category[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
   const [myForm] = Form.useForm(); // 获取Form组件
+  const [searchForm] = Form.useForm();
 
   // 图片路径
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -53,18 +53,17 @@ function ArticlePage() {
   const [html, setHtml] = useState('');
 
   const [query, setQuery] = useState({
-    per: 10,
-    page: 1,
+    per,
+    page,
     title: '',
   });
   const [currentId, setCurrentId] = useState(''); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
-  // 如果存在表示修改，不存在表示新增
 
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
-      `/api/admin/articles?page=${query.page}&per=${query.per}&title=${query.title}`
+      `/api/admin/learn?page=${query.page}&per=${query.per}&title=${query.title}&type=${type}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -81,27 +80,16 @@ function ArticlePage() {
     }
   }, [open]);
 
-  // 查询所有分类
-  const getGategory = async () => {
-    await fetch(
-      `/api/admin/articles-category?page=1&per=1000`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setCategory(res.data.list);        
-      });
-  }
 
   return (
     <Card
-      title='交易策略管理'
+      title='策略-交易策略管理'
       extra={
         <>
           <Button
             icon={<PlusOutlined />}
             type='primary'
-            onClick={async () => {
-              getGategory()
+            onClick={async () => {    
               setOpen(true)
             }}
           />
@@ -109,11 +97,12 @@ function ArticlePage() {
       }
     >
       <Form
+        form={searchForm}
         layout='inline'
         onFinish={(v) => {
           setQuery({
-            page: 1,
-            per: 10,
+            page,
+            per,
             title: v.title,
           });
         }}
@@ -126,16 +115,17 @@ function ArticlePage() {
         </Form.Item>
       </Form>
       <Table
-        style={{ marginTop: '8px' }}
+        style={{ marginTop: '16px' }}
         dataSource={list}
         rowKey='_id'
         pagination={{
+          pageSize:per,
           total,
           onChange(page) {
             setQuery({
               ...query,
               page,
-              per: 10,
+              per,
             });
           },
         }}
@@ -150,31 +140,12 @@ function ArticlePage() {
           {
             title: '标题',
             dataIndex: 'title',
+            width: 200,
           },
           {
-            title: '分类',
-            dataIndex: 'category',
-            width: 80,
-          },
-          {
-            title: '封面',
-            align: 'center',
-            width: '100px',
-            // dataIndex: 'title',
-            render(v, r) {
-              return (
-                <img
-                  src={r.image}
-                  style={{
-                    display: 'block',
-                    margin: '8px auto',
-                    width: '80px',
-                    maxHeight: '80px',
-                  }}
-                  alt={r.title}
-                />
-              );
-            },
+            title: '英文标题',
+            dataIndex: 'enTitle',
+            width: 200,
           },
           // {
           //   title: '简介',
@@ -199,12 +170,10 @@ function ArticlePage() {
                     icon={<EditOutlined />}
                     type='primary'
                     onClick={() => {
-                      getGategory();
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
                       setHtml(r.content);
-                      setSelectedValue(r.category)
                       myForm.setFieldsValue(r);
                     }}
                   />
@@ -212,13 +181,13 @@ function ArticlePage() {
                     title='是否确认删除?'
                     onConfirm={async () => {
                       //
-                      const res = await fetch('/api/admin/articles/' + r._id, {
+                      const res = await fetch('/api/admin/learn/' + r._id, {
                         method: 'DELETE',
                       }).then((res) => res.json());
                       if (!res.success) {
                         return message.error(res.errorMessage || '操作失败！')
                       }  
-                      setQuery({ ...query, per: 10, page: 1 }); // 重制查询条件，重新获取数据
+                      setQuery({ ...query, per, page }); // 重制查询条件，重新获取数据
                     }}
                   >
                     <Button
@@ -253,7 +222,7 @@ function ArticlePage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              const res = await fetch('/api/admin/articles/' + currentId, {
+              const res = await fetch('/api/admin/learn/' + currentId, {
                 body: JSON.stringify({ ...v, image: imageUrl, content: html }),
                 method: 'PUT',
               }).then((res) => res.json());
@@ -261,9 +230,9 @@ function ArticlePage() {
                 return message.error(res.errorMessage || '操作失败！')
               }              
             } else {
-              const res = await fetch('/api/admin/articles', {
+              const res = await fetch('/api/admin/learn', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({ ...v, image: imageUrl, content: html, type }),
               }).then((res) => res.json());
               if (!res.success) {
                 return message.error(res.errorMessage || '操作失败！')
@@ -288,28 +257,11 @@ function ArticlePage() {
             <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
-            label='分类'
-            name='category'
-            rules={[
-              {
-                required: true,
-                message: '分类不能为空',
-              },
-            ]}>
-            <Select value={selectedValue}>
-              {
-                category && category.map(item => (
-                  <Select.Option key={item._id} value={item._id}>{item.title}</Select.Option>
-                ))
-              }              
-            </Select>
-          </Form.Item>
-          <Form.Item label='简介' name='desc'>
-            <Input.TextArea placeholder='请输入简介' />
-          </Form.Item>
-          <Form.Item label='封面'>
-            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
+            label='英文标题'
+            name='enTitle'
+          >
+            <Input placeholder='请输入英文标题' />
+          </Form.Item>          
           <Form.Item label='详情'>
             <MyEditor html={html} setHtml={setHtml} />
           </Form.Item>
@@ -319,4 +271,4 @@ function ArticlePage() {
   );
 }
 
-export default ArticlePage;
+export default analysisPage;

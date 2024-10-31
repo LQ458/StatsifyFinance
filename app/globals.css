@@ -251,3 +251,21 @@
 }
 
 .Js-fix-style{visibility: hidden;}
+
+.global-loading{
+  width:60px;
+  height:60px;
+  position: fixed;
+  left:50%;
+  top:30%;
+  z-index: 11000;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+  background-size: contain;
+  animation: load-rotate 2s infinite linear;
+}
+
+@keyframes load-rotate{
+  from{transform: rotate(0);}
+  to{ transform: rotate(360deg);}
+}

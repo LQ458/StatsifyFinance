@@ -7,9 +7,13 @@ const learnSchema = new Schema({
     type: String,
     required: true    
   },
+  enTitle: {
+    type: String,
+    required: false    
+  },
   category: {
     type: String,
-    required: true    
+    required: false    
   },
   type: {
     type: String,
