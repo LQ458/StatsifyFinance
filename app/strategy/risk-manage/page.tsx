@@ -6,12 +6,8 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams} from 'next/navigation';
 import styles from "@/src/css/learn.module.css";
 import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
-import Str2html from "@/components/str2html";
 import MainNav from "@/components/main-nav";
 import SideNav from "@/components/side-nav";
-import {
-  list,
-} from "@/src/data/strategy/rishMng";
 import {
   mainNavList
 } from "@/src/data/strategy/mainNav";
@@ -20,16 +16,13 @@ import { IoIosArrowDown } from "react-icons/io";
 // 定义对象类型
 interface Item {
   title: string;
+  enTitle: string;
   content: string;
 }
 interface ChangeData {
   activeIndex: number;
   isBeginning: boolean;
   isEnd: boolean;
-}
-interface Map {
-  title: string;
-  content: Item[];
 }
 interface Mapping {
   _id: string;
@@ -41,9 +34,13 @@ interface EventHandler {
 }
 
 const RiskManage = () => {
+  const [swiperIndex, setSwiperIndex] = useState(0);
+  const [isInitialRender, setIsInitialRender] = useState(true); // swiper初始化判定，用于跳过首次执行，避免首次执行覆盖地址栏传参
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
+  const [list, setList] = useState<Item[]>([]);
   const [currentNav, setCurrentNav] = useState('1'); // 默认选中第一个分类
   const router = useRouter();
   const handleChange = (newData: ChangeData) => {
@@ -51,23 +48,56 @@ const RiskManage = () => {
     setCurrent(activeIndex);
     setNoPrev(isBeginning);
     setNoNext(isEnd);
+    setSwiperIndex(activeIndex)
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams()
 
+  const updateIndex = (newIndex: number) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("index", String(newIndex));
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  };
 
+  // 获取数据
+  const getTradeData = async () => {    
+    const response = await fetch(`/api/admin/learn?page=1&per=10000&type=risk-manage`)
+    const list = await response.json();  
+    if (list?.data?.list?.length > 0) {
+      setList(list.data.list)
+      setNoNext(false)
+    }    
+  };
+
+  useEffect(() => {    
+    const getData = async () => { 
+      await getTradeData()
+      setLoading(false)      
+    }
+    getData()    
+  }, []);
+  
+  useEffect(() => {
+    if (isInitialRender) {
+      setIsInitialRender(false)      
+    } else {
+      updateIndex(swiperIndex)
+    }    
+  }, [swiperIndex]);
+  // 数据加载完成后判断地址栏参数index，用于滑动到指定位置
   useEffect(() => {
     let index = searchParams.get('index')
-    if(index){
-      const sIndex = Number(index)
-      if (!isNaN(sIndex)) {
-        if(sIndex >= 0 && sIndex <= list.length - 1){
-          handleSlideTo(sIndex);
+    if (index) {
+        const sIndex = Number(index)
+        if (!isNaN(sIndex)) {
+          if(sIndex >= 0 && sIndex <= list.length - 1){
+            handleSlideTo(sIndex);
+          }
         }
-      }
-    }
-  }, []);
+      }    
+  }, [list]);  
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -115,7 +145,6 @@ const RiskManage = () => {
   ];
 
   const navClick: EventHandler = (id: string) => {
-    // setCurrentNav(id)
     if (id === '1') {
       router.push(`/strategy/risk-manage`)
     }
@@ -131,7 +160,7 @@ const RiskManage = () => {
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
         <MainNav navItems={ mainNavList } />        
-        <div className="flex flex-grow">
+        <div className={`${loading ? 'invisible' : ''} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
             <div className={`${styles["left-side"]}`}>
               <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />         
@@ -154,7 +183,7 @@ const RiskManage = () => {
                         className={`${current === idx ? styles["active"] : ""}`}
                         onClick={(e) => tabChange(idx, e)}
                       >
-                        <Str2html htmlString={item.title} />
+                        {item.title}<br/>{item.enTitle}
                       </li>
                     ))}
                   </ul>
@@ -165,7 +194,6 @@ const RiskManage = () => {
                     className={`${styles.slider}`}
                     items={list}
                     onChange={handleChange}
-                    sliderIndex={0}
                   />
                   <div
                     onClick={() => handlePrev()}
@@ -198,6 +226,7 @@ const RiskManage = () => {
         </div>
       </div>
       <Footer position="relative" />
+      { loading ? <div className="global-loading bg-loading"></div> : ''}
     </main>
   );
 };

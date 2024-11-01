@@ -16,8 +16,8 @@ import Image from "next/image";
 
 // 定义对象类型
 interface Item {
-  name: string;
-  picture: string;
+  title: string;
+  image: string;
   content: string;
 }
 
@@ -93,14 +93,13 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           slidesPerView={1} // 设置每次显示的滑块数量
           initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
           onSlideChange={(swiper) => onChange(swiper)}
-          onSwiper={(swiper) => onChange(swiper)}
           className={`${className}`}
         >
           {items.map((item, idx) => (
             <SwiperSlide key={idx} className="w-full h-full">
               <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666]">
-                <div className="cursor-pointer" onClick={() => handleClick(item.content)}><img src={`${item.picture}`} alt="" /></div>
-                <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">{ item.name }</div>
+                <div className="cursor-pointer h-[450px]" onClick={() => handleClick(item.content)}><img src={`${item.image}`} alt="" /></div>
+                <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">{ item.title }</div>
               </div>
             </SwiperSlide>
           ))}          

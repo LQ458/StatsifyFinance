@@ -7,13 +7,14 @@ import { useRouter, useSearchParams} from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/news.module.css";
 import Str2html from "@/components/str2html";
+import dayjs from 'dayjs';
 
 interface Item {
   id: number,
   title: string;
   cover: string;
   content: string;
-  createTime: string;
+  createdAt: string;
 }
 
 interface Mapping {
@@ -32,7 +33,7 @@ const NewsDetails = () => {
     title:'',
     cover:'',
     content:'',
-    createTime:''
+    createdAt:''
   });
   // const [news, setDetail] = useState<Item>({})
   
@@ -68,7 +69,7 @@ const NewsDetails = () => {
             </div>
             <div className={`${styles.newsContent}`}>
               <h1>{news.title}</h1>
-              <div className="border-b border-[#666] pb-[10px] text-[#666] text-[16px]"> {news.createTime}</div>
+              <div className="border-b border-[#666] pb-[10px] text-[#666] text-[16px]"> { news.createdAt && dayjs(news.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
               <div className={`${styles.newsMain}`}>
                 <Str2html htmlString={news.content} />
               </div>

@@ -32,7 +32,7 @@
   flex: 0 0 calc(25% - 15px);
   height:240px;
   cursor: pointer;
-  background: #1D1E20;
+  background: rgba(255, 255, 255, 0.1);
 }
 .slider .slide-item ul li img {
   opacity: 0.7;
@@ -148,7 +148,7 @@
   padding-top: 40px;
   font-size: 16px;
   line-height: 36px;
-  color: #ccc;
+  color: #999;
   overflow-y: auto;
 }
 

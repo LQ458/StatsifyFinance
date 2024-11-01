@@ -28,7 +28,7 @@ interface ChangeData {
 interface sliderProps {
   className: string; // 给slider最外层的class
   items: Item[]; // 需要轮播的数据
-  sliderIndex: number; // 激活第几项,数组下标记数方式
+  sliderIndex?: number; // 激活第几项,数组下标记数方式
   onChange: (data: ChangeData) => void; // 当slider改变时触发的回调
 }
 
@@ -67,7 +67,6 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           slidesPerView={1} // 设置每次显示的滑块数量
           initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
           onSlideChange={(swiper) => onChange(swiper)}
-          onSwiper={(swiper) => onChange(swiper)}
           className={`${className}`}
         >
           {items.map((item, idx) => (
