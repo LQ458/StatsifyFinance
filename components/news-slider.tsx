@@ -16,7 +16,7 @@ import Image from "next/image";
 
 // 定义对象类型
 interface Item {
-  _id: number;
+  _id: string;
   category: string;
   title: string;
   desc: string;
