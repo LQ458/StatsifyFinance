@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import * as echarts from 'echarts';
+import React, { useEffect, useRef } from "react";
+import * as echarts from "echarts";
 
 interface EChartComponentProps {
   option: echarts.EChartsOption;
@@ -22,17 +22,17 @@ const EChartComponent: React.FC<EChartComponentProps> = ({ option }) => {
         chartInstance.resize();
       };
 
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
 
       // Cleanup on unmount
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
         chartInstance.dispose();
       };
     }
   }, [option]);
 
-  return <div ref={chartRef} style={{ width: '100%', height: '580px' }}></div>;
+  return <div ref={chartRef} style={{ width: "100%", height: "580px" }}></div>;
 };
 
 export default EChartComponent;

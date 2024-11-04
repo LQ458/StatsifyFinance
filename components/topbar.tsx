@@ -3,12 +3,12 @@
 import Link from "next/link";
 import React from "react";
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import Menu from "./menu";
 import styles from "../src/css/topbar.module.css";
-import { signOut, useSession  } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 type PositionType = "relative" | "fixed" | "absolute";
 
 interface TopbarProps {
@@ -16,18 +16,18 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ position }) => {
-  const nav = useRouter()
-  const searchParams = useSearchParams()
+  const nav = useRouter();
+  const searchParams = useSearchParams();
   const [isSearch, setSearchState] = useState(false);
   const [keywords, setKeywords] = useState("");
   const [username, setUsername] = useState("");
   const [admin, setAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  let urlKeywords = searchParams.get('keywords') || ''
+  let urlKeywords = searchParams.get("keywords") || "";
   const { data: session } = useSession();
-  
+
   useEffect(() => {
-    if(urlKeywords){
+    if (urlKeywords) {
       setSearchState(true);
       setKeywords(urlKeywords);
       if (inputRef.current) {
@@ -37,12 +37,11 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
   }, []);
 
   useEffect(() => {
-    console.log('session::',session)
-    if(!session) return
-    const {admin, email, image, name} = session?.user as any
-    setUsername(name)
-    setAdmin(admin)
-
+    console.log("session::", session);
+    if (!session) return;
+    const { admin, email, image, name } = session?.user as any;
+    setUsername(name);
+    setAdmin(admin);
   }, [session]);
 
   // 切换搜索状态的函数
@@ -53,7 +52,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
     if (keywords.trim() !== "") {
       // alert(`搜索关键字：${keywords}`);
       // router.push(`/search?keywords=${keywords}&random=${new Date().getTime()}`)
-      window.location.href = `/search?keywords=${keywords}&random=${new Date().getTime()}`
+      window.location.href = `/search?keywords=${keywords}&random=${new Date().getTime()}`;
     } else {
       setSearchState((isSearch) => {
         return !isSearch;
@@ -69,23 +68,23 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
     }
   };
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       searchIconClick();
     }
-  };  
+  };
   // 搜索关键字发生改变
   const keywordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeywords(event.target.value);
   };
 
   // 退出
-  const quit=()=>{
-    signOut({ callbackUrl: '/' });  
-  }
+  const quit = () => {
+    signOut({ callbackUrl: "/" });
+  };
   // 管理
-  const manage=()=>{
-    window.location.href ='/admin/dashboard'
-  }
+  const manage = () => {
+    window.location.href = "/admin/dashboard";
+  };
   return (
     <div className="w-[100%] min-w-[1100px] bg-topbar-color border-b border-topbar-border-color h-[60px] ${position} z-[10000] flex-grow-0 flex-shrink-0">
       <div
@@ -123,18 +122,36 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
                 />
               </button>
             </div>
-            {!session ?
-            <Link
-              href="/login"
-              className="flex text-white space-x-3 no-underline"
-            >
-              <FaRegUserCircle className="text-[24px] self-center" />
-            </Link>
-              :
+            {!session ? (
+              <Link
+                href="/login"
+                className="flex text-white space-x-3 no-underline"
+              >
+                <FaRegUserCircle className="text-[24px] self-center" />
+              </Link>
+            ) : (
               <div className="flex self-center relative text-white text-[14px]">
-                {admin? '管理员':'您好'}：{username} <a href="#" className="mx-[15px] text-yellow-400 hover:text-yellow-300" onClick={quit}>退出登录</a> { admin ? <a className=" text-yellow-400 hover:text-yellow-300" href="#" onClick={manage}>管理</a> : '' }
-              </div>            
-            }
+                {admin ? "管理员" : "您好"}：{username}{" "}
+                <a
+                  href="#"
+                  className="mx-[15px] text-yellow-400 hover:text-yellow-300"
+                  onClick={quit}
+                >
+                  退出登录
+                </a>{" "}
+                {admin ? (
+                  <a
+                    className=" text-yellow-400 hover:text-yellow-300"
+                    href="#"
+                    onClick={manage}
+                  >
+                    管理
+                  </a>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

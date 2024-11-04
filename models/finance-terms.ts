@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const financeTermsSchema = new Schema({
   title: {
     type: String,
-    required: true    
+    required: true,
   },
   enTitle: {
     type: String,
-    required: true    
+    required: true,
   },
   content: {
     type: String,
@@ -26,8 +26,10 @@ const financeTermsSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
-const FinanceTerms = mongoose.models.FinanceTerms || mongoose.model("FinanceTerms", financeTermsSchema);
+const FinanceTerms =
+  mongoose.models.FinanceTerms ||
+  mongoose.model("FinanceTerms", financeTermsSchema);
 export default FinanceTerms;

@@ -1,6 +1,6 @@
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
-import { DBconnect, DBdisconnect} from "@/libs/mongodb";
+import { DBconnect } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -32,9 +32,9 @@ export async function POST(req: NextRequest) {
       originalPassword: __,
       ...userWithoutPassword
     } = user.toObject();
-    DBdisconnect()
+
     return NextResponse.json(
-      { message: "User created successfully", user: userWithoutPassword },
+      { message: "用户创建成功", user: userWithoutPassword },
       { status: 201 },
     );
   } catch (error: any) {
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: errorMessage }, { status: 403 });
     }
     return NextResponse.json(
-      { error: "An unexpected error occurred", message: error.message },
+      { error: "服务器错误，请稍后重试。", message: error.message },
       { status: 500 },
     );
   }

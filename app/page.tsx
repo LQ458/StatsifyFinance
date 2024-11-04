@@ -11,9 +11,18 @@ export default function Home() {
         <div className="abrazine">
           <div className="ball-list">
             <ul>
-              <li style={{background:'red', boxShadow: '0 0 50px 50px red'}}></li>
-              <li style={{background:'blue', boxShadow: '0 0 50px 50px blue'}}></li>
-              <li style={{background:'green', boxShadow: '0 0 50px 50px green'}}></li>
+              <li
+                style={{ background: "red", boxShadow: "0 0 50px 50px red" }}
+              ></li>
+              <li
+                style={{ background: "blue", boxShadow: "0 0 50px 50px blue" }}
+              ></li>
+              <li
+                style={{
+                  background: "green",
+                  boxShadow: "0 0 50px 50px green",
+                }}
+              ></li>
             </ul>
           </div>
         </div>

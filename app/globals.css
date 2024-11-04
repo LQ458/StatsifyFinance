@@ -4,21 +4,21 @@
 
 @media screen and (max-width: 5120px) {
   .bg-login-bg,
-  .bg-analysis-bg{
+  .bg-analysis-bg {
     max-width: 100%;
   }
-  
+
   .learn-container {
     width: 1920px;
   }
-  .learn-container .swiper{
-    height:700px;
+  .learn-container .swiper {
+    height: 700px;
   }
   .news-container {
     width: 1920px;
   }
-  .news-container .swiper{
-    height:700px;
+  .news-container .swiper {
+    height: 700px;
   }
   .finance-terms-container {
     width: 1800px;
@@ -27,33 +27,33 @@
     height: 670px;
   }
   .finance-terms-container .swiper .swiper-slide ul li {
-    height:320px;
+    height: 320px;
   }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 16px;
     line-height: 32px;
-    padding:20px;
+    padding: 20px;
   }
-  .investor-container{
-    width:1500px;
+  .investor-container {
+    width: 1500px;
   }
 }
 @media screen and (max-width: 2560px) {
   .bg-login-bg,
-  .bg-analysis-bg{
+  .bg-analysis-bg {
     max-width: 100%;
   }
   .learn-container {
     width: 1600px;
   }
-  .learn-container .swiper{
-    height:450px;
+  .learn-container .swiper {
+    height: 450px;
   }
   .news-container {
     width: 1600px;
   }
-  .news-container .swiper{
-    height:500px;
+  .news-container .swiper {
+    height: 500px;
   }
   .finance-terms-container {
     width: 1500px;
@@ -62,29 +62,29 @@
     height: 546px;
   }
   .finance-terms-container .swiper .swiper-slide ul li {
-    height:260px;
+    height: 260px;
   }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 16px;
     line-height: 32px;
-    padding:20px;
+    padding: 20px;
   }
-  .investor-container{
-    width:1200px;
+  .investor-container {
+    width: 1200px;
   }
 }
-@media screen and (max-width: 1920px) {  
+@media screen and (max-width: 1920px) {
   .learn-container {
     width: 1600px;
   }
-  .learn-container .swiper{
-    height:450px;
+  .learn-container .swiper {
+    height: 450px;
   }
   .news-container {
     width: 1600px;
   }
-  .news-container .swiper{
-    height:500px;
+  .news-container .swiper {
+    height: 500px;
   }
   .finance-terms-container {
     width: 1180px;
@@ -93,62 +93,62 @@
     height: 456px;
   }
   .finance-terms-container .swiper .swiper-slide ul li {
-    height:218px;
+    height: 218px;
   }
   .finance-terms-container .swiper .swiper-slide ul li p {
     font-size: 14px;
     line-height: 24px;
-    padding:10px;
-  }  
-  .investor-container{
-    width:1000px;
+    padding: 10px;
+  }
+  .investor-container {
+    width: 1000px;
   }
 }
-@media screen and (max-width: 1720px) {  
+@media screen and (max-width: 1720px) {
   .learn-container {
     width: 1440px;
   }
   .news-container {
     width: 1440px;
   }
-  .news-container h1{
+  .news-container h1 {
     font-size: 32px;
   }
-  .news-container .swiper{
-    height:452px;
+  .news-container .swiper {
+    height: 452px;
   }
   .news-container .swiper .swiper-slide ul li {
-    height:215px;
-  }  
+    height: 215px;
+  }
 }
-@media screen and (max-width: 1560px) {  
+@media screen and (max-width: 1560px) {
   .learn-container {
     width: 1200px;
   }
-  
+
   .news-container {
     width: 1200px;
   }
-  .news-container .swiper{
-    height:384px;
+  .news-container .swiper {
+    height: 384px;
   }
   .news-container .swiper .swiper-slide ul li {
-    height:180px;
+    height: 180px;
   }
 }
 
-@media screen and (max-width: 1320px) {  
+@media screen and (max-width: 1320px) {
   .learn-container {
     width: 1000px;
   }
   .news-container {
     width: 1000px;
   }
-  .news-container .swiper{
-    height:328px;
+  .news-container .swiper {
+    height: 328px;
   }
   .news-container .swiper .swiper-slide ul li {
-    height:152px;
+    height: 152px;
   }
   /* 金融基础术语 */
   .finance-terms-container {
@@ -169,25 +169,23 @@
   .learn-container,
   .investor-container,
   .news-container,
-  .finance-terms-container
-   {
-    padding-top:60px;
-    padding-bottom:60px;
+  .finance-terms-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
   /* 左侧菜单取消fixed定位 */
-  .fixed-left{
+  .fixed-left {
     position: absolute;
-    top:266px;
+    top: 266px;
     transform: translateY(0);
   }
 }
 
 /* 给所有背景图背景色 */
 .bg-analysis-bg,
-.bg-login-bg{
+.bg-login-bg {
   background-color: #000;
 }
-
 
 /* WebKit 浏览器 (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
@@ -208,12 +206,12 @@
   background-color: #131414;
 }
 
-.abrazine{
+.abrazine {
   position: absolute;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   z-index: 5;
   display: flex;
   flex-wrap: wrap;
@@ -221,43 +219,49 @@
   justify-content: center;
   overflow: hidden;
 }
-.abrazine::before{
-  content: '';
+.abrazine::before {
+  content: "";
   position: absolute;
   inset: 0;
   backdrop-filter: blur(200px);
   z-index: 10;
 }
-.ball-list ul{
+.ball-list ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   width: 700px;
-  margin-left:-500px;  
+  margin-left: -500px;
   animation: rotate 15s infinite ease-in-out alternate;
-  opacity: .7;
+  opacity: 0.7;
 }
-.ball-list li{
-  width:210px; 
-  height:210px;
-  margin:50px;
+.ball-list li {
+  width: 210px;
+  height: 210px;
+  margin: 50px;
   border-radius: 50%;
   box-shadow: 0 0 50px 50px red;
 }
-@keyframes rotate{
-  from{transform: rotate(0) scale(0.8);}
-  to{ transform: rotate(360deg) scale(1.2);}
+@keyframes rotate {
+  from {
+    transform: rotate(0) scale(0.8);
+  }
+  to {
+    transform: rotate(360deg) scale(1.2);
+  }
 }
 
-.Js-fix-style{visibility: hidden;}
+.Js-fix-style {
+  visibility: hidden;
+}
 
-.global-loading{
-  width:60px;
-  height:60px;
+.global-loading {
+  width: 60px;
+  height: 60px;
   position: fixed;
-  left:50%;
-  top:40%;
+  left: 50%;
+  top: 40%;
   z-index: 11000;
   transform: translate(-50%, -50%);
   opacity: 0.2;
@@ -265,7 +269,11 @@
   animation: load-rotate 2s infinite linear;
 }
 
-@keyframes load-rotate{
-  from{transform: rotate(0);}
-  to{ transform: rotate(360deg);}
+@keyframes load-rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

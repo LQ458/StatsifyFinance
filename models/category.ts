@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const categorySchema = new Schema({
   title: {
     type: String,
-    required: true    
+    required: true,
   },
   order: {
     type: Number,
-    default: 1
+    default: 1,
   },
   type: {
     type: String,
-    required: true    
+    required: true,
   },
   createdAt: {
     type: Date,
@@ -22,8 +22,9 @@ const categorySchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
-const Category = mongoose.models.Category || mongoose.model("Category", categorySchema);
+const Category =
+  mongoose.models.Category || mongoose.model("Category", categorySchema);
 export default Category;

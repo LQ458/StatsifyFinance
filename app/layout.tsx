@@ -17,10 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className="m-0">
-          <Suspense fallback={null}>
-              {children}
-          </Suspense>
-          </body>
+          <Suspense fallback={null}>{children}</Suspense>
+        </body>
       </AuthProvider>
     </html>
   );

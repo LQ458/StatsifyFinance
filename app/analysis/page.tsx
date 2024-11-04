@@ -82,13 +82,13 @@ const Analysis = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {          
+        if (current >= li.length / 2) {
           tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth
+            left: tabRef.current?.scrollWidth,
           });
         } else {
           tabRef.current?.scrollTo({
-            left: 0
+            left: 0,
           });
         }
       }
@@ -165,7 +165,9 @@ const Analysis = () => {
                         >
                           <button
                             onClick={() =>
-                              setCurSubTopic(findKeyByValue(curMap, item) || "flow")
+                              setCurSubTopic(
+                                findKeyByValue(curMap, item) || "flow",
+                              )
                             }
                             type="button"
                             className="text-white w-full"
@@ -239,9 +241,8 @@ const Analysis = () => {
                   ))}
                 </ul>
               </div>
-            </div>            
+            </div>
           </div>
-          
         </div>
       </div>
       <Footer position="relative" />

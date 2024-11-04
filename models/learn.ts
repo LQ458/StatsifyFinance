@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const learnSchema = new Schema({
   title: {
     type: String,
-    required: true    
+    required: true,
   },
   enTitle: {
     type: String,
-    required: false    
+    required: false,
   },
   category: {
     type: String,
-    required: false    
+    required: false,
   },
   type: {
     type: String,
@@ -34,7 +34,7 @@ const learnSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 const Learn = mongoose.models.Learn || mongoose.model("Learn", learnSchema);

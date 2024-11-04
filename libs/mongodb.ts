@@ -16,7 +16,7 @@ async function DBconnect() {
   }
 }
 
-async function DBdisconnect(){
+async function DBdisconnect() {
   try {
     mongoose.disconnect();
   } catch (error) {
@@ -24,6 +24,4 @@ async function DBdisconnect(){
   }
 }
 
-export {
-  DBconnect, DBdisconnect
-}
+export { DBconnect };

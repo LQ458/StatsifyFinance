@@ -81,10 +81,14 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                 <ul>
                   {page.map((item, idx) => (
                     <li key={idx}>
-                      <div className={`${styles["cover"]}`}><img src={item.image} width="100%" alt="" /></div>
+                      <div className={`${styles["cover"]}`}>
+                        <img src={item.image} width="100%" alt="" />
+                      </div>
                       <p>{item.content}</p>
                       <h4>
-                        {item.title}<br/>{item.enTitle}
+                        {item.title}
+                        <br />
+                        {item.enTitle}
                       </h4>
                     </li>
                   ))}
@@ -97,5 +101,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = 'LearnSlider';
+LearnSlider.displayName = "LearnSlider";
 export default LearnSlider;

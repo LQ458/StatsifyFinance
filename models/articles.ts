@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const articlesSchema = new Schema({
   title: {
     type: String,
-    required: true    
+    required: true,
   },
   category: {
     type: String,
-    required: true    
+    required: true,
   },
   desc: {
     type: String,
@@ -30,8 +30,9 @@ const articlesSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
-const Articles = mongoose.models.Articles || mongoose.model("Articles", articlesSchema);
+const Articles =
+  mongoose.models.Articles || mongoose.model("Articles", articlesSchema);
 export default Articles;

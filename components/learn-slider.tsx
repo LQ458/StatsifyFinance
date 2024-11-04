@@ -81,5 +81,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = 'LearnSlider';
+LearnSlider.displayName = "LearnSlider";
 export default LearnSlider;

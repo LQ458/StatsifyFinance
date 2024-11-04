@@ -51,7 +51,7 @@ const userSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

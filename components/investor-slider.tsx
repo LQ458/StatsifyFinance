@@ -1,10 +1,20 @@
 "use client";
-import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/investor.module.css";
-import { Navigation, Pagination, EffectCards, EffectCoverflow } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  EffectCards,
+  EffectCoverflow,
+} from "swiper/modules";
 import Str2html from "./str2html";
-import { useRouter} from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 // Import Swiper styles
 import "swiper/css";
@@ -46,7 +56,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const swiperRef = useRef<SwiperRef>(null);
     const router = useRouter();
     const [isShow, setShowstate] = useState(false);
-    const [intro, setIntro] = useState('');
+    const [intro, setIntro] = useState("");
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
@@ -61,17 +71,17 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
       },
     }));
 
-    const handleClick = (content:string) => {
-      setIntro(content)
-      setShowstate(true)
+    const handleClick = (content: string) => {
+      setIntro(content);
+      setShowstate(true);
     };
     const handleClose = () => {
-      setShowstate(false)
+      setShowstate(false);
       scrollRef?.current?.scrollTo({
-        top: 0,  
-        behavior: 'smooth' 
+        top: 0,
+        behavior: "smooth",
       });
-    }
+    };
 
     return (
       <>
@@ -98,21 +108,31 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           {items.map((item, idx) => (
             <SwiperSlide key={idx} className="w-full h-full">
               <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666]">
-                <div className="cursor-pointer h-[450px]" onClick={() => handleClick(item.content)}><img src={`${item.image}`} alt="" /></div>
-                <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">{ item.title }</div>
+                <div
+                  className="cursor-pointer h-[450px]"
+                  onClick={() => handleClick(item.content)}
+                >
+                  <img src={`${item.image}`} alt="" />
+                </div>
+                <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">
+                  {item.title}
+                </div>
               </div>
             </SwiperSlide>
-          ))}          
+          ))}
         </Swiper>
-        <div className={`${styles.modal} ${isShow ? styles.active : ''}`}>
-          <div className={`${styles['modal-close']}`} onClick={() => handleClose()} ></div>
-          <div ref={scrollRef} className={`${styles['modal-content']}`}>
+        <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
+          <div
+            className={`${styles["modal-close"]}`}
+            onClick={() => handleClose()}
+          ></div>
+          <div ref={scrollRef} className={`${styles["modal-content"]}`}>
             <Str2html htmlString={intro} />
-          </div>          
+          </div>
         </div>
       </>
     );
   },
 );
-LearnSlider.displayName = 'LearnSlider';
+LearnSlider.displayName = "LearnSlider";
 export default LearnSlider;
