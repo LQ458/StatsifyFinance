@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,11 +22,10 @@ const Login = () => {
       });
       if (res?.error) {
         console.log("登录失败");
-      }else{
+      } else {
         console.log("登录成功");
-        nav.push('/');        
+        nav.push("/");
       }
-      
     } catch (error) {
       console.error("登录失败", error);
     }

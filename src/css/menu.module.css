@@ -11,13 +11,15 @@
   color: white;
   transition: transform 0.3s;
 }
-.current h4{font-weight: bold;}
-.current:after{
-  content: '';
+.current h4 {
+  font-weight: bold;
+}
+.current:after {
+  content: "";
   position: absolute;
-  left:0;
-  right:0;
-  bottom:0; 
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 2px;
-  background-color: #FFD700;
+  background-color: #ffd700;
 }

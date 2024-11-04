@@ -4,7 +4,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/news.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
-import { useRouter} from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 // Import Swiper styles
 import "swiper/css";
@@ -70,9 +70,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     }));
 
     const goDetails = (data: Item) => {
-      const {_id, category:categoryId} = data
-      router.push(`/articles/details?category=${categoryId}&id=${_id}&category-name=${category.title}`)
-    }
+      const { _id, category: categoryId } = data;
+      router.push(
+        `/articles/details?category=${categoryId}&id=${_id}&category-name=${category.title}`,
+      );
+    };
 
     return (
       <>
@@ -94,10 +96,10 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
               <div className={`${styles["slide-item"]}`}>
                 <ul>
                   {page.map((item, idx) => (
-                    <li key={idx}
-                    onClick={() => goDetails(item)}
-                    >
-                      <div className={`${styles["cover"]}`}><img src={item.image} width="100%" alt="" /></div>
+                    <li key={idx} onClick={() => goDetails(item)}>
+                      <div className={`${styles["cover"]}`}>
+                        <img src={item.image} width="100%" alt="" />
+                      </div>
                       <h4>
                         <Str2html htmlString={item.title} />
                       </h4>
@@ -112,5 +114,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = 'LearnSlider';
+LearnSlider.displayName = "LearnSlider";
 export default LearnSlider;

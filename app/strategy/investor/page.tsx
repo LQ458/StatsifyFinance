@@ -3,13 +3,13 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { useSearchParams} from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 import styles from "@/src/css/investor.module.css";
-import InvestorSlider, { SwiperComponentHandle } from "@/components/investor-slider";
+import InvestorSlider, {
+  SwiperComponentHandle,
+} from "@/components/investor-slider";
 import MainNav from "@/components/main-nav";
-import {
-  mainNavList
-} from "@/src/data/strategy/mainNav";
+import { mainNavList } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 interface Item {
   title: string;
@@ -31,16 +31,16 @@ const Strategy = () => {
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const [list, setList] = useState<Item[]>([]);
-  const handleChange = (newData: ChangeData) => {    
+  const handleChange = (newData: ChangeData) => {
     const { activeIndex, isBeginning, isEnd } = newData;
     setCurrent(activeIndex);
     setNoPrev(isBeginning);
     setNoNext(isEnd);
     setSwiperIndex(activeIndex);
-  };  
+  };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   // 更新地址栏中的 index 参数
   const updateIndex = (newIndex: number) => {
@@ -51,37 +51,54 @@ const Strategy = () => {
   };
 
   // 获取数据
-  const getInvestorData = async () => {    
-    const response = await fetch(`/api/admin/learn?page=1&per=10000&type=investor`)
-    const list = await response.json();  
-    if (list?.data?.list?.length > 0) {
-      setList(list.data.list)
-      setNoNext(false)
-    }    
+  const getInvestorData = async () => {
+    const response = await fetch(
+      `/api/admin/learn?page=1&per=10000&type=investor`,
+    );
+
+    if (!response.ok) {
+      console.error("Network response was not ok");
+      return;
+    }
+
+    const text = await response.text();
+    if (text) {
+      try {
+        const list = JSON.parse(text);
+        if (list?.data?.list?.length > 0) {
+          setList(list.data.list);
+          setNoNext(false);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    } else {
+      console.warn("Response was empty");
+    }
   };
 
-  useEffect(() => {    
-    const getData = async () => { 
-      await getInvestorData()
-      setLoading(false)      
-    }
-    getData()    
+  useEffect(() => {
+    const getData = async () => {
+      await getInvestorData();
+      setLoading(false);
+    };
+    getData();
   }, []);
 
   useEffect(() => {
     if (isInitialRender) {
-      setIsInitialRender(false)      
+      setIsInitialRender(false);
     } else {
-      updateIndex(swiperIndex)
-    }    
+      updateIndex(swiperIndex);
+    }
   }, [swiperIndex]);
   // 数据加载完成后判断地址栏参数index，用于滑动到指定位置
   useEffect(() => {
-    let index = searchParams.get('index')
-    if(index){
-      const sIndex = Number(index)
+    let index = searchParams.get("index");
+    if (index) {
+      const sIndex = Number(index);
       if (!isNaN(sIndex)) {
-        if(sIndex >= 0 && sIndex <= list.length - 1){
+        if (sIndex >= 0 && sIndex <= list.length - 1) {
           handleSlideTo(sIndex);
         }
       }
@@ -110,13 +127,13 @@ const Strategy = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {          
+        if (current >= li.length / 2) {
           tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth
+            left: tabRef.current?.scrollWidth,
           });
         } else {
           tabRef.current?.scrollTo({
-            left: 0
+            left: 0,
           });
         }
       }
@@ -125,22 +142,21 @@ const Strategy = () => {
     tabScrollCenter();
   }, [current]);
 
-
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-strategy-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
-        <MainNav navItems={mainNavList} />   
-        <div className={`${loading ? 'invisible' : ''} flex flex-grow`}>
+        <MainNav navItems={mainNavList} />
+        <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center mt-[-60px] investor-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-            著名投资者
+              著名投资者
             </h1>
             <p className="text-[#B8B8B8] text-[16px]">
-            影响力巨大的投资者就像金融世界的摇滚明星
+              影响力巨大的投资者就像金融世界的摇滚明星
             </p>
 
-            <div className="mt-[30px] text-left">              
+            <div className="mt-[30px] text-left">
               <div className="h-[510px] relative">
                 <InvestorSlider
                   ref={swiperRef}
@@ -174,12 +190,11 @@ const Strategy = () => {
                 ))}
               </ul>
             </div>
-
-          </div>          
+          </div>
         </div>
       </div>
       <Footer position="relative" />
-      { loading ? <div className="global-loading bg-loading"></div> : ''}
+      {loading ? <div className="global-loading bg-loading"></div> : ""}
     </main>
   );
 };

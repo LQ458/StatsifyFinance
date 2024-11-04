@@ -3,14 +3,12 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/src/css/learn.module.css";
 import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
 import MainNav from "@/components/main-nav";
 import SideNav from "@/components/side-nav";
-import {
-  mainNavList
-} from "@/src/data/strategy/mainNav";
+import { mainNavList } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 
 // 定义对象类型
@@ -41,18 +39,18 @@ const RiskManage = () => {
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const [list, setList] = useState<Item[]>([]);
-  const [currentNav, setCurrentNav] = useState('1'); // 默认选中第一个分类
+  const [currentNav, setCurrentNav] = useState("1"); // 默认选中第一个分类
   const router = useRouter();
   const handleChange = (newData: ChangeData) => {
     const { activeIndex, isBeginning, isEnd } = newData;
     setCurrent(activeIndex);
     setNoPrev(isBeginning);
     setNoNext(isEnd);
-    setSwiperIndex(activeIndex)
+    setSwiperIndex(activeIndex);
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const updateIndex = (newIndex: number) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -62,42 +60,59 @@ const RiskManage = () => {
   };
 
   // 获取数据
-  const getTradeData = async () => {    
-    const response = await fetch(`/api/admin/learn?page=1&per=10000&type=risk-manage`)
-    const list = await response.json();  
-    if (list?.data?.list?.length > 0) {
-      setList(list.data.list)
-      setNoNext(false)
-    }    
+  const getTradeData = async () => {
+    const response = await fetch(
+      `/api/admin/learn?page=1&per=10000&type=risk-manage`,
+    );
+
+    if (!response.ok) {
+      console.error("Network response was not ok");
+      return;
+    }
+
+    const text = await response.text();
+    if (text) {
+      try {
+        const list = JSON.parse(text);
+        if (list?.data?.list?.length > 0) {
+          setList(list.data.list);
+          setNoNext(false);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    } else {
+      console.warn("Response was empty");
+    }
   };
 
-  useEffect(() => {    
-    const getData = async () => { 
-      await getTradeData()
-      setLoading(false)      
-    }
-    getData()    
+  useEffect(() => {
+    const getData = async () => {
+      await getTradeData();
+      setLoading(false);
+    };
+    getData();
   }, []);
-  
+
   useEffect(() => {
     if (isInitialRender) {
-      setIsInitialRender(false)      
+      setIsInitialRender(false);
     } else {
-      updateIndex(swiperIndex)
-    }    
+      updateIndex(swiperIndex);
+    }
   }, [swiperIndex]);
   // 数据加载完成后判断地址栏参数index，用于滑动到指定位置
   useEffect(() => {
-    let index = searchParams.get('index')
+    let index = searchParams.get("index");
     if (index) {
-        const sIndex = Number(index)
-        if (!isNaN(sIndex)) {
-          if(sIndex >= 0 && sIndex <= list.length - 1){
-            handleSlideTo(sIndex);
-          }
+      const sIndex = Number(index);
+      if (!isNaN(sIndex)) {
+        if (sIndex >= 0 && sIndex <= list.length - 1) {
+          handleSlideTo(sIndex);
         }
-      }    
-  }, [list]);  
+      }
+    }
+  }, [list]);
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -124,13 +139,13 @@ const RiskManage = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {          
+        if (current >= li.length / 2) {
           tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth
+            left: tabRef.current?.scrollWidth,
           });
         } else {
           tabRef.current?.scrollTo({
-            left: 0
+            left: 0,
           });
         }
       }
@@ -140,38 +155,41 @@ const RiskManage = () => {
   }, [current]);
 
   const category: Mapping[] = [
-    { _id: '1', title: "风险控制" },
-    { _id: '2', title: "行业分类" }
+    { _id: "1", title: "风险控制" },
+    { _id: "2", title: "行业分类" },
   ];
 
   const navClick: EventHandler = (id: string) => {
-    if (id === '1') {
-      router.push(`/strategy/risk-manage`)
+    if (id === "1") {
+      router.push(`/strategy/risk-manage`);
     }
-    if (id === '2') {
-      router.push(`/strategy/risk-manage/industry-sectors`)
+    if (id === "2") {
+      router.push(`/strategy/risk-manage/industry-sectors`);
     }
-    
   };
-
 
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-analysis-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px]">
-        <MainNav navItems={ mainNavList } />        
-        <div className={`${loading ? 'invisible' : ''} flex flex-grow`}>
+        <MainNav navItems={mainNavList} />
+        <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
             <div className={`${styles["left-side"]}`}>
-              <SideNav currentNav={ currentNav } navItems={ category } onItemClick={ navClick } />         
+              <SideNav
+                currentNav={currentNav}
+                navItems={category}
+                onItemClick={navClick}
+              />
             </div>
             <div className={`${styles["main"]}`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
                 风险控制
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-              通过系统的方法和策略，对可能影响投资回报和安全的风险进行识别、量化、监测和管理，<br />
-  以最小化投资损失并确保投资组合的稳定性和持续性
+                通过系统的方法和策略，对可能影响投资回报和安全的风险进行识别、量化、监测和管理，
+                <br />
+                以最小化投资损失并确保投资组合的稳定性和持续性
               </p>
 
               <div className="mt-[30px] text-left">
@@ -183,7 +201,9 @@ const RiskManage = () => {
                         className={`${current === idx ? styles["active"] : ""}`}
                         onClick={(e) => tabChange(idx, e)}
                       >
-                        {item.title}<br/>{item.enTitle}
+                        {item.title}
+                        <br />
+                        {item.enTitle}
                       </li>
                     ))}
                   </ul>
@@ -221,12 +241,11 @@ const RiskManage = () => {
                 </ul>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
       <Footer position="relative" />
-      { loading ? <div className="global-loading bg-loading"></div> : ''}
+      {loading ? <div className="global-loading bg-loading"></div> : ""}
     </main>
   );
 };

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import styles from "@/src/css/search.module.css";
 import mainNav from "@/src/css/main-nav.module.css";
@@ -36,7 +36,7 @@ const Search = () => {
   
   const [query, setQuery] = useState({
     per: 1000,
-    page: 1
+    page: 1,
   });
 
   // 标记
@@ -150,7 +150,8 @@ const Search = () => {
                 </ul>
               </div>
             </div>
-          </div>        
+            
+        </div>
       </div>
       <Footer position="relative" />
     </main>

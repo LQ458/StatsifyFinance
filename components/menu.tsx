@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
 import styles from "../src/css/menu.module.css";
@@ -39,7 +39,7 @@ const Menu = () => {
             </Link>
             <Link
               href="/strategy/trade"
-              className={`${ pathname.indexOf('/strategy') > -1 ? styles.current : ''} relative justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition`}
+              className={`${pathname.indexOf("/strategy") > -1 ? styles.current : ""} relative justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition`}
             >
               <h4 className="self-center font-[400]">策略</h4>
             </Link>
@@ -47,13 +47,13 @@ const Menu = () => {
         )}
       </div>
       <Link
-        className={`${pathname.indexOf('/articles') > -1 ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
+        className={`${pathname.indexOf("/articles") > -1 ? styles.current : ""} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
         href="/articles"
       >
         <h4 className="font-[400] self-center">资讯</h4>
       </Link>
       <Link
-        className={`${pathname === '/finance-terms' ? styles.current : ''} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
+        className={`${pathname === "/finance-terms" ? styles.current : ""} relative text-white no-underline flex justify-center px-6 hover:bg-yellow-400 hover:text-black`}
         href="/finance-terms"
       >
         <h4 className="font-[400] self-center">金融基础术语</h4>

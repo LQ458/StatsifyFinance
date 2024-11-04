@@ -68,54 +68,54 @@
   cursor: default;
 }
 
-.modal{
+.modal {
   position: fixed;
-  left:50%;
-  top:50%;
-  width:1000px;  
-  height:600px;  
+  left: 50%;
+  top: 50%;
+  width: 1000px;
+  height: 600px;
   z-index: 1000;
-  color:#999;  
+  color: #999;
   font-size: 16px;
   line-height: 32px;
-  margin:-300px 0 0 -500px;
+  margin: -300px 0 0 -500px;
   visibility: hidden;
   opacity: 0;
-  transition: .2s all;
+  transition: 0.2s all;
 }
-.modal::before{
-  content: '';
+.modal::before {
+  content: "";
   position: fixed;
   inset: 0;
-  background:rgba(0, 0, 0, .7);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 1000;
 }
-.modal-content{
+.modal-content {
   position: relative;
-  background: #1D1E20;
+  background: #1d1e20;
   height: 100%;
-  padding:40px 50px;
+  padding: 40px 50px;
   overflow-y: auto;
   z-index: 1100;
 }
-.modal-content p{
+.modal-content p {
   min-height: 32px;
 }
-.modal-close{
+.modal-close {
   position: absolute;
-  right:-51px;
-  top:0;
-  width:50px;
-  height:50px;
-  background: #1D1E20 url('/icon-close.png') center center no-repeat;
+  right: -51px;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  background: #1d1e20 url("/icon-close.png") center center no-repeat;
   background-size: 16px;
   cursor: pointer;
   z-index: 1100;
 }
-.modal-close:hover{
+.modal-close:hover {
   background-color: rgba(255, 215, 0, 0.7);
 }
-.active{
+.active {
   visibility: visible;
   opacity: 1;
 }

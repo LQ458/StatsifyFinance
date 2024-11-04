@@ -9,25 +9,24 @@ interface NavItem {
 
 interface ChildComponentProps {
   currentNav: string;
-  navItems: NavItem[]; 
+  navItems: NavItem[];
   onItemClick: (id: string) => void;
 }
 
-
-const sideNav : React.FC<ChildComponentProps> = ({currentNav, navItems, onItemClick}) => {
+const sideNav: React.FC<ChildComponentProps> = ({
+  currentNav,
+  navItems,
+  onItemClick,
+}) => {
   return (
     <div className={`${styles["sub-nav"]}`}>
       <ul>
         {navItems &&
           navItems.map((item, idx) => (
             <React.Fragment key={idx}>
-              <li
-                className={`${currentNav === item._id && styles["active"]}`}
-              >
+              <li className={`${currentNav === item._id && styles["active"]}`}>
                 <button
-                  onClick={() =>
-                    onItemClick(item._id)
-                  }  
+                  onClick={() => onItemClick(item._id)}
                   type="button"
                   className="text-white w-full"
                 >

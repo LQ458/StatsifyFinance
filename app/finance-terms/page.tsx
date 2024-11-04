@@ -34,24 +34,20 @@ const Qualitative = () => {
   const tabRef = useRef<HTMLUListElement>(null);
   const pageNum = 8; // 每页显示多少个
 
-
   // 获取资讯数据
-  const getArticles = async () => {    
-    const response = await fetch(
-      `/api/admin/finance-terms?page=1&per=10000`
-    )
-    const list = await response.json();  
-    console.log('list::::', list)
-    setList(list.data.list) 
+  const getArticles = async () => {
+    const response = await fetch(`/api/admin/finance-terms?page=1&per=10000`);
+    const list = await response.json();
+    console.log("list::::", list);
+    setList(list.data.list);
   };
 
   // 类似于vue的mounted
   useEffect(() => {
-    const getData = async () => { 
-      await getArticles()
-    }
-    getData()
-    
+    const getData = async () => {
+      await getArticles();
+    };
+    getData();
   }, []);
 
   const pages = [];

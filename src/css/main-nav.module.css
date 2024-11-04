@@ -11,7 +11,7 @@
   display: flex;
 }
 .nav ul li {
-  color: #fff;  
+  color: #fff;
   font-size: 14px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
@@ -22,7 +22,7 @@
 .nav ul li.active {
   border-bottom: 2px solid #ffd700;
 }
-.nav ul li a{
+.nav ul li a {
   display: block;
   height: 100%;
   padding: 0 25px;
