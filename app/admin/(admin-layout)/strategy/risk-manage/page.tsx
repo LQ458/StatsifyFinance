@@ -38,7 +38,7 @@ type Article = {
   createdAt: string;
 };
 
-function AnalysisPage() {
+function RiskManagePage() {
   const per = 10;
   const page = 1;
   const type = "risk-manage";
@@ -272,4 +272,4 @@ function AnalysisPage() {
   );
 }
 
-export default AnalysisPage;
+export default RiskManagePage;

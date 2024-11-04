@@ -109,7 +109,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
                 onChange={keywordsChange}
                 onBlur={handleBlur}
                 onKeyPress={handleKeyPress}
-                className={`${isSearch ? styles.search : "w-0 opacity-0"} h-[30px] px-[8px] focus:outline-0 pr-[30px] rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300`}
+                className={`${isSearch ? styles.search : "w-0 opacity-0"} h-[30px] px-[8px] focus:outline-0 pr-[30px] text-[14px] placeholder-gray-300 rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300`}
               />
               <button
                 title="search"

@@ -38,7 +38,7 @@ type Article = {
   createdAt: string;
 };
 
-function AnalysisPage() {
+function StrategyPage() {
   const per = 10;
   const page = 1;
   const type = "trade";
@@ -272,4 +272,4 @@ function AnalysisPage() {
   );
 }
 
-export default AnalysisPage;
+export default StrategyPage;
