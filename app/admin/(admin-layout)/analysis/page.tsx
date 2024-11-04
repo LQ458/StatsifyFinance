@@ -42,7 +42,7 @@ type Category = {
   title: string;
 };
 
-function analysisPage() {
+function AnalysisPage() {
   const per = 10;
   const page = 1;
 
@@ -354,4 +354,4 @@ function analysisPage() {
   );
 }
 
-export default analysisPage;
+export default AnalysisPage;
