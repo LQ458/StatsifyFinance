@@ -15,7 +15,7 @@ interface ChangeData {
   isEnd: boolean;
 }
 interface Item {
-  _id: number;
+  _id: string;
   category: string;
   title: string;
   desc: string;
