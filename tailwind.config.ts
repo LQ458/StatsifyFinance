@@ -17,13 +17,14 @@ const config: Config = {
         "login-bg": "url('/login-bg.png')",
         "analysis-bg": "url('/analysis-bg.png')",
         "strategy-bg": "url('/strategy-bg.png')",
-        loading: "url('/icon-loading.png')",
+        "loading": "url('/icon-loading.png')",
+        "no-result" : "url('/icon-no-result.png')"
       },
       colors: {
         // 在这里添加自定义颜色
         "topbar-color": "rgb(9, 10, 12)",
         "topbar-border-color": "#1C1D21",
-        "input-bg-color": "#666666",
+        "input-bg-color": "#333",
         "footer-color": "#090A0C",
         "grey-color": "rgba(255, 255, 255, 0.3)",
         "learn-button": "rgba(2,2,23,0.7)",

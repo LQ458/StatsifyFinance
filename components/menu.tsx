@@ -11,7 +11,7 @@ const Menu = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex">
+    <div className="flex text-[14px]">
       <div
         className="relative flex"
         onMouseEnter={() => setRotate(true)}

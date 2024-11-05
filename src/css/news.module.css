@@ -150,6 +150,12 @@
   color: #999;
   overflow-y: auto;
 }
+.newsMain img{
+  display: inline-block;
+}
+.newsMain p{
+  margin:20px 0
+}
 
 /* 左侧子导航 */
 .left-side {

@@ -1,26 +1,81 @@
-.newsContent {
+.nav {
+  margin: 0 auto;
+  height: 60px;
+  line-height: 60px;
+  position: relative;
+  z-index: 10;
+}
+.nav ul {
+  display: flex;
+}
+.nav ul li {
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.nav ul li:hover {
+  color: #ffd700;
+}
+.nav ul li.active {
+  border-bottom: 2px solid #ffd700;
+}
+.nav ul li a {
+  display: block;
+  height: 100%;
+  padding: 0 25px;
+}
+
+.searchContent {
   margin-top: 20px;
   background: #1d1e20;
   min-height: 100px;
   padding: 60px 50px;
 }
 
-.newsMain {
+.searchMain {
   padding-top: 40px;
   font-size: 16px;
   line-height: 24px;
   color: #999;
 }
-.newsMain li {
+.searchMain > ul{
+  padding-left: 20px;
+  list-style: outside decimal;  
+}
+.searchMain > ul > li{
   margin-bottom: 24px;
 }
-.newsMain li a {
+.searchMain > ul > li > a {
   color: #999;
 }
-.newsMain li a:hover {
+.searchMain > ul > li a:hover {
   color: #ffd700;
   text-decoration: none;
 }
-.newsMain li a div {
+.searchMain > ul > li > a > div {
   display: inline;
+}
+
+.searchArticles{
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchFinanceTerms{
+  display: flex;
+  gap:30px;
+}
+.searchFinanceTerms h3 {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+  color: #ccc;
+}
+
+.learn h3 {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: #ccc;
 }
