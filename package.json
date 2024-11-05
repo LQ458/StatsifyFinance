@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@types/echarts": "^4.9.22",
+    "@vercel/analytics": "^1.3.2",
+    "@vercel/speed-insights": "^1.0.14",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-react": "^1.0.6",
     "antd": "^5.21.5",
@@ -19,7 +21,7 @@
     "cookie": "^1.0.1",
     "echarts": "^5.5.1",
     "mongoose": "^8.5.2",
-    "next": "14.2.4",
+    "next": "^14.2.16",
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
