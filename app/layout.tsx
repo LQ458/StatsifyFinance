@@ -2,10 +2,10 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
-import { injectSpeedInsights } from "@vercel/speed-insights";
-import { Analytics } from "@vercel/analytics/react";
+// import { injectSpeedInsights } from "@vercel/speed-insights";
+// import { Analytics } from "@vercel/analytics/react";
 
-injectSpeedInsights();
+// injectSpeedInsights();
 
 export const metadata: Metadata = {
   title: "Statsify Finance",
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Analytics />
+      {/* <Analytics /> */}
       <AuthProvider>
         <body className="m-0">
           <Suspense fallback={null}>{children}</Suspense>
