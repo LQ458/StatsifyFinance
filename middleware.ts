@@ -7,7 +7,11 @@ export async function middleware(req: NextRequest) {
   // console.log('中间件执行了',req.nextUrl.pathname);
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
-    const cookieName = "next-auth.session-token";
+    // 根据环境设置 cookie 名称
+    const cookieName = process.env.NODE_ENV === 'production' 
+      ? "__Secure-next-auth.session-token" 
+      : "next-auth.session-token";
+
     console.log("Cookie Name:", cookieName);
     console.log("Auth Secret:", process?.env?.AUTH_SECRET);
 
