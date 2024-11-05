@@ -2,7 +2,10 @@ import Articles from "@/models/articles";
 import { DBconnect } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-const cookieName = "next-auth.session-token";
+const cookieName = process.env.NODE_ENV === 'production' 
+? "__Secure-next-auth.session-token" 
+: "next-auth.session-token";
+
 
 export const PUT = async (req: NextRequest, { params }: any) => {
   const { id } = params; // 路由中传递的参数

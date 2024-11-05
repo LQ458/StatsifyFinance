@@ -12,16 +12,12 @@ export async function middleware(req: NextRequest) {
       ? "__Secure-next-auth.session-token" 
       : "next-auth.session-token";
 
-    console.log("Cookie Name:", cookieName);
-    console.log("Auth Secret:", process?.env?.AUTH_SECRET);
-
     const token = await getToken({
       req,
       cookieName,
       secret: process?.env?.AUTH_SECRET,
     });
 
-    console.log("Token Retrieved:", token);
     console.log("isAdmin::::", token?.admin);
 
     // 访问的如果是管理后台，我们可以在这里做判断
