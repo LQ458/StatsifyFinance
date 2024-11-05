@@ -1,8 +1,6 @@
 import User from "@/models/user";
 import { DBconnect } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-const cookieName = "next-auth.session-token";
 
 export const GET = async (req: NextRequest) => {
   let per = (req.nextUrl.searchParams.get("per") as any) * 1 || 10;

@@ -7,13 +7,19 @@ export async function middleware(req: NextRequest) {
   // console.log('中间件执行了',req.nextUrl.pathname);
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
-    const cookieName = "next-auth.session-token";
+    // 根据环境设置 cookie 名称
+    const cookieName = process.env.NODE_ENV === 'production' 
+      ? "__Secure-next-auth.session-token" 
+      : "next-auth.session-token";
+
     const token = await getToken({
       req,
       cookieName,
       secret: process?.env?.AUTH_SECRET,
     });
+
     console.log("isAdmin::::", token?.admin);
+
     // 访问的如果是管理后台，我们可以在这里做判断
     if (req.cookies.get(cookieName)) {
       if (!Boolean(token?.admin)) {
