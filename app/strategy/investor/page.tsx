@@ -157,7 +157,7 @@ const Strategy = () => {
             </p>
 
             <div className="mt-[30px] text-left">
-              <div className="h-[510px] relative">
+              <div className="h-[510px] relative ss-slide-height">
                 <InvestorSlider
                   ref={swiperRef}
                   className={`${styles.slider}`}

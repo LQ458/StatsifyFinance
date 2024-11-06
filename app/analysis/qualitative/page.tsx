@@ -211,25 +211,23 @@ const Analysis = () => {
         <MainNav navItems={mainNavList} />
         <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] learn-container flex">
-            <div className={`${styles["left-side"]}`}>
+            <div className={`${styles["left-side"]} ss-left-side`}>
               <SideNav
                 currentNav={currentNav}
                 navItems={category}
                 onItemClick={switchNav}
               />
             </div>
-            <div className={`${styles["main"]}`}>
+            <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
                 定性分析指标
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-                在金融分析中用于评估企业的非财务方面，如管理质量、品牌价值和市场竞争力。
-                <br />
-                这些指标基于主观判断和经验，帮助投资者和分析师全面了解企业的整体状况。
+              指评估企业管理质量、品牌价值和市场竞争力等非财务因素<br/>的主观判断，用于全面了解企业状况。
               </p>
 
               <div className="mt-[30px] text-left">
-                <div className={`${styles.tab}`}>
+                <div className={`${styles.tab} ss-tab`}>
                   <ul ref={tabRef}>
                     {pages.map((item, idx) => (
                       <li
@@ -244,7 +242,7 @@ const Analysis = () => {
                     ))}
                   </ul>
                 </div>
-                <div className={`${styles.tabContent}`}>
+                <div className={`${styles.tabContent} ss-tab-content`}>
                   <LearnSlider
                     ref={swiperRef}
                     className={`${styles.slider}`}
@@ -253,19 +251,19 @@ const Analysis = () => {
                   />
                   <div
                     onClick={() => handlePrev()}
-                    className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                    className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""} ss-custom-prev`}
                   >
                     <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
                   </div>
                   <div
                     onClick={() => handleNext()}
-                    className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                    className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""} ss-custom-next`}
                   >
                     <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
                   </div>
                 </div>
               </div>
-              <div className={`${styles["custom-pagination"]}`}>
+              <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
                 <ul>
                   {pages.map((item, idx) => (
                     <li

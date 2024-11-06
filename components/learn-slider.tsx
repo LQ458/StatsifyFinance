@@ -71,7 +71,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
         >
           {items.map((item, idx) => (
             <SwiperSlide key={idx} className="w-full h-full">
-              <div className={`${styles["slide-item"]}`}>
+              <div className={`${styles["slide-item"]} ss-slide-item`}>
                 <Str2html htmlString={item.content} />
               </div>
             </SwiperSlide>

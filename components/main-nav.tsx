@@ -17,7 +17,7 @@ const MainNav: React.FC<ChildComponentProps> = ({ navItems }) => {
   const pathname = usePathname();
   // console.log('pathname:::', pathname)
   return (
-    <div className={`${styles.nav} w-full`}>
+    <div className={`${styles.nav} w-full ss-main-nav`}>
       <ul>
         {navItems.map((item, idx) => (
           <li

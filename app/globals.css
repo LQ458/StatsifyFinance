@@ -164,6 +164,117 @@
   }
 }
 
+/* 平板 */
+@media screen and (max-width: 1024px) {
+  .ss-topbar{
+    min-width: 768px;    
+  }
+  .ss-topbar-inner{
+    width:768px;
+    min-width: 768px;
+    padding:0 10px;
+  }
+  .ss-topbar-inner .ss-gap{
+    gap:40px;
+  }
+  .ss-footer{
+    min-width: 768px;
+    height: 50px;
+  }
+  .ss-footer-inner{
+    width:768px;
+    min-width: 768px;
+    padding:0 10px;
+  }
+  .bg-strategy-bg,
+  .bg-analysis-bg{
+    min-width: 768px;
+    padding: 0;
+  }
+  .bg-strategy-bg .ss-main-nav,
+  .bg-analysis-bg .ss-main-nav{
+    width:768px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .learn-container {
+    width: 700px;
+  }
+  .learn-container .ss-left-side{
+    width:160px;
+    margin-right:65px;
+  }
+  .learn-container .ss-main{
+    width:calc(100% - 225px);
+  }
+  .ss-left-side ul li{
+    font-size: 14px;
+    height: 44px;
+    line-height: 44px;
+  }
+  .learn-container h1{
+    font-size: 28px;
+  }
+  .learn-container p{
+    font-size: 14px;
+  }
+  .learn-container .ss-tab{
+    height: 64px;
+    font-size: 13px;
+  }
+  .learn-container .ss-tab li{
+    padding:0 15px
+  }
+  .learn-container .ss-slide-item{
+    font-size: 14px;
+  }
+  .learn-container .ss-slide-item p{
+    line-height: 1.5;
+    min-height: 22px;
+  }
+  .ss-tab-content .ss-custom-prev{
+    left: -51px;
+  }
+  .ss-tab-content .ss-custom-next{
+    right: -51px;
+  }
+  .learn-container .ss-custom-pagination li{
+    width:30px
+  }
+
+  .investor-container{
+    width: 700px;
+  }
+  .investor-container h1{
+    font-size: 28px;
+  }
+  .investor-container p{
+    font-size: 14px;
+  }
+  .investor-container .ss-slide-height{
+    height: 460px;
+  }
+  .investor-container .ss-img-width{
+    width: 100%;
+  }
+  .investor-container .ss-img-height{
+    height: 393px;
+  }
+  .investor-container .ss-investor-modal{
+    width: 700px;
+    margin-left:-350px;
+  }
+
+
+
+
+}
+
+/* 手机 */
+@media screen and (max-width: 768px) {
+
+}
+
 /* 高度适配 */
 @media screen and (max-height: 900px) {
   .learn-container,

@@ -107,12 +107,12 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
         >
           {items.map((item, idx) => (
             <SwiperSlide key={idx} className="w-full h-full">
-              <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666]">
+              <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666] ss-img-width">
                 <div
-                  className="cursor-pointer h-[450px]"
+                  className="cursor-pointer h-[450px] ss-img-height"
                   onClick={() => handleClick(item.content)}
                 >
-                  <img src={`${item.image}`} alt="" />
+                  <img className="h-full" src={`${item.image}`} alt="" />
                 </div>
                 <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">
                   {item.title}
@@ -121,7 +121,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
+        <div className={`${styles.modal} ${isShow ? styles.active : ""} ss-investor-modal`}>
           <div
             className={`${styles["modal-close"]}`}
             onClick={() => handleClose()}

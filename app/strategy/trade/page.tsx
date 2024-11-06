@@ -159,7 +159,7 @@ const Strategy = () => {
             </p>
 
             <div className="mt-[30px] text-left">
-              <div className={`${styles.tab}`}>
+              <div className={`${styles.tab} ss-tab`}>
                 <ul ref={tabRef}>
                   {list.map((item, idx) => (
                     <li
@@ -174,7 +174,7 @@ const Strategy = () => {
                   ))}
                 </ul>
               </div>
-              <div className={`${styles.tabContent}`}>
+              <div className={`${styles.tabContent} ss-tab-content`}>
                 <LearnSlider
                   ref={swiperRef}
                   className={`${styles.slider}`}
@@ -183,19 +183,19 @@ const Strategy = () => {
                 />
                 <div
                   onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""} ss-custom-prev`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
                 </div>
                 <div
                   onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""} ss-custom-next`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]}`}>
+            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
               <ul>
                 {list.map((item, idx) => (
                   <li
