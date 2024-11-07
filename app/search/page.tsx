@@ -137,7 +137,7 @@ const Search = () => {
     <main className="flex flex-col min-h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto p-[60px]" style={{ backgroundAttachment: 'fixed' }}>
-          <div className="w-[1000px] mx-auto">            
+          <div className="w-[1000px] mx-auto search-container">            
           <div className={`${styles.searchContent}`}>
             <div>
 

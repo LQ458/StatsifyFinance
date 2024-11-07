@@ -7,9 +7,7 @@ import styles from "@/src/css/finance-terms.module.css";
 import Slider, {
   SwiperComponentHandle,
 } from "@/components/finance-terms-slider";
-import Str2html from "@/components/str2html";
 import { IoIosArrowDown } from "react-icons/io";
-import Link from "next/link";
 // 定义对象类型
 interface Item {
   _id: string;
@@ -25,35 +23,49 @@ interface ChangeData {
   isEnd: boolean;
 }
 
-const Qualitative = () => {
+const FinanceTerms = () => {
   const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
   const [list, setList] = useState<Item[]>([]);
+  const [pages, setPages] = useState<Item[][]>([]);
   const swiperRef = useRef<SwiperComponentHandle>(null);
-  const tabRef = useRef<HTMLUListElement>(null);
   const pageNum = 8; // 每页显示多少个
 
-  // 获取资讯数据
+  // 获取数据
   const getArticles = async () => {
     const response = await fetch(`/api/admin/finance-terms?page=1&per=10000`);
     const list = await response.json();
-    console.log("list::::", list);
-    setList(list.data.list);
+    if (list?.data?.list?.length > 0) {
+      setList(list.data.list);
+    }
   };
 
   // 类似于vue的mounted
   useEffect(() => {
     const getData = async () => {
       await getArticles();
+      setLoading(false);
     };
     getData();
   }, []);
 
-  const pages = [];
-  for (let i = 0; i < list.length; i += pageNum) {
-    pages.push(list.slice(i, i + pageNum));
-  }
+  useEffect(() => {
+    const pages = [];
+    for (let i = 0; i < list.length; i += pageNum) {
+      pages.push(list.slice(i, i + pageNum));
+    }
+    // 大于一页，设置下一页按钮状态
+    if (pages.length > 1) {
+      setNoNext(false);
+    } else {
+      setNoNext(true);
+    }
+    setPages(pages)
+  }, [list]);
+
+  
 
   const handleChange = (newData: ChangeData) => {
     // console.log('handleChange::', newData)
@@ -85,17 +97,17 @@ const Qualitative = () => {
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto px-[60px] pt-[80px]">
-        <div className="flex flex-grow">
+        <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1180px] mx-auto text-center self-center translate-y-[-60px] finance-terms-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              金融基础术语教学
+              金融基础术语
             </h1>
             <p className="text-[#B8B8B8] text-[16px]">
-              提供金融术语的字典或词典，包括定义、使用场景和例子
+              提供金融领域中常用的、帮助理解市场运作和投资决策的基本概念和词汇
             </p>
 
             <div className="mt-[30px] text-left">
-              <div className={`${styles.tabContent}`}>
+              <div className={`${styles.tabContent} ss-tab-content`}>
                 <Slider
                   ref={swiperRef}
                   className={`${styles.slider}`}
@@ -104,19 +116,19 @@ const Qualitative = () => {
                 />
                 <div
                   onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""} ss-custom-prev`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
                 </div>
                 <div
                   onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""} ss-custom-next`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]}`}>
+            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
               <ul>
                 {pages.map((item, idx) => (
                   <li
@@ -131,8 +143,9 @@ const Qualitative = () => {
         </div>
       </div>
       <Footer position="relative" />
+      {loading ? <div className="global-loading bg-loading"></div> : ""}
     </main>
   );
 };
 
-export default Qualitative;
+export default FinanceTerms;

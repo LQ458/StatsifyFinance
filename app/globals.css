@@ -154,13 +154,13 @@
   .finance-terms-container {
     width: 1000px;
   }
-  .finance-terms-container ul li p {
-    padding: 10px !important;
-    font-size: 12px !important;
-    line-height: 22px !important;
+  .finance-terms-container .swiper .swiper-slide ul li p {
+    padding: 10px;
+    font-size: 12px;
+    line-height: 22px;
   }
-  .finance-terms-container ul li h4 {
-    font-size: 14px !important;
+  .finance-terms-container .swiper .swiper-slide ul li h4 {
+    font-size: 14px;
   }
 }
 
@@ -186,16 +186,35 @@
     min-width: 768px;
     padding:0 10px;
   }
+  .bg-login-bg,
   .bg-strategy-bg,
   .bg-analysis-bg{
     min-width: 768px;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
   .bg-strategy-bg .ss-main-nav,
   .bg-analysis-bg .ss-main-nav{
     width:768px;
     height: 50px;
     line-height: 50px;
+  }
+  .index-container{
+    width: 768px;
+    min-width: auto;
+  }
+  .index-container .ss-index-left{
+    padding:0 60px;
+    position: relative;
+    z-index: 10;
+  }
+  .index-container .ss-index-right{
+    padding-right: 0;
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+    z-index: 5;
+    opacity: .2;
   }
   .learn-container {
     width: 700px;
@@ -264,7 +283,118 @@
     width: 700px;
     margin-left:-350px;
   }
+  .news-container {
+    width: 700px;
+  }
+  .news-container .ss-left-side{
+    width:160px;
+    margin-right:65px;
+  }
+  .news-container .ss-main{
+    width:calc(100% - 225px);
+  }
+  .news-container h1{
+    font-size: 28px;
+  }
+  .news-container p{
+    font-size: 14px;
+  }
+  .news-container .ss-slide-item{
+    font-size: 14px;
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item ul{
+    display: block;
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item li{
+    display: flex;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    line-height: 1.5;
+    background: none;
+    padding:10px
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item li:hover{
+    background: rgba(255, 215, 0, 0.3);
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item li:before{
+    content:'';
+    width:6px;
+    height:6px;
+    background-color: #ffd700;
+    flex:0 0 auto;
+    margin: 0 8px 0 0;
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item li h4{   
+    display: block;
+    height: auto;
+    text-align: left;
+    background: none;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color:#b8b8b8
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item .ss-news-img{
+    display: none;
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 128px;
+  }
+  .news-container .swiper .swiper-slide .ss-slide-item .ss-news-date{
+    display: inline;
+    margin-left: auto;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .news-container .ss-slide-item p{
+    line-height: 1.5;
+    min-height: 22px;
+  }
+  .news-container .ss-custom-pagination{
+    margin-top: 40px;
+  }
+  .news-container .ss-custom-pagination li{
+    width:30px
+  }
 
+  .finance-terms-container{
+    width: 700px;
+  }
+  .finance-terms-container h1{
+    font-size: 28px;
+  }
+  .finance-terms-container p{
+    font-size: 14px;
+  }
+  .finance-terms-container .swiper .swiper-slide .ss-slide-item ul{
+    gap: 10px;
+  }
+  .finance-terms-container .swiper .swiper-slide .ss-slide-item ul li{
+    flex: 0 0 calc(25% - 8px);
+  }
+  .finance-terms-container .swiper .swiper-slide .ss-slide-item ul li p{
+    padding:5px 10px;
+    line-height: 18px;
+    inset: 0 0 50px 0;
+  }
+  .finance-terms-container .swiper .swiper-slide .ss-slide-item ul li h4{
+    height: 50px;
+  }
+  .finance-terms-container .swiper .swiper-slide .ss-slide-item .ss-finance-terms-img{
+    height: calc(100% - 50px);
+  }
+  .finance-terms-container .ss-custom-pagination{
+    margin-top: 40px;
+  }
+  .finance-terms-container .ss-custom-pagination li{
+    width:30px
+  }
+  .search-container{
+    width: 700px;
+  }
 
 
 
@@ -346,7 +476,7 @@
   width: 700px;
   margin-left: -500px;
   animation: rotate 15s infinite ease-in-out alternate;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 .ball-list li {
   width: 210px;
@@ -369,8 +499,8 @@
 }
 
 .global-loading {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   position: fixed;
   left: 50%;
   top: 40%;
@@ -383,9 +513,9 @@
 
 @keyframes load-rotate {
   from {
-    transform: rotate(0);
+    transform: translate(-50%, -50%) rotate(0);
   }
   to {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

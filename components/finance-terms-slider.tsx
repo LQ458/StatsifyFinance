@@ -72,16 +72,15 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           slidesPerView={1} // 设置每次显示的滑块数量
           initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
           onSlideChange={(swiper) => onChange(swiper)}
-          onSwiper={(swiper) => onChange(swiper)}
           className={`${className}`}
         >
           {items.map((page, index) => (
             <SwiperSlide key={index}>
-              <div className={`${styles["slide-item"]}`}>
+              <div className={`${styles["slide-item"]} ss-slide-item`}>
                 <ul>
                   {page.map((item, idx) => (
                     <li key={idx}>
-                      <div className={`${styles["cover"]}`}>
+                      <div className={`${styles["cover"]} ss-finance-terms-img`}>
                         <img src={item.image} width="100%" alt="" />
                       </div>
                       <p>{item.content}</p>

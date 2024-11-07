@@ -26,8 +26,8 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-row justify-center align-middle max-w-[1920px] min-w-[1100px] mx-auto h-[100%] relative z-10">
-          <div className="self-center flex flex-col gap-[160px] flex-grow pl-[120px] -mt-[50px]">
+        <div className="flex flex-row justify-center align-middle max-w-[1920px] min-w-[1100px] mx-auto h-[100%] relative z-10 index-container">
+          <div className="self-center flex flex-col gap-[160px] flex-grow pl-[120px] -mt-[50px] ss-index-left">
             <div className="flex flex-col gap-5">
               <h1 className="text-white font-[400] text-[32px]">
                 Your Path To Financial Clarity
@@ -104,7 +104,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="self-center flex pr-[76px]">
+          <div className="self-center flex pr-[76px] ss-index-right">
             <img
               src="/icon.png"
               alt="icon"

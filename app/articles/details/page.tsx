@@ -62,7 +62,7 @@ const NewsDetails = () => {
         className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto p-[60px]"
         style={{ backgroundAttachment: "fixed" }}
       >
-        <div className="w-[1000px] mx-auto">
+        <div className="w-[1000px] mx-auto news-container">
           <div className="text-left text-[#999] text-[16px]">
             <Link href={`/articles?category=${cId}`}> {categoryName}</Link> &gt;{" "}
             <span>{news.title} </span>

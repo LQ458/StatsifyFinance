@@ -5,6 +5,7 @@ import styles from "@/src/css/news.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 
 // Import Swiper styles
 import "swiper/css";
@@ -51,7 +52,7 @@ export interface SwiperComponentHandle {
   slideTo: (index: number) => void;
 }
 
-const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
+const NewsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0, category } = props;
     const swiperRef = useRef<SwiperRef>(null);
@@ -88,21 +89,19 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           slidesPerView={1} // 设置每次显示的滑块数量
           initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
           onSlideChange={(swiper) => onChange(swiper)}
-          onSwiper={(swiper) => onChange(swiper)}
           className={`${className}`}
         >
           {items.map((page, index) => (
             <SwiperSlide key={index}>
-              <div className={`${styles["slide-item"]}`}>
+              <div className={`${styles["slide-item"]} ss-slide-item`}>
                 <ul>
                   {page.map((item, idx) => (
                     <li key={idx} onClick={() => goDetails(item)}>
-                      <div className={`${styles["cover"]}`}>
+                      <div className={`${styles["cover"]} ss-news-img`}>
                         <img src={item.image} width="100%" alt="" />
                       </div>
-                      <h4>
-                        <Str2html htmlString={item.title} />
-                      </h4>
+                      <h4>{item.title}</h4>
+                      <div className="hidden ss-news-date">{dayjs(item.createdAt).format("YYYY-MM-DD")}</div>
                     </li>
                   ))}
                 </ul>
@@ -114,5 +113,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = "LearnSlider";
-export default LearnSlider;
+NewsSlider.displayName = "NewsSlider";
+export default NewsSlider;

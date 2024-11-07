@@ -87,7 +87,7 @@ const Register = () => {
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
-                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
+                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px]">
                   用户名格式字母开头，可包含数字，4-18个字符
                 </p>
               </div>
@@ -107,7 +107,7 @@ const Register = () => {
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
-                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px] max-[1430px]:text-[10px] max-[1260px]:text-[8px]">
+                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px]">
                   8~16个字符，包括字母、数字、特殊符号，区分大小写
                 </p>
               </div>
