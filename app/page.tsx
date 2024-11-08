@@ -47,10 +47,10 @@ export default function Home() {
                 </p>
                 <p className="text-[#666666] text-[14px]">more &gt;</p>
               </div>
-              <div className="flex max-w-[886px]">
-                <div className="relative group flex-1">
-                  <div className="flex flex-row h-[50px] leading-[50px]">
-                    <div className="w-[86px] h-[100%] bg-[#3f4044] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150">
+              <div className="flex max-w-[886px] ss-vocabs">
+                <div className="relative group flex-1 ss-vocabs-item">
+                  <div className="flex flex-row h-[50px] leading-[50px] ss-vocabs-head">
+                    <div className="w-[86px] h-[100%] bg-[rgba(63,64,68,.7)] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150 ss-vocabs-label">
                       <p className="text-[12px] h-[100%] text-center text-[#525356]">
                         vocab
                         <span className="text-[28px] text-[#666666] italic font-[600]">
@@ -58,11 +58,11 @@ export default function Home() {
                         </span>
                       </p>
                     </div>
-                    <div className="flex-grow-[1] h-[100%] bg-[#2a2b30] text-white px-[20px] text-[16px]">
+                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px]">
                       ESG
                     </div>
                   </div>
-                  <div className="absolute left-0 top-[50px] bg-[#3f4044] border-0 border-t border-black p-[20px] text-white text-[14px] duration-300 transition opacity-0 translate-y-[-10%] group-hover:opacity-100 group-hover:translate-y-[0]">
+                  <div className="absolute left-0 right-0 top-[50px] bg-[rgba(63,64,68,.3)] border-0 border-t border-black p-[20px] text-white text-[14px] duration-300 transition invisible opacity-0 translate-y-[-10%] group-hover:visible group-hover:opacity-100 group-hover:translate-y-[0] ss-vocabs-content">
                     ESG
                     是环境、社会和治理的缩写。它是一种衡量企业可持续性和社会责任的标准
                     <div className="text-right">
@@ -75,9 +75,9 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="relative group flex-1">
-                  <div className="flex flex-row h-[50px] leading-[50px] border-l border-black">
-                    <div className="w-[86px] h-[100%] bg-[#3f4044] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150">
+                <div className="relative group flex-1 ss-vocabs-item">
+                  <div className="flex flex-row h-[50px] leading-[50px] border-l border-black ss-vocabs-head">
+                    <div className="w-[86px] h-[100%] bg-[rgba(63,64,68,.7)] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150 ss-vocabs-label">
                       <p className="text-[12px] h-[100%] text-center text-[#525356]">
                         vocab
                         <span className="text-[28px] text-[#666666] italic font-[600]">
@@ -85,11 +85,11 @@ export default function Home() {
                         </span>
                       </p>
                     </div>
-                    <div className="flex-grow-[1] h-[100%] bg-[#2a2b30] text-white px-[20px] text-[16px]">
+                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px]">
                       Invest
                     </div>
                   </div>
-                  <div className="absolute left-0 top-[50px] bg-[#3f4044] border-0 border-t border-black p-[20px] text-white text-[14px] duration-300 transition opacity-0 translate-y-[-10%] group-hover:opacity-100 group-hover:translate-y-[0]">
+                  <div className="absolute left-0 right-0 top-[50px] bg-[rgba(63,64,68,.3)] border-0 border-t border-black p-[20px] text-white text-[14px] duration-300 transition invisible opacity-0 translate-y-[-10%] group-hover:visible group-hover:opacity-100 group-hover:translate-y-[0] ss-vocabs-content">
                     Invest指的是将资金投入到某个项目、资产或企业中，以期获得未来的收益
                     <div className="text-right">
                       <Link

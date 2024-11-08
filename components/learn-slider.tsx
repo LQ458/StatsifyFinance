@@ -1,5 +1,5 @@
 "use client";
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef, useState, useEffect } from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
@@ -42,6 +42,8 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0 } = props;
     const swiperRef = useRef<SwiperRef>(null);
+    const [autoHeight, setAutoHeight] = useState(false);
+    const [resetSwiper, setReSetSwiper] = useState(true);
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -55,28 +57,62 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
       },
     }));
 
+    useEffect(() => {
+      // 检查窗口宽度
+      const handleResize = () => {
+        if (document.documentElement.clientWidth < 768) {
+          setAutoHeight(true);
+        } else {
+          setAutoHeight(false);
+        }
+      };  
+      // 页面加载时判断一次窗口宽度
+      handleResize();  
+      // 监听窗口尺寸变化
+      window.addEventListener('resize', handleResize);       
+      // 清除监听
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
+    useEffect(() => {
+      if (swiperRef.current) {
+        const swiper = swiperRef.current.swiper;
+        // 每当 autoHeight 改变时，重新渲染swiper
+        setReSetSwiper(false)
+        setTimeout(() => {
+          setReSetSwiper(true)
+        },10)
+      }
+    }, [autoHeight]);
+
     return (
       <>
-        <Swiper
-          // install Swiper modules
-          ref={swiperRef}
-          modules={[Navigation, EffectCards]}
-          effect="Cards"
-          // noSwiping // 增加swiper-no-swiping类可以让文字可选，但拖动翻页就不能用了
-          spaceBetween={0} // 设置滑块之间的间距为0px
-          slidesPerView={1} // 设置每次显示的滑块数量
-          initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
-          onSlideChange={(swiper) => onChange(swiper)}
-          className={`${className}`}
-        >
-          {items.map((item, idx) => (
-            <SwiperSlide key={idx} className="w-full h-full">
-              <div className={`${styles["slide-item"]} ss-slide-item`}>
-                <Str2html htmlString={item.content} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {resetSwiper && (
+          <Swiper
+            // install Swiper modules
+            ref={swiperRef}
+            modules={[Navigation, EffectCards]}
+            autoHeight={autoHeight}
+            effect="Cards"
+            // noSwiping // 增加swiper-no-swiping类可以让文字可选，但拖动翻页就不能用了
+            spaceBetween={0} // 设置滑块之间的间距为0px
+            slidesPerView={1} // 设置每次显示的滑块数量
+            initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
+            onSlideChange={(swiper) => onChange(swiper)}
+            className={`${className}`}
+          >
+            {items.map((item, idx) => (
+              <SwiperSlide key={idx} className="w-full h-full">
+                <div className={`${styles["slide-item"]} ss-slide-item`}>
+                  <Str2html htmlString={item.content} />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+        
       </>
     );
   },

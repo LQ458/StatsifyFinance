@@ -36,7 +36,7 @@ const User = () => {
         {!session ? (
               <Link
                 href="/login"
-                className="flex text-white space-x-3 no-underline self-center text-[14px]"
+                className="text-white space-x-3 no-underline self-center text-[14px] w-[60px] h-[60px] leading-[60px] text-center hover:bg-[#313131]"
               >                
                 登录
               </Link>
@@ -45,9 +45,9 @@ const User = () => {
               onMouseEnter={() => setRotate(true)}
               onMouseLeave={() => setRotate(false)}
             >
-              <div className={`${rotate ? 'bg-[#313131]' : ''}  text-[24px] px-[15px] flex`}><FaRegUserCircle className="self-center" /></div>
+              <div className={`${rotate ? 'bg-[#313131]' : ''}  text-[24px] w-[60px] flex justify-center`}><FaRegUserCircle className="self-center" /></div>
                 {rotate && (
-                  <div className="absolute top-[59px] right-[0px] w-[200px] bg-[#313131] p-5 py-2.5">
+                  <div className="absolute top-[59px] right-[0px] w-[200px] bg-[#313131] p-5 py-2.5 shadow-[0_5px_5px_rgba(0,0,0,0.3)]">
                     <div className="leading-[40px] text-[#999]">{admin ? "管理员：" : "您好："}</div>
                     <div className="leading-[24px] text-[18px] truncate">{username}</div>
                     <div className="leading-[40px] flex justify-center gap-10 mt-[15px]">
