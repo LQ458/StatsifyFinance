@@ -74,13 +74,12 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const handleClick = (content: string) => {
       setIntro(content);
       setShowstate(true);
+      scrollRef?.current?.scrollTo({
+        top: 0
+      });
     };
     const handleClose = () => {
-      setShowstate(false);
-      scrollRef?.current?.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      setShowstate(false);      
     };
 
     return (

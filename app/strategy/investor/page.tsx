@@ -39,7 +39,6 @@ const Strategy = () => {
     setSwiperIndex(activeIndex);
   };
   const swiperRef = useRef<SwiperComponentHandle>(null);
-  const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams();
 
   // 更新地址栏中的 index 参数
@@ -123,25 +122,6 @@ const Strategy = () => {
     }
   };
 
-  useEffect(() => {
-    const tabScrollCenter = () => {
-      if (tabRef.current) {
-        const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {
-          tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth,
-          });
-        } else {
-          tabRef.current?.scrollTo({
-            left: 0,
-          });
-        }
-      }
-    };
-
-    tabScrollCenter();
-  }, [current]);
-
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
@@ -167,19 +147,19 @@ const Strategy = () => {
                 />
                 <div
                   onClick={() => handlePrev()}
-                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-prev"]} ${noPrev ? styles["disabled"] : ""} ss-custom-prev`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[90deg]`} />
                 </div>
                 <div
                   onClick={() => handleNext()}
-                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""}`}
+                  className={`${styles["custom-next"]} ${noNext ? styles["disabled"] : ""} ss-custom-next`}
                 >
                   <IoIosArrowDown className={`text-[22px] rotate-[-90deg]`} />
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]}`}>
+            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
               <ul>
                 {list.map((item, idx) => (
                   <li

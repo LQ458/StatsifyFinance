@@ -207,18 +207,20 @@ const IndustrySectors = () => {
   const data = genData(14);
 
   const chartOption: echarts.EChartsOption = {
-    height: 580,
+    // height: 580,
     backgroundColor: "#1d1e20",
     tooltip: {
       trigger: "item",
+      confine: true,
       backgroundColor: "#1d1e20",
       textStyle: {
         color: "#ffffff",
         fontSize: 12,
       },
+      position:'top',
       formatter: function (params: any) {
         var data = params.data;
-        var tooltipContent = `<div style="padding: 10px; line-height:2; color:#b8b8b8; font-size:14px;"><strong>${params.name}</strong><br>`;
+        var tooltipContent = `<div style="padding: 10px; line-height:2; color:#b8b8b8; font-size:14px; white-space:wrap;"><strong>${params.name}</strong><br>`;
         if (data.categories) {
           data.categories.forEach(function (category: chartCategory) {
             tooltipContent += `<b>${category.name}</b>: ${category.value}<br>`;
@@ -319,7 +321,7 @@ const IndustrySectors = () => {
                 是一颗璀璨的明珠，闪耀着创新与智慧的光芒
               </p>
 
-              <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20]">
+              <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20] pb-[40px] ss-echart-wrap">
                 <EChartComponent option={chartOption} />
               </div>
             </div>

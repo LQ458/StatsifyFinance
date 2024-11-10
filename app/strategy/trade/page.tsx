@@ -126,19 +126,17 @@ const Strategy = () => {
   useEffect(() => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
-        const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {
-          tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth,
-          });
-        } else {
-          tabRef.current?.scrollTo({
-            left: 0,
-          });
-        }
+        // 有滚动条才滚动
+        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+          const li = (tabRef.current as HTMLElement).querySelectorAll("li");
+          if (li.length > 0 && current>=0) {
+            tabRef.current?.scrollTo({
+              left: li[current].offsetLeft
+            });
+          }
+        }        
       }
     };
-
     tabScrollCenter();
   }, [current]);
 

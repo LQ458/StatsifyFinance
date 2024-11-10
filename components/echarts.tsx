@@ -32,7 +32,7 @@ const EChartComponent: React.FC<EChartComponentProps> = ({ option }) => {
     }
   }, [option]);
 
-  return <div ref={chartRef} style={{ width: "100%", height: "580px" }}></div>;
+  return <div ref={chartRef} style={{ width: "100%", height: "100%" }}></div>;
 };
 
 export default EChartComponent;

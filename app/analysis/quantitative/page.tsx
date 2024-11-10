@@ -145,19 +145,17 @@ const Analysis = () => {
   useEffect(() => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
-        const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {
-          tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth,
-          });
-        } else {
-          tabRef.current?.scrollTo({
-            left: 0,
-          });
-        }
+        // 有滚动条才滚动
+        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+          const li = (tabRef.current as HTMLElement).querySelectorAll("li");
+          if (li.length > 0 && current>=0) {
+            tabRef.current?.scrollTo({
+              left: li[current].offsetLeft
+            });
+          }
+        }        
       }
     };
-
     tabScrollCenter();
   }, [current]);
 
@@ -223,9 +221,7 @@ const Analysis = () => {
                 定量分析指标
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-                在金融分析中用于评估投资的性能、风险和回报。
-                <br />
-                这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。
+                在金融分析中用于评估投资的性能、风险和回报。这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。
               </p>
 
               <div className="mt-[30px] text-left">

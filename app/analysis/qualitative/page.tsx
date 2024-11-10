@@ -145,19 +145,17 @@ const Analysis = () => {
   useEffect(() => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
-        const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-        if (current >= li.length / 2) {
-          tabRef.current?.scrollTo({
-            left: tabRef.current?.scrollWidth,
-          });
-        } else {
-          tabRef.current?.scrollTo({
-            left: 0,
-          });
-        }
+        // 有滚动条才滚动
+        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+          const li = (tabRef.current as HTMLElement).querySelectorAll("li");
+          if (li.length > 0 && current>=0) {
+            tabRef.current?.scrollTo({
+              left: li[current].offsetLeft
+            });
+          }
+        }        
       }
     };
-
     tabScrollCenter();
   }, [current]);
 
@@ -223,7 +221,7 @@ const Analysis = () => {
                 定性分析指标
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-              指评估企业管理质量、品牌价值和市场竞争力等非财务因素<br/>的主观判断，用于全面了解企业状况。
+              指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。
               </p>
 
               <div className="mt-[30px] text-left">

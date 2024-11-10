@@ -4,7 +4,8 @@
 
 @media screen and (max-width: 5120px) {
   .bg-login-bg,
-  .bg-analysis-bg {
+  .bg-analysis-bg,
+  .bg-strategy-bg {
     max-width: 100%;
   }
 
@@ -40,7 +41,8 @@
 }
 @media screen and (max-width: 2560px) {
   .bg-login-bg,
-  .bg-analysis-bg {
+  .bg-analysis-bg,
+  .bg-strategy-bg {
     max-width: 100%;
   }
   .learn-container {
@@ -505,7 +507,7 @@
     top: 0;
     background: rgba(9, 10, 12,.9);
     box-sizing: content-box;
-    z-index: 1000;
+    z-index: 1100;
   }
   .bg-strategy-bg .ss-main-nav li,
   .bg-analysis-bg .ss-main-nav li{
@@ -527,8 +529,7 @@
     align-self:self-start
   }
   .learn-container .ss-left-side{
-    width: auto;
-    margin-bottom: 40px;
+    width: auto;    
     margin-right:0;
     position: sticky;
     top: 112px;
@@ -554,20 +555,41 @@
   }
   .learn-container .ss-left-side ul li[class^="side-nav_active"] button{
     color:#ffd700;
-    font-weight: bold;
   }
 
   .learn-container .ss-main{
     width: 100%;
     min-width: 320px;
   }
+  .learn-container .ss-main .ss-echart-wrap{
+    height: 414px;
+  }
+  .learn-container > h1,
+  .learn-container .ss-main > h1{
+    font-size: 24px;
+    margin-top: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .learn-container > p,
+  .learn-container .ss-main > p{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
   .learn-container .swiper{
     height: auto;
   }
-
   .learn-container .ss-tab li:hover{
     background-color: transparent;
+  }
+
+  .learn-container .ss-tab-content{
+    min-height: auto;
+  }
+
+  .learn-container .ss-tab-content .ss-slide-item{
+    padding:20px
   }
 
   .ss-tab-content .ss-custom-prev{
@@ -578,7 +600,51 @@
   }
   .learn-container .ss-custom-pagination li{
     padding-bottom: 40px;
+    width: 20px;
   }
+  .investor-container{
+    width: 100%;
+    min-width: 320px;
+  }
+  .investor-container h1{
+    margin-top: 40px;
+    font-size: 24px;
+  }
+  .investor-container p{
+    font-size: 14px;
+  }
+  .investor-container .ss-slide-height{
+    height: auto;
+  }
+  .investor-container .ss-img-width{
+    width: 100%;
+  }
+  .investor-container .ss-img-height{
+    height: auto;
+  }
+  .investor-container .ss-investor-modal{
+    width: 100%;
+    height: auto;
+    inset: 0;
+    margin:0;
+    padding-top: 110px;
+  }
+  .investor-container .ss-investor-modal div[class^="investor_modal-close"]{
+    top: 110px;
+    right:0;
+    z-index: 1200;
+  }
+  .investor-container .ss-investor-modal div[class^="investor_modal-content"]{
+    padding:20px 50px 20px 20px;
+  }
+  .investor-container .ss-custom-next,
+  .investor-container .ss-custom-prev{
+    display: none;
+  }
+  .investor-container .ss-custom-pagination li{
+    width: 20px;
+  }
+  
 
 
 
