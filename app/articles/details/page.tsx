@@ -63,13 +63,13 @@ const NewsDetails = () => {
         style={{ backgroundAttachment: "fixed" }}
       >
         <div className="w-[1000px] mx-auto news-container">
-          <div className="text-left text-[#999] text-[16px]">
+          <div className="text-left text-[#999] text-[16px] ss-bread">
             <Link href={`/articles?category=${cId}`}> {categoryName}</Link> &gt;{" "}
             <span>{news.title} </span>
           </div>
-          <div className={`${styles.newsContent}`}>
+          <div className={`${styles.newsContent} ss-news-content`}>
             <h1>{news.title}</h1>
-            <div className="border-b border-[#666] pb-[10px] text-[#666] text-[16px]">
+            <div className="border-b border-[#666] pb-[10px] text-[#666] text-[16px] ss-news-date">
                
               {news.createdAt &&
                 dayjs(news.createdAt).format("YYYY-MM-DD HH:mm:ss")}

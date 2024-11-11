@@ -173,7 +173,7 @@ const News: React.FC = () => {
   return (
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
-      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px] pt-[80px]">
+      <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1100px] mx-auto px-[60px] pt-[60px]">
         <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center translate-y-[-60px] news-container flex">
             <div className={`${styles["left-side"]} ss-left-side`}>
@@ -185,12 +185,12 @@ const News: React.FC = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                金融市场动态、基础知识和深入分析
+                金融市场动态和深入分析
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">更全面的金融市场认知，更高的投资判断力,开启投资跃升之路</p>
 
               <div className="mt-[30px] text-left">
-                <div className={`${styles.tabContent}`}>
+                <div className={`${styles.tabContent} ss-tab-content`}>
                   <NewsSlider
                     ref={swiperRef}
                     className={`${styles.slider}`}

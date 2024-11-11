@@ -39,30 +39,48 @@
   transition: 0.3s all;
 }
 .slider .slide-item ul li h4 {
-  height: 60px;
+  height: 50px;
   text-align: center;
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #fff;  
   line-height: 20px;
+  text-align: left;
   font-size: 14px;
   transition: 0.3s all;
-  padding: 0 5px;
+  padding: 6px 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+
+}
+.slider .slide-item ul li .date{
+  height: 20px;
+  line-height: 20px;
+  padding:0 10px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  transition: 0.3s all;
 }
 .slider .slide-item ul li:hover h4 {
   background: rgba(255, 215, 0, 0.7);
 }
+.slider .slide-item ul li:hover .date {
+  color: #fff;
+  background: rgba(255, 215, 0, 0.7);
+}
 .slider .slide-item ul li:hover img {
+  transform: scale(1.2);
   opacity: 1;
 }
 .slider .slide-item .cover {
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 70px);
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .slider .slide-item .cover img {
@@ -70,6 +88,8 @@
   height: 100%;
   object-fit: cover; /* 保持图片比例，不变形 */
 }
+
+
 
 /* 自定义指示器 */
 .custom-pagination {

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     } = user.toObject();
 
     return NextResponse.json(
-      { message: "用户创建成功", user: userWithoutPassword },
+      { message: "用户创建成功", user: userWithoutPassword, success: true },
       { status: 201 },
     );
   } catch (error: any) {
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: errorMessage }, { status: 403 });
     }
     return NextResponse.json(
-      { error: "服务器错误，请稍后重试。", message: error.message },
+      { error: "服务器错误，请稍后重试。", message: error.message, success: false },
       { status: 500 },
     );
   }

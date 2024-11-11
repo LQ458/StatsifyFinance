@@ -136,7 +136,7 @@ const Strategy = () => {
               影响力巨大的投资者就像金融世界的摇滚明星
             </p>
 
-            <div className="mt-[30px] text-left">
+            <div className="mt-[30px] text-left ss-slide-wrap">
               <div className="h-[510px] relative ss-slide-height">
                 <InvestorSlider
                   ref={swiperRef}

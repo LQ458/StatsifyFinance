@@ -88,6 +88,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           // install Swiper modules
           ref={swiperRef}
           modules={[Navigation, EffectCoverflow]}
+          autoHeight={true}
           effect="coverflow"
           coverflowEffect={{
             rotate: 0,

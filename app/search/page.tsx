@@ -138,40 +138,39 @@ const Search = () => {
       <Topbar position="relative" />
       <div className="flex flex-grow flex-col w-full bg-login-bg bg-cover bg-center max-w-[1920px] min-w-[1180px] mx-auto p-[60px]" style={{ backgroundAttachment: 'fixed' }}>
           <div className="w-[1000px] mx-auto search-container">            
-          <div className={`${styles.searchContent}`}>
-            <div>
+          <div className={`${styles.searchContent} ss-search-content`}>
+            
 
-            <div className="flex gap-10 pb-[20px]">
-              <div className="flex self-center relative">
-                <input
-                  ref={inputRef}
-                  placeholder="请输入关键字"
-                  type="text"
-                  value={keywords}
-                  onChange={keywordsChange}
-                  onKeyPress={handleKeyPress}
-                  className={`h-[30px] px-[8px] focus:outline-0 pr-[30px] text-[14px] placeholder-gray-300 rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300`}
-                />
-                <button
-                  title="search"
-                  type="button"
-                  className={`absolute right-[5px] top-[3px] bg-transparent p-0 border-0`}
-                >
-                    <IoSearch
-                      className={`text-[24px] text-white cursor-pointer`}
-                      onClick={ searchHandle }
+              <div className="flex gap-10 pb-[20px] ss-serarch-input-wrap">
+                <div className="flex self-center relative">
+                  <input
+                    ref={inputRef}
+                    placeholder="请输入关键字"
+                    type="text"
+                    value={keywords}
+                    onChange={keywordsChange}
+                    onKeyPress={handleKeyPress}
+                    className={`h-[30px] px-[8px] focus:outline-0 pr-[30px] text-[14px] placeholder-gray-300 rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300 ss-search-input`}
                   />
-                </button>
+                  <button
+                    title="search"
+                    type="button"
+                    className={`absolute right-[5px] top-[3px] bg-transparent p-0 border-0`}
+                  >
+                      <IoSearch
+                        className={`text-[24px] text-white cursor-pointer`}
+                        onClick={ searchHandle }
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
 
 
 
 
 
 
-            </div>
-          <div className={`${styles.nav} w-full`}>
+          <div className={`${styles.nav} w-full ss-search-nav`}>
             <ul className="border-b border-[#666] ">
                 <li className={`${ currentNav === 'articles' ? styles.active : ''}`}>
                   <Link href="#" onClick={() => tabClick('articles')}>资讯</Link>
@@ -202,15 +201,15 @@ const Search = () => {
             )}
             
             
-            <div className={`${styles.searchMain}`}>
+            <div className={`${styles.searchMain} ss-search-main`}>
               {/* 资讯 */}
               { currentNav === 'articles' && (
                     <ul>
                       {data.map((item, idx) => (
                         <li key={idx} >
-                          <div className={`${styles.searchArticles}`}>
+                          <div className={`${styles.searchArticles} ss-search-articles`}>
                             <Link href={`/articles/details?category=${item.category}&id=${item._id}&category-name=返回分类`}> <Str2html htmlString={item.title} /></Link>
-                            <div className="text-[14px] text-[#666] flex-shrink-0 flex-grow-0 text-nowrap" >{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}</div>
+                            <div className="text-[14px] text-[#666] flex-shrink-0 flex-grow-0 text-nowrap ss-search-articles-date" >{dayjs(item.createdAt).format("YYYY-MM-DD")}</div>
                           </div>                          
                         </li>
                       ))}
@@ -221,13 +220,13 @@ const Search = () => {
                 <ul>
                     {data.map((item, idx) => (
                       <li key={idx} >
-                        <div className={`${styles.searchFinanceTerms}`}>                          
+                        <div className={`${styles.searchFinanceTerms} ss-search-finance-terms`}>                          
                           <div className="flex-auto">
                             <h3><Str2html htmlString={item.title} /> <Str2html htmlString={item.enTitle || ''} /></h3>
                             <p className="text-[14px]">{item.content}</p>
-                            <div  className="text-[12px] text-[#666] mt-[10px]">{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}</div>
+                            <div  className="text-[12px] text-[#666] mt-[10px]">{dayjs(item.createdAt).format("YYYY-MM-DD")}</div>
                           </div>
-                          <div className="flex-shrink-0 flex-grow-0 self-center">
+                          <div className="flex-shrink-0 flex-grow-0 self-center ss-search-finance-terms-cover">
                             <Image                              
                                 src={item.image}
                                 alt="风景"
@@ -265,7 +264,7 @@ const Search = () => {
             {/* 没有数据 */}
             {noData && (
               <div className="text-center text-[#999] min-h-[200px] pt-[50px] text-[14px]">
-                <div className="bg-no-result w-[64px] h-[64px] bg-cover opacity-30 mx-auto mb-[10px]"></div>
+                <div className="bg-no-result w-[64px] h-[64px] bg-cover opacity-10 mx-auto mb-[10px]"></div>
                 { currentSearchKeyword.length > 0 ? '没有搜到相关内容' : '请输入需要查找的内容'}
               </div>
             )}

@@ -77,14 +77,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     }, []);
 
     useEffect(() => {
-      if (swiperRef.current) {
-        const swiper = swiperRef.current.swiper;
         // 每当 autoHeight 改变时，重新渲染swiper
         setReSetSwiper(false)
         setTimeout(() => {
           setReSetSwiper(true)
         },10)
-      }
     }, [autoHeight]);
 
     return (

@@ -5,17 +5,32 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Message from '@/components/message';
+type TipType = 'success' | 'warning' | 'error';
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [email, setEmail] = useState("");
+  const [msgType, setMsgType] = useState<TipType>("error");
+  const [msg, setMsg] = useState("");
+  const [msgVisible, setMsgVisible] = useState(false);
+  
 
   const PassReg =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
 
-  const UserReg = /^[^\W_]+$/;
+  const UserReg = /^[^\W_]+$/;  
+
+
+
+  const Msg = (type:TipType, msg:string) => {    
+      setMsg(msg)
+      setMsgType(type)   
+      setMsgVisible(true)
+  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,16 +38,20 @@ const Register = () => {
     const validateInput = () => {
       switch (true) {
         case !UserReg.test(username):
-          alert("用户名格式错误");
+          Msg('error', '用户名格式错误')               
+          // alert("用户名格式错误");
           return false;
         case !PassReg.test(password):
-          alert("密码格式错误");
+          Msg('error', '密码格式错误')
+          // alert("密码格式错误");
           return false;
         case password !== repassword:
-          alert("两次密码不一致");
+          Msg('error', '两次密码不一致')
+          // alert("两次密码不一致");
           return false;
         case email === "":
-          alert("邮箱不能为空");
+          Msg('error', '邮箱不能为空')
+          // alert("邮箱不能为空");
           return false;
         default:
           return true;
@@ -51,15 +70,18 @@ const Register = () => {
       });
 
       const res = await axios.post(`/api/register?${params.toString()}`);
-      if (res.data.message === "User created successfully") {
-        alert("注册成功");
+      if (res.data.success) {
+        // alert("注册成功");
+        Msg('success', '注册成功')
         window.location.href = "/login";
       } else {
-        alert("注册失败");
+        Msg('error', '注册失败')
+        // alert("注册失败");
       }
-    } catch (error) {
-      console.error(error);
-      alert("注册失败");
+    } catch (error: any) {
+      console.error(error.response.data.error);
+      Msg('error', error.response.data.error || '注册失败')
+      // alert("注册失败");
     }
   };
 
@@ -67,8 +89,8 @@ const Register = () => {
     <main className="flex flex-col h-screen bg-[#131419]">
       <Topbar position="relative" />
       <div className="flex-grow w-full flex bg-login-bg bg-cover bg-center">
-        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2 min-w-[800px]">
-          <div className="flex flex-col m-12 ml-28 mr-14 gap-5">
+        <div className="bg-[rgba(29,30,32,0.7)] border-[#333333] border-solid border-[1px] self-center m-auto w-[55%] h-[27rem] border-t-[#ffd700] border-t-2 min-w-[800px] ss-register-container">
+          <div className="flex flex-col m-12 ml-28 mr-14 gap-5 ss-register-box">
             <h1 className="text-white text-lg">注册</h1>
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
               <div className="flex flex-row">
@@ -166,6 +188,14 @@ const Register = () => {
         </div>
       </div>
       <Footer position="relative" />
+      {msgVisible && (
+        <Message
+          type={msgType} // 可选 "success"、"warning"、"error"
+          message={msg}
+          duration={3000} // 3秒后关闭
+          onClose={() => setMsgVisible(false)}
+        />
+      )}
     </main>
   );
 };
