@@ -490,6 +490,10 @@
   }
   .index-container .ss-index-left{
     padding:0 28px;
+    gap:140px
+  }
+  .index-container .ss-index-left p{
+    color: #999;
   }
   .ss-vocabs{
     position: relative;
@@ -616,8 +620,11 @@
   .ss-tab-content .ss-custom-next{
     display: none;
   }
+  .learn-container .ss-custom-pagination{
+    margin-top:20px;
+    margin-bottom: 20px;
+  }
   .learn-container .ss-custom-pagination li{
-    padding-bottom: 40px;
     width: 20px;
   }
   .investor-container{
@@ -767,7 +774,8 @@
     color: #b8b8b8;
   }
   .news-container .ss-custom-pagination{
-    margin-top: 20px;
+    margin: 20px 0;
+
   }
   /* 详细页 */
   .news-container .ss-bread{
@@ -783,7 +791,9 @@
   }
   .news-container .ss-news-content .ss-news-date{
     font-size: 14px;
-    padding-bottom: 5px;
+  }
+  .news-container .ss-news-content .ss-news-main{
+    padding-top: 10px;
   }
 
   .finance-terms-container{
@@ -822,7 +832,8 @@
     height: calc(100% - 50px);
   }
   .finance-terms-container .ss-custom-pagination{
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .finance-terms-container .ss-custom-pagination li{
     width:30px
@@ -875,16 +886,37 @@
   .ss-login-container{
     width: 100%;
     min-width: 320px;
+    align-self: self-start;
+    margin: 0;
+    flex-grow: 1;
+    height: 100%;
+    border: 0;
   }
   .ss-login-container .ss-login-box{
-    margin:30px 20px;
+    margin:90px 20px 0;
+    align-self: flex-start;
   }
   .ss-register-container{
     width: 100%;
     min-width: 320px;
+    align-self: self-start;
+    margin: 0;
+    flex-grow: 1;
+    height: 100%;
+    border: 0;
   }
   .ss-register-container .ss-register-box{
-    margin:30px 20px;
+    margin:90px 20px 0;
+  }
+  .ss-register-container .ss-register-box form > .flex.flex-row{
+    display: block;
+  }
+  .ss-register-input-cell{
+    width:100%;
+    margin-bottom: 5px;
+  }
+  .ss-register-button{
+    width:100%
   }
 
   

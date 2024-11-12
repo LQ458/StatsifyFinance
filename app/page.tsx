@@ -58,7 +58,7 @@ export default function Home() {
                         </span>
                       </p>
                     </div>
-                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px]">
+                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px] truncate">
                       ESG
                     </div>
                   </div>
@@ -85,7 +85,7 @@ export default function Home() {
                         </span>
                       </p>
                     </div>
-                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px]">
+                    <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px] truncate">
                       Invest
                     </div>
                   </div>

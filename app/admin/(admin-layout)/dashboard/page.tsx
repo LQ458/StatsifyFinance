@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 function Dashboard() {
   const { data: session } = useSession();
   useEffect(() => {
-    console.log("session::", session);
+    // console.log("session::", session);
   }, [session]);
   return (
     <PageContainer title="管理主页">

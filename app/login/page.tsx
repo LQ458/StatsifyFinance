@@ -92,15 +92,15 @@ const Login = () => {
                   />
                 </div>
               </div>
-              <Link
+              {/* <Link
                 href="#"
                 className="no-underline text-[rgba(255,215,0,0.7)] text-right text-sm mb-6"
               >
                 忘记密码
-              </Link>
+              </Link> */}
               <button
                 type="submit"
-                className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 cursor-pointer"
+                className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 mt-6 cursor-pointer"
               >
                 <p className="text-white m-auto">登录</p>
               </button>

@@ -21,7 +21,9 @@ const Register = () => {
   const PassReg =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
 
-  const UserReg = /^[^\W_]+$/;  
+  const UserReg = /^[a-zA-Z][a-zA-Z0-9]{3,17}$/;  
+
+  const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 
 
@@ -49,8 +51,8 @@ const Register = () => {
           Msg('error', '两次密码不一致')
           // alert("两次密码不一致");
           return false;
-        case email === "":
-          Msg('error', '邮箱不能为空')
+        case !emailReg.test(email):
+          Msg('error', '邮箱格式错误')
           // alert("邮箱不能为空");
           return false;
         default:
@@ -72,7 +74,7 @@ const Register = () => {
       const res = await axios.post(`/api/register?${params.toString()}`);
       if (res.data.success) {
         // alert("注册成功");
-        Msg('success', '注册成功')
+        Msg('success', '注册成功!即将跳转到登录')
         window.location.href = "/login";
       } else {
         Msg('error', '注册失败')
@@ -94,7 +96,7 @@ const Register = () => {
             <h1 className="text-white text-lg">注册</h1>
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
               <div className="flex flex-row">
-                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px]">
+                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px] ss-register-input-cell">
                   <Image
                     src="/username.svg"
                     alt="username"
@@ -114,7 +116,7 @@ const Register = () => {
                 </p>
               </div>
               <div className="flex flex-row">
-                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px]">
+                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px] ss-register-input-cell">
                   <Image
                     src="/password.svg"
                     alt="password"
@@ -134,7 +136,7 @@ const Register = () => {
                 </p>
               </div>
               <div className="flex flex-row">
-                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px]">
+                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px] ss-register-input-cell">
                   <Image
                     src="/password.svg"
                     alt="password"
@@ -149,19 +151,24 @@ const Register = () => {
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
+                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px]">
+                   &nbsp;
+                </p>
               </div>
               <div className="flex flex-row">
-                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px]">
+                <div className="bg-[#666666] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 w-[48%] gap-[0.5px] ss-register-input-cell">
                   <Image src="/email.svg" alt="email" width="30" height="30" />
                   <input
-                    type="email"
+                    type="text"
                     value={email}
-                    required
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="请输入邮箱，用于将来找回密码"
+                    placeholder="请输入邮箱"
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
+                <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px]">
+                  用于将来找回密码
+                </p>
                 {/* <div className="flex flex-row align-middle justify-center gap-1">
                   <Image
                     src={"/imp.svg"}
@@ -178,7 +185,7 @@ const Register = () => {
               <div className="flex flex-row">
                 <button
                   type="submit"
-                  className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 w-[48%] cursor-pointer"
+                  className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 w-[48%] cursor-pointer ss-register-button"
                 >
                   <p className="text-white m-auto">注册</p>
                 </button>
@@ -192,7 +199,7 @@ const Register = () => {
         <Message
           type={msgType} // 可选 "success"、"warning"、"error"
           message={msg}
-          duration={3000} // 3秒后关闭
+          duration={2000} // 2秒后关闭
           onClose={() => setMsgVisible(false)}
         />
       )}

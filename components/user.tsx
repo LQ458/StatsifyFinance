@@ -12,7 +12,7 @@ const User = () => {
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
-    console.log("session::", session);
+    // console.log("session::", session);
     if (!session) return;
     const { admin, email, image, name } = session?.user as any;
     setUsername(name);

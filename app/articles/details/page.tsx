@@ -69,12 +69,12 @@ const NewsDetails = () => {
           </div>
           <div className={`${styles.newsContent} ss-news-content`}>
             <h1>{news.title}</h1>
-            <div className="border-b border-[#666] pb-[10px] text-[#666] text-[16px] ss-news-date">
+            <div className="border-b border-[#333] pb-[10px] text-[#666] text-[16px] ss-news-date">
                
               {news.createdAt &&
                 dayjs(news.createdAt).format("YYYY-MM-DD HH:mm:ss")}
             </div>
-            <div className={`${styles.newsMain}`}>
+            <div className={`${styles.newsMain} ss-news-main`}>
               <Str2html htmlString={news.content} />
             </div>
           </div>
