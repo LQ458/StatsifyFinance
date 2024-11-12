@@ -813,7 +813,8 @@
     height: auto;
   }
   .finance-terms-container .swiper .swiper-slide .ss-slide-item ul{
-    gap: 10px;
+    gap: 4px;
+    justify-content: center;
   }
   .finance-terms-container .swiper .swiper-slide .ss-slide-item ul li{
     flex: 0 0 calc(50% - 8px);
