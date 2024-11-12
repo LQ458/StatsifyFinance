@@ -12,6 +12,7 @@ export const GET = async (req: NextRequest) => {
   let page = (req.nextUrl.searchParams.get("page") as any) * 1 || 1;
   let title = (req.nextUrl.searchParams.get("title") as string) || "";
   let type = (req.nextUrl.searchParams.get("type") as string) || "";
+  let featured = (req.nextUrl.searchParams.get("featured") as string) || "";
   try {
     await DBconnect();
     let query = {}; // 如果传入 title 则模糊查询，否则查询全部
@@ -26,6 +27,12 @@ export const GET = async (req: NextRequest) => {
     } else {
       query = {
         type,
+      };
+    }
+    // 如果带了index参数，就是首页推荐用的，重新写查询条件
+    if (featured) {
+      query = {
+        featured: true
       };
     }
 

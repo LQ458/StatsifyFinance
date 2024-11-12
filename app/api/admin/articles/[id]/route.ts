@@ -24,7 +24,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await Articles.findByIdAndUpdate(id, data, { new: true });
+    await Articles.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
     return NextResponse.json({
       success: true,
       errorMessage: "修改成功",

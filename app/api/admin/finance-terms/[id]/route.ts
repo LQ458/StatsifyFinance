@@ -25,7 +25,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await FinanceTerms.findByIdAndUpdate(id, data, { new: true });
+    await FinanceTerms.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
     // await prisma.article.update({
     //   where: { id },
     //   data,

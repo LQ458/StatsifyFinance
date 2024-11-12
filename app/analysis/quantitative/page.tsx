@@ -12,6 +12,7 @@ import { mainNavList } from "@/src/data/analysis/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 
 interface Item {
+  _id: string;
   title: string;
   category: string;
   enTitle: string;
@@ -74,14 +75,14 @@ const Analysis = () => {
   };
 
   // 获取资讯分类
-  const getArticlesCategory = async () => {
+  const getCategory = async () => {
     const response = await fetch(`/api/admin/category?type=quantitative`);
     const list = await response.json();
     setCategory(list?.data?.list ?? []);
   };
 
   // 获取数据
-  const getTradeData = async () => {
+  const getQuantitativeData = async () => {
     const response = await fetch(
       `/api/admin/learn?page=1&per=10000&type=quantitative`,
     );
@@ -94,8 +95,8 @@ const Analysis = () => {
 
   useEffect(() => {
     const getData = async () => {
-      await getTradeData();
-      await getArticlesCategory();
+      await getQuantitativeData();
+      await getCategory();
       setLoading(false);
     };
     getData();
@@ -108,9 +109,10 @@ const Analysis = () => {
       updateIndex(swiperIndex);
     }
   }, [swiperIndex]);
-  // 数据加载完成后判断地址栏参数index，用于滑动到指定位置
-  useEffect(() => {
+  // 分类页面数据加载完成后判断地址栏参数index，用于滑动到指定位置
+  useEffect(() => {    
     let index = searchParams.get("index");
+    // index优先，在有index的情况下不考虑首页过来的情况
     if (index) {
       const sIndex = Number(index);
       if (!isNaN(sIndex)) {
@@ -118,8 +120,17 @@ const Analysis = () => {
           handleSlideTo(sIndex);
         }
       }
+    } else {
+      // 获取地址栏_id参数，这是首页推荐位跳转过来，需要通过id定位到具体tab
+      const _id = searchParams.get("_id");
+      for (let i = 0; i < pages.length; i++) {
+        if (pages[i]._id === _id) {
+            handleSlideTo(i);
+            break; 
+        }
+      }      
     }
-  }, [list]);
+  }, [pages]);
 
   const handleNext = () => {
     if (swiperRef.current) {

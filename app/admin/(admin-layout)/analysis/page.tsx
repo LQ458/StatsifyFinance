@@ -9,6 +9,7 @@ import {
   Table,
   Tabs,
   TabsProps,
+  Switch,
   Modal,
   message,
   Space,
@@ -344,6 +345,12 @@ function AnalysisPage() {
                   </Select.Option>
                 ))}
             </Select>
+          </Form.Item>
+          <Form.Item label="推荐到首页" name="featured">
+            <Switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+            />
           </Form.Item>
           <Form.Item label="详情">
             <MyEditor html={html} setHtml={setHtml} />

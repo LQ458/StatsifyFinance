@@ -60,7 +60,7 @@ const RiskManage = () => {
   };
 
   // 获取数据
-  const getTradeData = async () => {
+  const getRiskData = async () => {
     const response = await fetch(
       `/api/admin/learn?page=1&per=10000&type=risk-manage`,
     );
@@ -88,7 +88,7 @@ const RiskManage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      await getTradeData();
+      await getRiskData();
       setLoading(false);
     };
     getData();

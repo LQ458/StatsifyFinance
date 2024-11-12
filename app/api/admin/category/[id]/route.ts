@@ -7,7 +7,7 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   const data = await req.json(); // 请求体中传递的数据
   try {
     await DBconnect();
-    await Category.findByIdAndUpdate(id, data, { new: true });
+    await Category.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
     // await prisma.article.update({
     //   where: { id },
     //   data,
