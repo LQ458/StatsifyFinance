@@ -71,7 +71,7 @@ function AnalysisPage() {
   const [currentId, setCurrentId] = useState(""); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
 
-  const onChange = (key: string) => {
+  const onChange = (key: string) => {     
     searchForm.resetFields();
     setTabVal(key);
     setQuery({
@@ -115,7 +115,7 @@ function AnalysisPage() {
 
   useEffect(() => {
     getGategory();
-  }, []);
+  }, [tabVal]);
 
   // 查询所有分类
   const getGategory = async () => {
@@ -187,6 +187,16 @@ function AnalysisPage() {
             },
           },
           {
+            title: "首页推荐",
+            render(v, r) {              
+                if (v.featured) {
+                  return '是'
+                } else {
+                  return ''
+                }
+            },
+          },
+          {
             title: "标题",
             dataIndex: "title",
             width: 200,
@@ -201,6 +211,7 @@ function AnalysisPage() {
             render(v, r) {
               let categoryStr = "";
               category.forEach((item) => {
+                console.log('找到：', item._id === v.category, item.title)
                 if (item._id === v.category) {
                   categoryStr = item.title;
                 }
