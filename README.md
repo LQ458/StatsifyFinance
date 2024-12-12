@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Introduction
+
+StatsifyFinance is a comprehensive financial tool website designed for both beginners and professionals. The platform provides rich financial analysis tools, trading strategy guides, and professional financial education resources.
+
+## Key Features
+
+### Analysis Tools
+
+- Qualitative Analysis: Comprehensive explanations of economic concepts with case studies
+- Quantitative Analysis: In-depth exploration of quantitative economic concepts and practical applications
+
+### Strategy Center
+
+- Trading Strategies: Detailed trading methodologies and practical case studies
+- Investor Profiles: Characteristics and investment approaches of different investor types
+- Risk Management: Systematic risk control methods and industry analysis
+
+### Resource Center
+
+- Financial Articles: Up-to-date industry dynamics and trend analysis
+- Search Function: Convenient site-wide content retrieval system
+- Financial Terminology: Detailed explanations and definitions of professional terms
+
+## Technical Architecture
+
+### Core Tech Stack
+
+```
+- Next.js: React framework
+- Tailwind CSS: Styling framework
+- Antd UI: UI component library
+- Echarts: Chart visualization
+- MongoDB: Database
+- Next Auth: Authentication system
+- TypeScript: Type system
+- @wangeditor/editor: Web editor
+- Swiper: Touch slider
+```
+
+### Project Structure
+
+```
+├── app/                # Next.js main application directory
+│   ├── pages/         # Page routes
+│   ├── api/          # API routes
+│   └── components/   # Page components
+├── components/        # Shared components
+│   ├── ui/           # UI components
+│   └── business/     # Business components
+├── models/           # MongoDB data models
+├── libs/            # Database connection
+└── src/             # Web data and style files
+```
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Clone the project
+git clone https://github.com/LQ458/StatsifyFinance.git
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build production version
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[中文版介绍](https://github.com/LQ458/StatsifyFinance/blob/main/README_CN.md)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Issues and pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License
