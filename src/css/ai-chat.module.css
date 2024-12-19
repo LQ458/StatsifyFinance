@@ -140,3 +140,49 @@
     max-width: 400px;
   }
 }
+
+.topicsList {
+  padding: 16px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.topicsHeader {
+  color: #ffd700;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.topicItem {
+  padding: 8px 12px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+.topicItem:hover {
+  background: rgba(255, 215, 0, 0.3);
+}
+
+.message pre {
+  background: #1a1a1a;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.message code {
+  font-family: monospace;
+  background: #1a1a1a;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.message p {
+  margin: 0;
+  line-height: 1.5;
+}
