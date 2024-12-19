@@ -2,10 +2,10 @@ import Learn from "@/models/learn";
 import { DBconnect } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-const cookieName = process.env.NODE_ENV === 'production' 
-? "__Secure-next-auth.session-token" 
-: "next-auth.session-token";
-
+const cookieName =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-next-auth.session-token"
+    : "next-auth.session-token";
 
 export const GET = async (req: NextRequest) => {
   let per = (req.nextUrl.searchParams.get("per") as any) * 1 || 10;
@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest) => {
     // 如果带了index参数，就是首页推荐用的，重新写查询条件
     if (featured) {
       query = {
-        featured: true
+        featured: true,
       };
     }
 

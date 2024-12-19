@@ -1,5 +1,11 @@
 "use client";
-import React, { forwardRef, useImperativeHandle, useRef, useState, useEffect } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
@@ -65,23 +71,23 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
         } else {
           setAutoHeight(false);
         }
-      };  
+      };
       // 页面加载时判断一次窗口宽度
-      handleResize();  
+      handleResize();
       // 监听窗口尺寸变化
-      window.addEventListener('resize', handleResize);       
+      window.addEventListener("resize", handleResize);
       // 清除监听
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
       };
     }, []);
 
     useEffect(() => {
-        // 每当 autoHeight 改变时，重新渲染swiper
-        setReSetSwiper(false)
-        setTimeout(() => {
-          setReSetSwiper(true)
-        },10)
+      // 每当 autoHeight 改变时，重新渲染swiper
+      setReSetSwiper(false);
+      setTimeout(() => {
+        setReSetSwiper(true);
+      }, 10);
     }, [autoHeight]);
 
     return (
@@ -109,7 +115,6 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
             ))}
           </Swiper>
         )}
-        
       </>
     );
   },

@@ -75,11 +75,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
       setIntro(content);
       setShowstate(true);
       scrollRef?.current?.scrollTo({
-        top: 0
+        top: 0,
       });
     };
     const handleClose = () => {
-      setShowstate(false);      
+      setShowstate(false);
     };
 
     return (
@@ -121,7 +121,9 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className={`${styles.modal} ${isShow ? styles.active : ""} ss-investor-modal`}>
+        <div
+          className={`${styles.modal} ${isShow ? styles.active : ""} ss-investor-modal`}
+        >
           <div
             className={`${styles["modal-close"]}`}
             onClick={() => handleClose()}

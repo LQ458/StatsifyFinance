@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 import { DBconnect } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-const cookieName = process.env.NODE_ENV === 'production' 
-? "__Secure-next-auth.session-token" 
-: "next-auth.session-token";
-
+const cookieName =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-next-auth.session-token"
+    : "next-auth.session-token";
 
 export const PUT = async (req: NextRequest, { params }: any) => {
   const { id } = params; // 路由中传递的参数
@@ -29,7 +29,11 @@ export const PUT = async (req: NextRequest, { params }: any) => {
   }
   try {
     await DBconnect();
-    await User.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
+    await User.findByIdAndUpdate(
+      id,
+      { ...data, updatedAt: new Date() },
+      { new: true },
+    );
     // await prisma.article.update({
     //   where: { id },
     //   data,

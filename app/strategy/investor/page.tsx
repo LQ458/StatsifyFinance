@@ -159,7 +159,9 @@ const Strategy = () => {
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+            <div
+              className={`${styles["custom-pagination"]} ss-custom-pagination`}
+            >
               <ul>
                 {list.map((item, idx) => (
                   <li

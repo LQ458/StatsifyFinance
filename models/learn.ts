@@ -18,7 +18,7 @@ const learnSchema = new Schema({
   featured: {
     type: Boolean,
     required: true,
-    default: false
+    default: false,
   },
   type: {
     type: String,

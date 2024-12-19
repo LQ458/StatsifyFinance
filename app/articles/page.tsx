@@ -187,7 +187,9 @@ const News: React.FC = () => {
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
                 金融市场动态和深入分析
               </h1>
-              <p className="text-[#B8B8B8] text-[16px]">更全面的金融市场认知，更高的投资判断力,开启投资跃升之路</p>
+              <p className="text-[#B8B8B8] text-[16px]">
+                更全面的金融市场认知，更高的投资判断力,开启投资跃升之路
+              </p>
 
               <div className="mt-[30px] text-left">
                 <div className={`${styles.tabContent} ss-tab-content`}>
@@ -212,7 +214,9 @@ const News: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+              <div
+                className={`${styles["custom-pagination"]} ss-custom-pagination`}
+              >
                 <ul>
                   {pages.map((item, idx) => (
                     <li

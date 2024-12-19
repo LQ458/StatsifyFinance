@@ -5,8 +5,8 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Message from '@/components/message';
-type TipType = 'success' | 'warning' | 'error';
+import Message from "@/components/message";
+type TipType = "success" | "warning" | "error";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -16,23 +16,19 @@ const Register = () => {
   const [msgType, setMsgType] = useState<TipType>("error");
   const [msg, setMsg] = useState("");
   const [msgVisible, setMsgVisible] = useState(false);
-  
 
   const PassReg =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
 
-  const UserReg = /^[a-zA-Z][a-zA-Z0-9]{3,17}$/;  
+  const UserReg = /^[a-zA-Z][a-zA-Z0-9]{3,17}$/;
 
   const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-
-
-  const Msg = (type:TipType, msg:string) => {    
-      setMsg(msg)
-      setMsgType(type)   
-      setMsgVisible(true)
-  }
-
+  const Msg = (type: TipType, msg: string) => {
+    setMsg(msg);
+    setMsgType(type);
+    setMsgVisible(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,19 +36,19 @@ const Register = () => {
     const validateInput = () => {
       switch (true) {
         case !UserReg.test(username):
-          Msg('error', '用户名格式错误')               
+          Msg("error", "用户名格式错误");
           // alert("用户名格式错误");
           return false;
         case !PassReg.test(password):
-          Msg('error', '密码格式错误')
+          Msg("error", "密码格式错误");
           // alert("密码格式错误");
           return false;
         case password !== repassword:
-          Msg('error', '两次密码不一致')
+          Msg("error", "两次密码不一致");
           // alert("两次密码不一致");
           return false;
         case !emailReg.test(email):
-          Msg('error', '邮箱格式错误')
+          Msg("error", "邮箱格式错误");
           // alert("邮箱不能为空");
           return false;
         default:
@@ -74,15 +70,15 @@ const Register = () => {
       const res = await axios.post(`/api/register?${params.toString()}`);
       if (res.data.success) {
         // alert("注册成功");
-        Msg('success', '注册成功!即将跳转到登录')
+        Msg("success", "注册成功!即将跳转到登录");
         window.location.href = "/login";
       } else {
-        Msg('error', '注册失败')
+        Msg("error", "注册失败");
         // alert("注册失败");
       }
     } catch (error: any) {
       console.error(error.response.data.error);
-      Msg('error', error.response.data.error || '注册失败')
+      Msg("error", error.response.data.error || "注册失败");
       // alert("注册失败");
     }
   };
@@ -152,7 +148,7 @@ const Register = () => {
                   />
                 </div>
                 <p className="text-[#999999] text-sm m-auto ml-2 max-3xl:text-[12px]">
-                   &nbsp;
+                  &nbsp;
                 </p>
               </div>
               <div className="flex flex-row">

@@ -80,7 +80,9 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                 <ul>
                   {page.map((item, idx) => (
                     <li key={idx}>
-                      <div className={`${styles["cover"]} ss-finance-terms-img`}>
+                      <div
+                        className={`${styles["cover"]} ss-finance-terms-img`}
+                      >
                         <img src={item.image} width="100%" alt="" />
                       </div>
                       <p>{item.content}</p>

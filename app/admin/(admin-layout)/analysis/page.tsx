@@ -71,7 +71,7 @@ function AnalysisPage() {
   const [currentId, setCurrentId] = useState(""); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
 
-  const onChange = (key: string) => {     
+  const onChange = (key: string) => {
     searchForm.resetFields();
     setTabVal(key);
     setQuery({
@@ -188,12 +188,12 @@ function AnalysisPage() {
           },
           {
             title: "首页推荐",
-            render(v, r) {              
-                if (v.featured) {
-                  return '是'
-                } else {
-                  return ''
-                }
+            render(v, r) {
+              if (v.featured) {
+                return "是";
+              } else {
+                return "";
+              }
             },
           },
           {
@@ -211,7 +211,7 @@ function AnalysisPage() {
             render(v, r) {
               let categoryStr = "";
               category.forEach((item) => {
-                console.log('找到：', item._id === v.category, item.title)
+                console.log("找到：", item._id === v.category, item.title);
                 if (item._id === v.category) {
                   categoryStr = item.title;
                 }
@@ -358,10 +358,7 @@ function AnalysisPage() {
             </Select>
           </Form.Item>
           <Form.Item label="推荐到首页" name="featured">
-            <Switch
-              checkedChildren="是"
-              unCheckedChildren="否"
-            />
+            <Switch checkedChildren="是" unCheckedChildren="否" />
           </Form.Item>
           <Form.Item label="详情">
             <MyEditor html={html} setHtml={setHtml} />

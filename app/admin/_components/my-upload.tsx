@@ -11,7 +11,10 @@ import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 // };
 
 const beforeUpload = (file: RcFile) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/webp";
+  const isJpgOrPng =
+    file.type === "image/jpeg" ||
+    file.type === "image/png" ||
+    file.type === "image/webp";
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG/WEBP file!");
   }

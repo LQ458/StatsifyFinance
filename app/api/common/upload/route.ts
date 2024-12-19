@@ -4,10 +4,10 @@ import path from "path";
 import fs from "fs";
 import { randomUUID } from "crypto";
 import { getToken } from "next-auth/jwt";
-const cookieName = process.env.NODE_ENV === 'production' 
-? "__Secure-next-auth.session-token" 
-: "next-auth.session-token";
-
+const cookieName =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-next-auth.session-token"
+    : "next-auth.session-token";
 
 const saveFile = async (blob: File) => {
   const dirName = "/uploads/" + dayjs().format("YYYY-MM-DD");

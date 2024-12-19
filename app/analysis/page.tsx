@@ -18,6 +18,7 @@ import {
   qualArrayMap,
 } from "@/src/data/analysis/qualitative";
 import { IoIosArrowDown } from "react-icons/io";
+import AIChat from "@/components/aiChat";
 
 // 定义对象类型
 interface Item {
@@ -246,6 +247,7 @@ const Analysis = () => {
         </div>
       </div>
       <Footer position="relative" />
+      <AIChat />
     </main>
   );
 };
