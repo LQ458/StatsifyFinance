@@ -1,58 +1,51 @@
-import { NextResponse } from "next/server";
-import { DeepseekChat } from "./deepseek";
-
-const deepseek = new DeepseekChat({
-  apiKey: process.env.DEEPSEEK_API_KEY!,
-  baseURL: "https://api.deepseek.com/v1",
-});
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
     const { message } = await request.json();
 
-    const systemPrompt = `你是 StatsifyFinance 的 AI 助手,专门解答金融分析相关问题。
-    请用专业且易懂的方式回答问题,适当加入示例说明。
-    如果涉及代码,请使用 markdown 代码块。
-    如果不确定的内容,请明确说明。`;
+    // 这里可以接入实际的AI服务
+    const aiResponse = `
+# ${message}
 
-    // 创建流式响应
-    const stream = await deepseek.chat.completions.create({
-      model: "deepseek-chat",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-      stream: true,
+这是一个关于 **${message}** 的详细解释:
+
+## 主要概念
+
+${message}是金融分析中的重要指标，主要用于...
+
+## 计算方法
+
+可以使用以下公式计算:
+
+\`\`\`python
+def calculate_metric(data):
+    return data.mean() / data.std()
+\`\`\`
+
+## 应用场景
+
+1. 投资决策
+2. 风险管理
+3. 组合优化
+
+## 相关指标
+
+- 指标A
+- 指标B
+- 指标C
+    `;
+
+    return NextResponse.json({ 
+      success: true,
+      message: aiResponse 
     });
 
-    // 返回 ReadableStream
-    const encoder = new TextEncoder();
-    const readable = new ReadableStream({
-      async start(controller) {
-        for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content || "";
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ text })}\n\n`),
-          );
-        }
-        controller.close();
-      },
-    });
-
-    return new Response(readable, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
   } catch (error) {
-    console.error("Chat API Error:", error);
+    console.error('Chat API Error:', error);
     return NextResponse.json(
-      { success: false, error: "AI 响应失败" },
-      { status: 500 },
+      { success: false, error: 'Failed to get AI response' },
+      { status: 500 }
     );
   }
 }
