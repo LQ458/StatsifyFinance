@@ -39,11 +39,11 @@
   line-height: 24px;
   color: #999;
 }
-.searchMain > ul{
+.searchMain > ul {
   padding-left: 20px;
-  list-style: outside decimal;  
+  list-style: outside decimal;
 }
-.searchMain > ul > li{
+.searchMain > ul > li {
   margin-bottom: 24px;
 }
 .searchMain > ul > li > a {
@@ -57,14 +57,14 @@
   display: inline;
 }
 
-.searchArticles{
+.searchArticles {
   display: flex;
   justify-content: space-between;
 }
 
-.searchFinanceTerms{
+.searchFinanceTerms {
   display: flex;
-  gap:30px;
+  gap: 30px;
 }
 .searchFinanceTerms h3 {
   display: flex;

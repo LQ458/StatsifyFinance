@@ -127,14 +127,14 @@ const Strategy = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         // 有滚动条才滚动
-        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+        if (tabRef.current.offsetWidth < tabRef.current.scrollWidth) {
           const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-          if (li.length > 0 && current>=0) {
+          if (li.length > 0 && current >= 0) {
             tabRef.current?.scrollTo({
-              left: li[current].offsetLeft
+              left: li[current].offsetLeft,
             });
           }
-        }        
+        }
       }
     };
     tabScrollCenter();
@@ -193,7 +193,9 @@ const Strategy = () => {
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+            <div
+              className={`${styles["custom-pagination"]} ss-custom-pagination`}
+            >
               <ul>
                 {list.map((item, idx) => (
                   <li

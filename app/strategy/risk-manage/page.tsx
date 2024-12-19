@@ -139,14 +139,14 @@ const RiskManage = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         // 有滚动条才滚动
-        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+        if (tabRef.current.offsetWidth < tabRef.current.scrollWidth) {
           const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-          if (li.length > 0 && current>=0) {
+          if (li.length > 0 && current >= 0) {
             tabRef.current?.scrollTo({
-              left: li[current].offsetLeft
+              left: li[current].offsetLeft,
             });
           }
-        }        
+        }
       }
     };
     tabScrollCenter();
@@ -185,7 +185,7 @@ const RiskManage = () => {
                 风险控制
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-              通过系统方法识别、量化、监测和管理影响投资回报的风险，以最小化损失并确保投资组合的稳定性。
+                通过系统方法识别、量化、监测和管理影响投资回报的风险，以最小化损失并确保投资组合的稳定性。
               </p>
 
               <div className="mt-[30px] text-left">
@@ -225,7 +225,9 @@ const RiskManage = () => {
                   </div>
                 </div>
               </div>
-              <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+              <div
+                className={`${styles["custom-pagination"]} ss-custom-pagination`}
+              >
                 <ul>
                   {list.map((item, idx) => (
                     <li

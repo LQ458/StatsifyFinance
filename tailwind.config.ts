@@ -17,8 +17,8 @@ const config: Config = {
         "login-bg": "url('/login-bg.png')",
         "analysis-bg": "url('/analysis-bg.png')",
         "strategy-bg": "url('/strategy-bg.png')",
-        "loading": "url('/icon-loading.png')",
-        "no-result" : "url('/icon-no-result.png')"
+        loading: "url('/icon-loading.png')",
+        "no-result": "url('/icon-no-result.png')",
       },
       colors: {
         // 在这里添加自定义颜色

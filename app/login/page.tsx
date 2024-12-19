@@ -8,7 +8,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-type TipType = 'success' | 'warning' | 'error';
+type TipType = "success" | "warning" | "error";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -18,11 +18,11 @@ const Login = () => {
   const [msgVisible, setMsgVisible] = useState(false);
   const nav = useRouter();
 
-  const Msg = (type:TipType, msg:string) => {    
-    setMsg(msg)
-    setMsgType(type)   
-    setMsgVisible(true)
-}
+  const Msg = (type: TipType, msg: string) => {
+    setMsg(msg);
+    setMsgType(type);
+    setMsgVisible(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,14 +34,14 @@ const Login = () => {
       });
       console.log("res:::", res);
       if (!res?.ok) {
-        Msg('error', '用户名或密码错误')
-        return
+        Msg("error", "用户名或密码错误");
+        return;
       }
       if (res?.error) {
-        Msg('error', '登录失败')
+        Msg("error", "登录失败");
         console.log("登录失败");
       } else {
-        Msg('success', '登录成功')
+        Msg("success", "登录成功");
         console.log("登录成功");
         nav.push("/");
       }
@@ -119,7 +119,7 @@ const Login = () => {
         <Message
           type={msgType} // 可选 "success"、"warning"、"error"
           message={msg}
-          duration={2000} 
+          duration={2000}
           onClose={() => setMsgVisible(false)}
         />
       )}

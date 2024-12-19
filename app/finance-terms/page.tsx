@@ -62,10 +62,8 @@ const FinanceTerms = () => {
     } else {
       setNoNext(true);
     }
-    setPages(pages)
+    setPages(pages);
   }, [list]);
-
-  
 
   const handleChange = (newData: ChangeData) => {
     // console.log('handleChange::', newData)
@@ -128,7 +126,9 @@ const FinanceTerms = () => {
                 </div>
               </div>
             </div>
-            <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+            <div
+              className={`${styles["custom-pagination"]} ss-custom-pagination`}
+            >
               <ul>
                 {pages.map((item, idx) => (
                   <li

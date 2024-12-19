@@ -38,11 +38,9 @@ export default function Home() {
     getData();
   }, []);
 
-
-
   return (
     <main className="bg-intro-color flex flex-col h-screen">
-      <Topbar position="relative" />                
+      <Topbar position="relative" />
       <div className="w-full flex-grow relative">
         <div className="abrazine">
           <div className="ball-list">
@@ -77,19 +75,27 @@ export default function Home() {
               </div>
             </div>
 
-          
-            
-            <div className="min-h-[81px]">            
+            <div className="min-h-[81px]">
               <div className="flex flex-row justify-between max-w-[886px] mb-[10px]">
                 <p className="text-[#666666] text-[14px]">
                   Vocabs for the week
                 </p>
-                <Link href="/analysis/quantitative" className="text-[#666666] text-[14px] hover:text-[#ffd700]">more &gt;</Link>
+                <Link
+                  href="/analysis/quantitative"
+                  className="text-[#666666] text-[14px] hover:text-[#ffd700]"
+                >
+                  more &gt;
+                </Link>
               </div>
-              {loading ? <div className="text-[#666] text-center">loading...</div> : (
+              {loading ? (
+                <div className="text-[#666] text-center">loading...</div>
+              ) : (
                 <div className="flex max-w-[886px] gap-[1px] ss-vocabs">
-                  {list.map((item, idx) => (                    
-                    <div key={idx} className="relative group flex-1 min-w-0 ss-vocabs-item">
+                  {list.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="relative group flex-1 min-w-0 ss-vocabs-item"
+                    >
                       <div className="flex flex-row h-[50px] leading-[50px] ss-vocabs-head">
                         <div className="w-[86px] h-[100%] bg-[rgba(63,64,68,.7)] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150 flex-shrink-0 flex-grow-0 ss-vocabs-label">
                           <p className="text-[12px] h-[100%] text-center text-[#525356]">
@@ -100,11 +106,13 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px] truncate">
-                            { item.title}
+                          {item.title}
                         </div>
                       </div>
                       <div className="absolute left-0 right-0 top-[50px] bg-[rgba(63,64,68,.3)] border-0 border-t border-[rgba(0,0,0,.3)] p-[20px] text-white text-[14px] duration-300 transition invisible opacity-0 translate-y-[-10%] group-hover:visible group-hover:opacity-100 group-hover:translate-y-[0] ss-vocabs-content">
-                        <div className="vocab-content"><Str2html htmlString={item.content} /></div>
+                        <div className="vocab-content">
+                          <Str2html htmlString={item.content} />
+                        </div>
                         <style jsx>{`
                           .vocab-content {
                             display: -webkit-box;
@@ -123,13 +131,10 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                  ))}              
-                
-              </div>
+                  ))}
+                </div>
               )}
             </div>
-           
-
           </div>
           <div className="self-center flex pr-[76px] min-w-[500px] ss-index-right">
             <img

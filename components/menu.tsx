@@ -11,30 +11,29 @@ const Menu = () => {
   const pathname = usePathname();
   const handleMouseEnter = () => {
     if (document.documentElement.clientWidth > 768) {
-      setRotate(true)
+      setRotate(true);
     }
   };
 
   const handleMouseLeave = () => {
     if (document.documentElement.clientWidth > 768) {
-      setRotate(false)
+      setRotate(false);
     }
   };
 
   const handleClick = () => {
     if (document.documentElement.clientWidth <= 768) {
-      setRotate(!rotate)
+      setRotate(!rotate);
     }
   };
 
   return (
-    <div className="flex text-[14px] ss-menu">      
+    <div className="flex text-[14px] ss-menu">
       <div
         className="relative flex ss-menu-item"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        
-      >        
+      >
         <div
           className={`${rotate ? "bg-menu-color" : ""} flex justify-center space-x-1 cursor-pointer relative  px-6 group hover:bg-menu-color ss-icon-submenu`}
           onClick={handleClick}

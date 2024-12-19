@@ -217,7 +217,7 @@ const IndustrySectors = () => {
         color: "#ffffff",
         fontSize: 12,
       },
-      position:'top',
+      position: "top",
       formatter: function (params: any) {
         var data = params.data;
         var tooltipContent = `<div style="padding: 10px; line-height:2; color:#b8b8b8; font-size:14px; white-space:wrap;"><strong>${params.name}</strong><br>`;
@@ -234,7 +234,7 @@ const IndustrySectors = () => {
       type: "scroll",
       orient: "vertical",
       right: 80,
-      top: 'middle',
+      top: "middle",
       data: data.legendData,
       textStyle: {
         color: "#ffffff",
@@ -258,43 +258,47 @@ const IndustrySectors = () => {
     ],
     media: [
       {
-        query: { maxWidth: 5120 },  // 当屏幕宽度小于768px时
+        query: { maxWidth: 5120 }, // 当屏幕宽度小于768px时
         option: {
           legend: {
             type: "scroll",
             orient: "vertical",
             right: 80,
-            top: 'middle'
+            top: "middle",
           },
-          series: [{
-            center: ['40%', '50%']  // 保证手机屏幕中间位置
-          }]
-        }
+          series: [
+            {
+              center: ["40%", "50%"], // 保证手机屏幕中间位置
+            },
+          ],
+        },
       },
       {
-        query: { maxWidth: 768 },  // 当屏幕宽度小于768px时
+        query: { maxWidth: 768 }, // 当屏幕宽度小于768px时
         option: {
           legend: {
-            orient: 'vertical',
-            left: 'right',
-            top: 'middle'
-          }
-        }
+            orient: "vertical",
+            left: "right",
+            top: "middle",
+          },
+        },
       },
       {
-        query: { maxWidth: 480 },  // 当屏幕宽度小于480px时
+        query: { maxWidth: 480 }, // 当屏幕宽度小于480px时
         option: {
           legend: {
-            orient: 'horizontal',
-            left: 'center',
-            bottom: 0
+            orient: "horizontal",
+            left: "center",
+            bottom: 0,
           },
-          series: [{
-            center: ['50%', '50%']  // 保证手机屏幕中间位置
-          }]
-        }
-      }
-    ]
+          series: [
+            {
+              center: ["50%", "50%"], // 保证手机屏幕中间位置
+            },
+          ],
+        },
+      },
+    ],
   };
 
   return (

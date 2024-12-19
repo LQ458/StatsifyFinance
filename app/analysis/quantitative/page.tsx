@@ -10,6 +10,7 @@ import SideNav from "@/components/side-nav";
 import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/analysis/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
+import AIChat from "@/components/aiChat";
 
 interface Item {
   _id: string;
@@ -110,7 +111,7 @@ const Analysis = () => {
     }
   }, [swiperIndex]);
   // 分类页面数据加载完成后判断地址栏参数index，用于滑动到指定位置
-  useEffect(() => {    
+  useEffect(() => {
     let index = searchParams.get("index");
     // index优先，在有index的情况下不考虑首页过来的情况
     if (index) {
@@ -125,10 +126,10 @@ const Analysis = () => {
       const _id = searchParams.get("_id");
       for (let i = 0; i < pages.length; i++) {
         if (pages[i]._id === _id) {
-            handleSlideTo(i);
-            break; 
+          handleSlideTo(i);
+          break;
         }
-      }      
+      }
     }
   }, [pages]);
 
@@ -157,14 +158,14 @@ const Analysis = () => {
     const tabScrollCenter = () => {
       if (tabRef.current) {
         // 有滚动条才滚动
-        if(tabRef.current.offsetWidth < tabRef.current.scrollWidth){
+        if (tabRef.current.offsetWidth < tabRef.current.scrollWidth) {
           const li = (tabRef.current as HTMLElement).querySelectorAll("li");
-          if (li.length > 0 && current>=0) {
+          if (li.length > 0 && current >= 0) {
             tabRef.current?.scrollTo({
-              left: li[current].offsetLeft
+              left: li[current].offsetLeft,
             });
           }
-        }        
+        }
       }
     };
     tabScrollCenter();
@@ -272,7 +273,9 @@ const Analysis = () => {
                   </div>
                 </div>
               </div>
-              <div className={`${styles["custom-pagination"]} ss-custom-pagination`}>
+              <div
+                className={`${styles["custom-pagination"]} ss-custom-pagination`}
+              >
                 <ul>
                   {pages.map((item, idx) => (
                     <li
@@ -289,6 +292,7 @@ const Analysis = () => {
       </div>
       <Footer position="relative" />
       {loading ? <div className="global-loading bg-loading"></div> : ""}
+      <AIChat />
     </main>
   );
 };

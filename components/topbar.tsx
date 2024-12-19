@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
 import Menu from "./menu";
 import User from "./user";
@@ -15,8 +15,8 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const ChangeMenuState = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   const divRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +31,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
     ) {
       // console.log("Clicked outside of div!");
       // 执行点击外部的逻辑，例如关闭模态框
-      setShowMenu(false)
+      setShowMenu(false);
     }
   };
 
@@ -43,9 +43,11 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   return (
-    <div className={`w-[100%] min-w-[1100px] bg-topbar-color border-b border-topbar-border-color h-[60px] ${position} z-[10000] flex-grow-0 flex-shrink-0 ss-topbar`}>
+    <div
+      className={`w-[100%] min-w-[1100px] bg-topbar-color border-b border-topbar-border-color h-[60px] ${position} z-[10000] flex-grow-0 flex-shrink-0 ss-topbar`}
+    >
       <div
         className={`flex justify-between max-w-[1920px] min-w-[1100px] mx-auto h-[100%] px-[60px] ss-topbar-inner`}
       >
@@ -56,22 +58,24 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
           <img src="/logo-gold.svg" width={20} alt="" />
           Statsify Finance
         </Link>
-        <div className={`${showMenu ? 'ss-menu-wrap' : ''} flex gap-32 ss-gap`}>
+        <div className={`${showMenu ? "ss-menu-wrap" : ""} flex gap-32 ss-gap`}>
           <div ref={menuRef} className="flex">
             <Menu />
-          </div>          
-          <div className="flex gap-[1px]">              
-            <Link href="/search" className="self-center w-[60px] h-[60px] flex cursor-pointer justify-center hover:bg-[#313131]">
-              <IoSearch
-              className="text-[24px] text-white self-center"
-              />
+          </div>
+          <div className="flex gap-[1px]">
+            <Link
+              href="/search"
+              className="self-center w-[60px] h-[60px] flex cursor-pointer justify-center hover:bg-[#313131]"
+            >
+              <IoSearch className="text-[24px] text-white self-center" />
             </Link>
             <User />
-            <div ref={divRef} className={`${showMenu ? 'ss-menu-show' : ''} hidden self-center ss-icon-menu `}
-              onClick={ ChangeMenuState }
+            <div
+              ref={divRef}
+              className={`${showMenu ? "ss-menu-show" : ""} hidden self-center ss-icon-menu `}
+              onClick={ChangeMenuState}
             ></div>
           </div>
-          
         </div>
       </div>
     </div>

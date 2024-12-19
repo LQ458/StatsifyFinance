@@ -48,7 +48,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: errorMessage }, { status: 403 });
     }
     return NextResponse.json(
-      { error: "服务器错误，请稍后重试。", message: error.message, success: false },
+      {
+        error: "服务器错误，请稍后重试。",
+        message: error.message,
+        success: false,
+      },
       { status: 500 },
     );
   }

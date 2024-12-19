@@ -101,7 +101,9 @@ const NewsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                         <img src={item.image} width="100%" alt="" />
                       </div>
                       <h4>{item.title}</h4>
-                      <div className={`${styles["date"]} ss-news-date`}>{dayjs(item.createdAt).format("YYYY-MM-DD")}</div>
+                      <div className={`${styles["date"]} ss-news-date`}>
+                        {dayjs(item.createdAt).format("YYYY-MM-DD")}
+                      </div>
                     </li>
                   ))}
                 </ul>
