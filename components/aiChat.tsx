@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FloatButton } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
 import styles from "@/src/css/ai-chat.module.css";
 
@@ -36,8 +35,8 @@ export default function AIChat() {
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
-    const userMessage = {
-      role: "user",
+    const userMessage: Message = {
+      role: "user" as const,
       content: inputValue,
     };
 
@@ -60,7 +59,7 @@ export default function AIChat() {
         setMessages((prev) => [
           ...prev,
           {
-            role: "assistant",
+            role: "assistant" as const,
             content: data.message,
           },
         ]);
@@ -74,11 +73,9 @@ export default function AIChat() {
 
   return (
     <>
-      <FloatButton
-        icon={<MessageOutlined />}
-        onClick={() => setIsOpen(true)}
-        className={styles.chatButton}
-      />
+      <button onClick={() => setIsOpen(true)} className={styles.chatButton}>
+        <MessageOutlined />
+      </button>
 
       {isOpen && (
         <div ref={chatRef} className={styles.chatWindow}>

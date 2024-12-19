@@ -1,12 +1,24 @@
 .chatButton {
-  position: fixed !important;
-  right: 24px !important;
-  bottom: 24px !important;
-  width: 48px !important;
-  height: 48px !important;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
-  background: #ffd700 !important;
-  color: #000 !important;
+  background: white;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chatButton:hover {
+  background: #ffd700;
 }
 
 .chatWindow {
