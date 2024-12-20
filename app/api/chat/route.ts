@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -36,16 +36,15 @@ def calculate_metric(data):
 - 指标C
     `;
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      message: aiResponse 
+      message: aiResponse,
     });
-
   } catch (error) {
-    console.error('Chat API Error:', error);
+    console.error("Chat API Error:", error);
     return NextResponse.json(
-      { success: false, error: 'Failed to get AI response' },
-      { status: 500 }
+      { success: false, error: "Failed to get AI response" },
+      { status: 500 },
     );
   }
 }

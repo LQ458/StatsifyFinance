@@ -19,6 +19,7 @@ import {
 } from "@/src/data/analysis/qualitative";
 import { IoIosArrowDown } from "react-icons/io";
 import AIChat from "@/components/aiChat";
+import {useTranslations} from 'next-intl';
 
 // 定义对象类型
 interface Item {
@@ -40,6 +41,7 @@ interface Mapping {
 }
 
 const Analysis = () => {
+  const t = useTranslations('analysis');
   const [current, setCurrent] = useState(0);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
   const [noNext, setNoNext] = useState(false); // 默认还有下一页
@@ -143,13 +145,13 @@ const Analysis = () => {
               onClick={() => setCurTopic("quan")}
               className={`${curTopic === "quan" && styles.active}`}
             >
-              定量
+              {t('quantitative.title')}
             </li>
             <li
               onClick={() => setCurTopic("qual")}
               className={`${curTopic === "qual" && styles.active}`}
             >
-              定性
+              {t('qualitative.title')}
             </li>
           </ul>
         </div>
