@@ -1,42 +1,18 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import createMiddleware from "next-intl/middleware";
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(req: NextRequest) {
-  // console.log('中间件执行了',req.nextUrl.pathname);
+export const locales = ["en", "zh"] as const;
+export const defaultLocale = "en" as const;
 
-  if (req.nextUrl.pathname.startsWith("/admin")) {
-    // 根据环境设置 cookie 名称
-    const cookieName =
-      process.env.NODE_ENV === "production"
-        ? "__Secure-next-auth.session-token"
-        : "next-auth.session-token";
+export type Locale = (typeof locales)[number];
 
-    const token = await getToken({
-      req,
-      cookieName,
-      secret: process?.env?.AUTH_SECRET,
-    });
+export const SUPPORTED_LOCALES = ['en', 'zh'] as const;
 
-    console.log("isAdmin::::", token?.admin);
+export default createMiddleware({
+  locales: SUPPORTED_LOCALES,
+  defaultLocale,
+  localePrefix: "always",
+});
 
-    // 访问的如果是管理后台，我们可以在这里做判断
-    if (req.cookies.get(cookieName)) {
-      if (!Boolean(token?.admin)) {
-        // 跳转到首页
-        return NextResponse.redirect(new URL("/", req.url));
-      }
-      // 已经登陆了，什么都不做
-    } else {
-      // 跳转到登陆页面
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-  }
-  // return NextResponse.redirect(new URL('/home', request.url));
-}
-
-// // See "Matching Paths" below to learn more
-// export const config = {
-//   matcher: '/about/:path*',
-// }
+export const config = {
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)", "/"],
+};

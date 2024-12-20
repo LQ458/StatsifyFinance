@@ -1,10 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
 import Menu from "./menu";
 import User from "./user";
+import LanguageSwitcher from "./language-switcher";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { Locale } from "../middleware";
 type PositionType = "relative" | "fixed" | "absolute";
 
 interface TopbarProps {
@@ -13,6 +17,8 @@ interface TopbarProps {
 
 const Topbar: React.FC<TopbarProps> = ({ position }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const locale = useLocale() as Locale;
+  const t = useTranslations("navigation");
 
   const ChangeMenuState = () => {
     setShowMenu(!showMenu);
@@ -53,6 +59,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
       >
         <Link
           href="/"
+          locale={locale}
           className="flex gap-2 text-[16px] text-white self-center no-underline whitespace-nowrap"
         >
           <img src="/logo-gold.svg" width={20} alt="" />
@@ -65,6 +72,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
           <div className="flex gap-[1px]">
             <Link
               href="/search"
+              locale={locale}
               className="self-center w-[60px] h-[60px] flex cursor-pointer justify-center hover:bg-[#313131]"
             >
               <IoSearch className="text-[24px] text-white self-center" />
@@ -77,6 +85,7 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             ></div>
           </div>
         </div>
+        <LanguageSwitcher />
       </div>
     </div>
   );

@@ -19,77 +19,50 @@
     "home": "Home",
     "analysis": "Analysis",
     "search": "Search",
-    "strategy": "Strategy",
-    "learn": "Learn",
-    "articles": "Articles",
-    "finance_terms": "Terminology",
-    "login": "Login",
-    "manage": "Manage",
-    "logout": "Logout",
-    "hello": "Hello: ",
-    "admin": "Admin: "
+    "strategy": "Strategy"
   },
   "common": {
     "loading": "Loading...",
     "error": "Error occurred",
     "login": "Login",
+    "register": "Register", 
     "logout": "Logout",
-    "register": "Register",
     "search": "Search",
     "more": "More",
     "back": "Back",
-    "noData": "No data available",
-    "language": {
-      "select": "Select language",
-      "zh": "Chinese",
-      "en": "English"
-    },
-    "message": {
-      "type": {
-        "success": "Success",
-        "warning": "Warning",
-        "error": "Error"
-      },
-      "close": "Close message"
-    },
-    "aiChat": {
-      "title": "AI Assistant",
-      "suggestedTopics": "Suggested Topics",
-      "thinking": "AI is thinking...",
-      "placeholder": "Type your message here...",
-      "send": "Send"
-    },
-    "dateFormat": {
-      "short": "YYYY-MM-DD",
-      "long": "YYYY-MM-DD HH:mm:ss"
-    }
-  },
-  "footer": {
-    "copyright": "© 2024 StatsifyFinance. All Rights Reserved.",
-    "social": {
-      "weibo": "Weibo",
-      "twitter": "Twitter",
-      "facebook": "Facebook",
-      "wechat": "WeChat",
-      "linkedin": "LinkedIn"
-    }
-  },
-  "articles": {
-    "title": "Financial Market Dynamics and In-depth Analysis",
-    "description": "Better understanding of financial markets, higher investment judgment, start the investment upgrade path",
-    "breadcrumb": {
-      "separator": ">"
-    }
+    "noData": "No data available"
   },
   "analysis": {
-    "quantitative": "Quantitative",
-    "qualitative": "Qualitative",
-    "title": "Market Analysis",
-    "trade": "Trade Strategy",
-    "investor": "Investor",
-    "risk-manage": "Risk Management",
-    "description": "Comprehensive market analysis helps you make better investment decisions",
-    "loading": "Loading..."
+    "quantitative": {
+      "title": "Quantitative Analysis Indicators",
+      "description": "Used in financial analysis to evaluate investment performance, risk and return. These indicators are based on mathematical and statistical methods to help investors and analysts make objective investment decisions.",
+      "categories": {
+        "profitability": "Profitability",
+        "operation": "Operation",
+        "growth": "Growth",
+        "solvency": "Solvency"
+      }
+    },
+    "qualitative": {
+      "title": "Qualitative Analysis Indicators", 
+      "description": "Subjective judgments that assess non-financial factors such as corporate management quality, brand value and market competitiveness for a comprehensive understanding of the business.",
+      "categories": {
+        "business": "Business Model",
+        "industry": "Industry Analysis",
+        "management": "Management Analysis"
+      }
+    },
+    "articles": {
+      "title": "Financial Market Dynamics and In-depth Analysis",
+      "description": "Better understanding of financial markets, higher investment judgment, start the investment upgrade path",
+      "breadcrumb": {
+        "separator": ">"
+      }
+    },
+    "finance_terms": {
+      "title": "Financial Terms",
+      "description": "Provides basic concepts and vocabulary commonly used in finance to help understand market operations and investment decisions"
+    }
   },
   "login": {
     "title": "Login",
@@ -98,8 +71,7 @@
     "remember": "Remember me",
     "forgot": "Forgot password?",
     "submit": "Login",
-    "registerNote": "No account? ",
-    "register": "Register",
+    "register": "No account? Register",
     "error": {
       "email": "Please enter a valid email",
       "password": "Password cannot be empty",
@@ -109,7 +81,7 @@
   "register": {
     "title": "Register",
     "email": "Email",
-    "password": "Password",
+    "password": "Password", 
     "confirm": "Confirm Password",
     "submit": "Register",
     "login": "Have an account? Login",
@@ -122,84 +94,21 @@
   },
   "search": {
     "title": "Search",
-    "placeholder": "Enter keywords",
+    "placeholder": "Enter keywords to search",
     "empty": "No results found",
-    "noInput": "Please enter search keywords",
-    "result": {
-      "prefix": "Found results for \"",
-      "suffix": "\" in ",
-      "count": " item(s)"
-    },
     "filter": {
       "all": "All",
-      "articles": "Articles",
-      "finance_terms": "Financial Terms",
-      "quantitative": "Quantitative",
-      "qualitative": "Qualitative",
-      "trade": "Trading Strategy",
-      "risk_manage": "Risk Management"
-    },
-    "image": {
-      "alt": "Search result illustration"
-    },
-    "back_to_category": "Back to category"
+      "article": "Articles",
+      "term": "Terms"
+    }
   },
   "strategy": {
     "title": "Investment Strategy",
     "description": "Explore different investment strategies",
     "categories": {
       "value": "Value Investing",
-      "growth": "Growth Investing",
+      "growth": "Growth Investing", 
       "dividend": "Dividend Investing"
-    }
-  },
-  "finance_terms": {
-    "title": "Financial Terms",
-    "description": "Basic concepts and vocabulary in finance about market operations and investment decisions",
-    "term": {
-      "image": {
-        "alt": "Illustration for financial term"
-      }
-    }
-  },
-  "investor": {
-    "title": "Investor Stories",
-    "description": "Learn from successful investors' experiences and insights",
-    "image": {
-      "alt": "Investor story illustration"
-    },
-    "modal": {
-      "close": "Close story details"
-    }
-  },
-  "learn": {
-    "slider": {
-      "label": "Learning content slider"
-    },
-    "slide": {
-      "label": "Slide"
-    }
-  },
-  "news": {
-    "slider": {
-      "label": "News content slider"
-    },
-    "image": {
-      "alt": "News article illustration"
-    }
-  },
-  "quantitative": {
-    "title": "Quantitative Analysis",
-    "description": "Analyzing investment performance and risk using statistical methods. This approach helps assess returns effectively."
-  },
-  "qualitative": {
-    "title": "Qualitative Analysis",
-    "description": "Evaluating non-financial factors such as management quality, brand value, and market competitiveness to understand a company's overall situation."
-  },
-  "article_details": {
-    "breadcrumb": {
-      "articles": "Back to articles",
-      "separator": ">"
     }
   }
 }

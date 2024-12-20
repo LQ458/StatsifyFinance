@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "Statsify Finance",
+    "description": "Statsify Finance 网站"
+  },
+  "home": {
+    "title": "更好地理解金融",
+    "subtitle": "通过评估、预算和规划获得清晰而有条理的财务理解",
+    "vocabs": {
+      "title": "本周词汇",
+      "more": "更多",
+      "loading": "加载中...",
+      "item": {
+        "vocab": "词汇"
+      }
+    }
+  },
+  "navigation": {
+    "home": "首页",
+    "analysis": "分析",
+    "search": "搜索",
+    "strategy": "策略"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "search": "搜索",
+    "more": "更多",
+    "back": "返回",
+    "noData": "暂无数据"
+  },
+  "analysis": {
+    "quantitative": {
+      "title": "定量分析指标",
+      "description": "在金融分析中用于评估投资的性能、风险和回报。这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。",
+      "categories": {
+        "profitability": "盈利能力",
+        "operation": "运营能力",
+        "growth": "成长能力",
+        "solvency": "偿债能力"
+      }
+    },
+    "qualitative": {
+      "title": "定性分析指标",
+      "description": "指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。",
+      "categories": {
+        "business": "商业模式",
+        "industry": "行业分析",
+        "management": "管理层分析"
+      }
+    },
+    "articles": {
+      "title": "金融市场动态和深入分析",
+      "description": "更全面的金融市场认知，更高的投资判断力,开启投资跃升之路",
+      "breadcrumb": {
+        "separator": ">"
+      }
+    },
+    "finance_terms": {
+      "title": "金融基础术语",
+      "description": "提供金融领域中常用的、帮助理解市场运作和投资决策的基本概念和词汇"
+    }
+  },
+  "login": {
+    "title": "登录",
+    "email": "邮箱",
+    "password": "密码",
+    "remember": "记住我",
+    "forgot": "忘记密码?",
+    "submit": "登录",
+    "register": "还没有账号? 注册",
+    "error": {
+      "email": "请输入有效的邮箱地址",
+      "password": "密码不能为空",
+      "invalid": "邮箱或密码错误"
+    }
+  },
+  "register": {
+    "title": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "confirm": "确认密码",
+    "submit": "注册",
+    "login": "已有账号? 登录",
+    "error": {
+      "email": "请输入有效的邮箱地址",
+      "password": "密码长度至少6位",
+      "confirm": "两次输入的密码不一致",
+      "exists": "该邮箱已被注册"
+    }
+  },
+  "search": {
+    "title": "搜索",
+    "placeholder": "输入关键词搜索",
+    "empty": "暂无搜索结果",
+    "filter": {
+      "all": "全部",
+      "article": "文章",
+      "term": "术语"
+    }
+  },
+  "strategy": {
+    "title": "投资策略",
+    "description": "探索不同的投资策略",
+    "categories": {
+      "value": "价值投资",
+      "growth": "成长投资",
+      "dividend": "股息投资"
+    }
+  }
+}

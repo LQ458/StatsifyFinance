@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 import Link from "next/link";
 import Str2html from "@/components/str2html";
 import { useState, useEffect } from "react";
+import { useTranslations } from 'next-intl';
 
 interface Item {
   _id: string;
@@ -16,6 +17,7 @@ interface Item {
 }
 
 export default function Home() {
+  const t = useTranslations('home');
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<Item[]>([]);
 
@@ -64,13 +66,12 @@ export default function Home() {
           <div className="self-center flex-grow pl-[120px] -mt-[50px] min-w-0 ss-index-left">
             <div className="flex flex-col gap-5 mb-[160px]">
               <h1 className="text-white font-[400] text-[32px]">
-                Your Path To Financial Clarity
+                {t('title')}
               </h1>
               <div className="bg-yellow-400 h-0.5 w-16"></div>
               <div className="text-[16px]">
                 <p className="text-[#666666] max-w-[600px]">
-                  Gaining clear and organized financial understanding through
-                  evaluation, budgeting, and planning.
+                  {t('subtitle')}
                 </p>
               </div>
             </div>
@@ -78,17 +79,17 @@ export default function Home() {
             <div className="min-h-[81px]">
               <div className="flex flex-row justify-between max-w-[886px] mb-[10px]">
                 <p className="text-[#666666] text-[14px]">
-                  Vocabs for the week
+                  {t('vocabs.title')}
                 </p>
                 <Link
                   href="/analysis/quantitative"
                   className="text-[#666666] text-[14px] hover:text-[#ffd700]"
                 >
-                  more &gt;
+                  {t('vocabs.more')} &gt;
                 </Link>
               </div>
               {loading ? (
-                <div className="text-[#666] text-center">loading...</div>
+                <div className="text-[#666] text-center">{t('vocabs.loading')}</div>
               ) : (
                 <div className="flex max-w-[886px] gap-[1px] ss-vocabs">
                   {list.map((item, idx) => (
@@ -99,7 +100,7 @@ export default function Home() {
                       <div className="flex flex-row h-[50px] leading-[50px] ss-vocabs-head">
                         <div className="w-[86px] h-[100%] bg-[rgba(63,64,68,.7)] border-0 border-b-2 border-transparent duration-300 transition  group-hover:border-yellow-400 group-hover:delay-150 flex-shrink-0 flex-grow-0 ss-vocabs-label">
                           <p className="text-[12px] h-[100%] text-center text-[#525356]">
-                            vocab
+                            {t('vocabs.item.vocab')}
                             <span className="text-[28px] text-[#666666] italic font-[600]">
                               {idx + 1}
                             </span>

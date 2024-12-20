@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { MessageOutlined } from "@ant-design/icons";
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import styles from "@/src/css/ai-chat.module.css";
-import type { SyntaxHighlighterProps } from 'react-syntax-highlighter';
+import type { SyntaxHighlighterProps } from "react-syntax-highlighter";
+import { useTranslations } from "next-intl";
 
 interface Message {
   role: "user" | "assistant" | "system";
@@ -14,10 +15,11 @@ interface Message {
 
 interface SuggestedTopic {
   title: string;
-  content: string;
+  content?: string;
 }
 
 export default function AIChat() {
+  const t = useTranslations("common.aiChat");
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -44,7 +46,7 @@ export default function AIChat() {
 
   // 获取推荐topics
   useEffect(() => {
-    if(isOpen) {
+    if (isOpen) {
       generateTopics();
     }
   }, [isOpen]);
@@ -54,19 +56,24 @@ export default function AIChat() {
       const response = await fetch("/api/suggest-topics", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          pageType: window.location.pathname.includes("quantitative") ? "quantitative" : "qualitative"
+          pageType: window.location.pathname.includes("quantitative")
+            ? "quantitative"
+            : "qualitative",
         }),
       });
-      
+
       const data = await response.json();
-      if(data.success) {
-        setSuggestedTopics(data.topics);
+      if (data.success && Array.isArray(data.data)) {
+        setSuggestedTopics(data.data);
+      } else {
+        setSuggestedTopics([]);
       }
     } catch (error) {
       console.error("Failed to get topics:", error);
+      setSuggestedTopics([]);
     }
   };
 
@@ -84,7 +91,7 @@ export default function AIChat() {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    if(!message) setInputValue("");
+    if (!message) setInputValue("");
     setLoading(true);
 
     try {
@@ -123,7 +130,7 @@ export default function AIChat() {
       {isOpen && (
         <div ref={chatRef} className={styles.chatWindow}>
           <div className={styles.chatHeader}>
-            <span>AI 助手</span>
+            <span>{t("title")}</span>
             <button
               onClick={() => setIsOpen(false)}
               className={styles.closeButton}
@@ -134,9 +141,11 @@ export default function AIChat() {
 
           <div className={styles.chatContainer}>
             <div className={styles.messageList}>
-              {messages.length === 0 && suggestedTopics.length > 0 && (
+              {messages.length === 0 && Array.isArray(suggestedTopics) && suggestedTopics.length > 0 && (
                 <div className={styles.topicsList}>
-                  <div className={styles.topicsHeader}>建议的话题:</div>
+                  <div className={styles.topicsHeader}>
+                    {t("suggestedTopics")}
+                  </div>
                   {suggestedTopics.map((topic, index) => (
                     <div
                       key={index}
@@ -153,35 +162,43 @@ export default function AIChat() {
                 <div
                   key={index}
                   className={`${styles.message} ${
-                    msg.role === "user" ? styles.userMessage : styles.assistantMessage
+                    msg.role === "user"
+                      ? styles.userMessage
+                      : styles.assistantMessage
                   }`}
                 >
                   <ReactMarkdown
                     components={{
-                      code({node, inline, className, children, ...props}: any) {
-                        const match = /language-(\w+)/.exec(className || '');
+                      code({
+                        node,
+                        inline,
+                        className,
+                        children,
+                        ...props
+                      }: any) {
+                        const match = /language-(\w+)/.exec(className || "");
                         return !inline && match ? (
                           <SyntaxHighlighter
-                            style={tomorrow as SyntaxHighlighterProps['style']}
+                            style={tomorrow as SyntaxHighlighterProps["style"]}
                             language={match[1]}
                             PreTag="div"
                             {...props}
                           >
-                            {String(children).replace(/\n$/, '')}
+                            {String(children).replace(/\n$/, "")}
                           </SyntaxHighlighter>
                         ) : (
                           <code className={className} {...props}>
                             {children}
                           </code>
                         );
-                      }
+                      },
                     }}
                   >
                     {msg.content}
                   </ReactMarkdown>
                 </div>
               ))}
-              {loading && <div className={styles.loading}>AI正在思考...</div>}
+              {loading && <div className={styles.loading}>{t("thinking")}</div>}
             </div>
 
             <div className={styles.inputArea}>
@@ -190,7 +207,7 @@ export default function AIChat() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder="输入您的问题..."
+                placeholder={t("placeholder")}
                 className={styles.input}
               />
               <button
@@ -198,7 +215,7 @@ export default function AIChat() {
                 className={styles.sendButton}
                 disabled={loading}
               >
-                发送
+                {t("send")}
               </button>
             </div>
           </div>

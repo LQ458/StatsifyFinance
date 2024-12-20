@@ -1,5 +1,5 @@
 "use client";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
@@ -8,7 +8,6 @@ import Str2html from "@/components/str2html";
 import { IoSearch } from "react-icons/io5";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { useTranslations } from "next-intl";
 
 type Item = {
   _id: string;
@@ -22,8 +21,6 @@ type Item = {
 };
 
 const Search = () => {
-  const t = useTranslations("search");
-  const commonT = useTranslations("common");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [keywords, setKeywords] = useState("");
   const [currentNav, setCurrentNav] = useState("articles");
@@ -60,20 +57,24 @@ const Search = () => {
         signal: newController.signal,
       });
       const result = await response.json();
-
-      // 直接使用 map 返回新数组,避免创建临时数组
-      const filterList = result?.data?.list
-        ? result.data.list.map((item: Item) => ({
+      let filterList: Item[] = [];
+      result?.data?.list &&
+        result.data.list.map((item: Item) => {
+          let tempData = {
             ...item,
             title: addMark(item.title, currentSearchKeyword),
-            enTitle: item.enTitle
-              ? addMark(item.enTitle, currentSearchKeyword)
-              : undefined,
-          }))
-        : [];
-
+          };
+          if (item.enTitle) {
+            tempData.enTitle = addMark(item.enTitle, currentSearchKeyword);
+          }
+          filterList.push(tempData);
+        });
       setData(filterList);
-      setNoData(filterList.length === 0);
+      if (filterList.length === 0) {
+        setNoData(true);
+      } else {
+        setNoData(false);
+      }
     } catch (error: any) {
       if (error.name === "AbortError") {
         console.log("请求被取消");
@@ -85,9 +86,7 @@ const Search = () => {
 
   // 标记
   const addMark = (content: string, keyword: string) => {
-    // 转义正则表达式特殊字符
-    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(escapedKeyword, "gi");
+    const regex = new RegExp(keyword, "gi");
     let result = content.replace(
       regex,
       (match) => `<span style="color:#FFD700">${match}</span>`,
@@ -148,7 +147,7 @@ const Search = () => {
               <div className="flex self-center relative">
                 <input
                   ref={inputRef}
-                  placeholder={t("placeholder")}
+                  placeholder="请输入关键字"
                   type="text"
                   value={keywords}
                   onChange={keywordsChange}
@@ -156,7 +155,7 @@ const Search = () => {
                   className={`h-[30px] px-[8px] focus:outline-0 pr-[30px] text-[14px] placeholder-gray-300 rounded-[4px] text-white bg-input-bg-color self-center transition-all duration-300 ss-search-input`}
                 />
                 <button
-                  title={commonT("search")}
+                  title="search"
                   type="button"
                   className={`absolute right-[5px] top-[3px] bg-transparent p-0 border-0`}
                 >
@@ -169,77 +168,57 @@ const Search = () => {
             </div>
 
             <div className={`${styles.nav} w-full ss-search-nav`}>
-              <ul className="border-b border-[#666] overflow-x-auto">
+              <ul className="border-b border-[#666] ">
                 <li
                   className={`${currentNav === "articles" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("articles")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.articles")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("articles")}>
+                    资讯
+                  </Link>
                 </li>
                 <li
                   className={`${currentNav === "finance-terms" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("finance-terms")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.finance_terms")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("finance-terms")}>
+                    金融基础术语
+                  </Link>
                 </li>
                 <li
                   className={`${currentNav === "quantitative" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("quantitative")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.quantitative")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("quantitative")}>
+                    定量
+                  </Link>
                 </li>
                 <li
                   className={`${currentNav === "qualitative" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("qualitative")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.qualitative")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("qualitative")}>
+                    定性
+                  </Link>
                 </li>
                 <li
                   className={`${currentNav === "trade" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("trade")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.trade")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("trade")}>
+                    交易策略
+                  </Link>
                 </li>
                 <li
                   className={`${currentNav === "risk-manage" ? styles.active : ""}`}
                 >
-                  <button
-                    onClick={() => tabClick("risk-manage")}
-                    className="whitespace-nowrap"
-                  >
-                    {t("filter.risk_manage")}
-                  </button>
+                  <Link href="#" onClick={() => tabClick("risk-manage")}>
+                    风控
+                  </Link>
                 </li>
               </ul>
             </div>
 
             {currentSearchKeyword.length > 0 && (
               <div className=" pt-[20px] text-[#999] text-[14px]">
-                {t("result.prefix")}
+                 找到与“
                 <span className="text-[#FFD700]">{currentSearchKeyword}</span>
-                {t("result.suffix")}
-                {data.length}
-                {t("result.count")}
+                ”相关的内容共{data.length}条
               </div>
             )}
 
@@ -253,15 +232,13 @@ const Search = () => {
                         className={`${styles.searchArticles} ss-search-articles`}
                       >
                         <Link
-                          href={`/articles/details?category=${item.category}&id=${item._id}&category-name=${t("back_to_category")}`}
+                          href={`/articles/details?category=${item.category}&id=${item._id}&category-name=返回分类`}
                         >
                           {" "}
                           <Str2html htmlString={item.title} />
                         </Link>
                         <div className="text-[14px] text-[#666] flex-shrink-0 flex-grow-0 text-nowrap ss-search-articles-date">
-                          {dayjs(item.createdAt).format(
-                            commonT("dateFormat.short"),
-                          )}
+                          {dayjs(item.createdAt).format("YYYY-MM-DD")}
                         </div>
                       </div>
                     </li>
@@ -283,15 +260,13 @@ const Search = () => {
                           </h3>
                           <p className="text-[14px]">{item.content}</p>
                           <div className="text-[12px] text-[#666] mt-[10px]">
-                            {dayjs(item.createdAt).format(
-                              commonT("dateFormat.short"),
-                            )}
+                            {dayjs(item.createdAt).format("YYYY-MM-DD")}
                           </div>
                         </div>
                         <div className="flex-shrink-0 flex-grow-0 self-center ss-search-finance-terms-cover">
                           <Image
                             src={item.image}
-                            alt={t("image.alt")}
+                            alt="风景"
                             width={140}
                             height={79}
                           />
@@ -318,9 +293,7 @@ const Search = () => {
                           <Str2html htmlString={item.content} />
                         </div>
                         <div className="text-[14px] text-[#666] mt-[10px]">
-                          {dayjs(item.createdAt).format(
-                            commonT("dateFormat.long"),
-                          )}
+                          {dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}
                         </div>
                       </div>
                     </li>
@@ -333,7 +306,9 @@ const Search = () => {
             {noData && (
               <div className="text-center text-[#999] min-h-[200px] pt-[50px] text-[14px]">
                 <div className="bg-no-result w-[64px] h-[64px] bg-cover opacity-10 mx-auto mb-[10px]"></div>
-                {currentSearchKeyword.length > 0 ? t("empty") : t("noInput")}
+                {currentSearchKeyword.length > 0
+                  ? "没有搜到相关内容"
+                  : "请输入需要查找的内容"}
               </div>
             )}
           </div>
