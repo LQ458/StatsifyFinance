@@ -8,6 +8,7 @@ import styles from "@/src/css/news.module.css";
 import SideNav from "@/components/side-nav";
 import NewsSlider, { SwiperComponentHandle } from "@/components/news-slider";
 import { IoIosArrowDown } from "react-icons/io";
+import { useTranslations } from "next-intl";
 
 interface ChangeData {
   activeIndex: number;
@@ -57,6 +58,9 @@ const News: React.FC = () => {
     pagesTemp: twoDimension = [];
   // 获取地址栏category参数，用于跳转到指定分类
   const cId = searchParams.get("category");
+
+  const t = useTranslations("articles");
+  const commonT = useTranslations("common");
 
   // 获取资讯分类
   const getArticlesCategory = async () => {
@@ -185,11 +189,9 @@ const News: React.FC = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                金融市场动态和深入分析
+                {t("title")}
               </h1>
-              <p className="text-[#B8B8B8] text-[16px]">
-                更全面的金融市场认知，更高的投资判断力,开启投资跃升之路
-              </p>
+              <p className="text-[#B8B8B8] text-[16px]">{t("description")}</p>
 
               <div className="mt-[30px] text-left">
                 <div className={`${styles.tabContent} ss-tab-content`}>
@@ -232,7 +234,11 @@ const News: React.FC = () => {
         </div>
       </div>
       <Footer position="relative" />
-      {loading ? <div className="global-loading bg-loading"></div> : ""}
+      {loading ? (
+        <div className="global-loading bg-loading">{commonT("loading")}</div>
+      ) : (
+        ""
+      )}
     </main>
   );
 };

@@ -1,18 +1,20 @@
 import createMiddleware from "next-intl/middleware";
-
-export const locales = ["en", "zh"] as const;
-export const defaultLocale = "en" as const;
-
-export type Locale = (typeof locales)[number];
-
-export const SUPPORTED_LOCALES = ['en', 'zh'] as const;
+import { locales, defaultLocale } from "./i18n/locales";
 
 export default createMiddleware({
-  locales: SUPPORTED_LOCALES,
+  locales,
   defaultLocale,
   localePrefix: "always",
 });
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)", "/"],
+  matcher: [
+    // Match all pathnames except for
+    // - api routes
+    // - static files
+    // - internal Next.js paths
+    "/((?!api|_next|_vercel|.*\\.[^/]*$).*)",
+    // Also match root path
+    "/",
+  ],
 };

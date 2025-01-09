@@ -5,11 +5,11 @@ interface NavItem {
 
 const mainNavList: NavItem[] = [
   {
-    value: "定量",
+    value: "quantitative",
     path: "/analysis/quantitative",
   },
   {
-    value: "定性",
+    value: "qualitative",
     path: "/analysis/qualitative",
   },
 ];

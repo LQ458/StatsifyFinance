@@ -8,7 +8,7 @@ import LanguageSwitcher from "./language-switcher";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { Locale } from "../middleware";
+type Locale = "en" | "zh";
 type PositionType = "relative" | "fixed" | "absolute";
 
 interface TopbarProps {
@@ -78,6 +78,8 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
               <IoSearch className="text-[24px] text-white self-center" />
             </Link>
             <User />
+            <div className="w-[1px] h-[20px] bg-[#333] self-center mx-4" />
+            <LanguageSwitcher />
             <div
               ref={divRef}
               className={`${showMenu ? "ss-menu-show" : ""} hidden self-center ss-icon-menu `}
@@ -85,7 +87,6 @@ const Topbar: React.FC<TopbarProps> = ({ position }) => {
             ></div>
           </div>
         </div>
-        <LanguageSwitcher />
       </div>
     </div>
   );

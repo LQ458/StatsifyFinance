@@ -870,7 +870,6 @@
     overflow-x: auto;
   }
   .search-container .ss-search-nav ul li a {
-    white-space: nowrap;
     padding: 0 10px;
   }
 

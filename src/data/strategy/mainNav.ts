@@ -5,15 +5,15 @@ interface NavItem {
 
 const mainNavList: NavItem[] = [
   {
-    value: "交易策略",
+    value: "trade",
     path: "/strategy/trade",
   },
   {
-    value: "投资者",
+    value: "investor",
     path: "/strategy/investor",
   },
   {
-    value: "风控",
+    value: "risk-manage",
     path: "/strategy/risk-manage",
   },
 ];

@@ -19,7 +19,15 @@
     "home": "首页",
     "analysis": "分析",
     "search": "搜索",
-    "strategy": "策略"
+    "strategy": "策略",
+    "learn": "学习",
+    "articles": "资讯",
+    "finance_terms": "金融基础术语",
+    "login": "登录",
+    "manage": "管理",
+    "logout": "退出登录",
+    "hello": "您好: ",
+    "admin": "管理员: "
   },
   "common": {
     "loading": "加载中...",
@@ -30,39 +38,60 @@
     "search": "搜索",
     "more": "更多",
     "back": "返回",
-    "noData": "暂无数据"
+    "noData": "暂无数据",
+    "language": {
+      "select": "选择语言",
+      "zh": "中文",
+      "en": "英文"
+    },
+    "message": {
+      "type": {
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误"
+      },
+      "close": "关闭消息"
+    },
+    "aiChat": {
+      "title": "AI 助手",
+      "suggestedTopics": "推荐话题",
+      "thinking": "AI 思考中...",
+      "placeholder": "请输入您的问题...",
+      "send": "发送"
+    },
+    "dateFormat": {
+      "short": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日 HH:mm:ss"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 StatsifyFinance. 保留所有权利。",
+    "social": {
+      "weibo": "微博",
+      "twitter": "推特",
+      "facebook": "脸书",
+      "wechat": "微信",
+      "linkedin": "领英"
+    }
+  },
+  "articles": {
+    "title": "金融市场动态和深入分析",
+    "description": "更全面的金融市场认知，更高的投资判断力,开启投资跃升之路",
+    "breadcrumb": {
+      "separator": ">"
+    }
   },
   "analysis": {
-    "quantitative": {
-      "title": "定量分析指标",
-      "description": "在金融分析中用于评估投资的性能、风险和回报。这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。",
-      "categories": {
-        "profitability": "盈利能力",
-        "operation": "运营能力",
-        "growth": "成长能力",
-        "solvency": "偿债能力"
-      }
-    },
-    "qualitative": {
-      "title": "定性分析指标",
-      "description": "指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。",
-      "categories": {
-        "business": "商业模式",
-        "industry": "行业分析",
-        "management": "管理层分析"
-      }
-    },
-    "articles": {
-      "title": "金融市场动态和深入分析",
-      "description": "更全面的金融市场认知，更高的投资判断力,开启投资跃升之路",
-      "breadcrumb": {
-        "separator": ">"
-      }
-    },
-    "finance_terms": {
-      "title": "金融基础术语",
-      "description": "提供金融领域中常用的、帮助理解市场运作和投资决策的基本概念和词汇"
-    }
+    "quantitative": "定量",
+    "qualitative": "定性",
+    "title": "市场分析",
+    "trade": "交易策略",
+    "investor": "投资者",
+    "risk-manage": "风控",
+    "trade-description-1": "使用数学、统计学、编程和大数据分析等技术，",
+    "trade-description-2": "基于历史数据和市场信号制定的交易策略",
+    "description": "全面的市场分析帮助您做出更好的投资决策",
+    "loading": "加载中..."
   },
   "login": {
     "title": "登录",
@@ -71,7 +100,8 @@
     "remember": "记住我",
     "forgot": "忘记密码?",
     "submit": "登录",
-    "register": "还没有账号? 注册",
+    "registerNote": "还没有账号? ",
+    "register": "立即注册",
     "error": {
       "email": "请输入有效的邮箱地址",
       "password": "密码不能为空",
@@ -96,11 +126,25 @@
     "title": "搜索",
     "placeholder": "输入关键词搜索",
     "empty": "暂无搜索结果",
+    "noInput": "请输入需要查找的内容",
+    "result": {
+      "prefix": "找到与\"",
+      "suffix": "\"相关的内容共",
+      "count": "条"
+    },
     "filter": {
       "all": "全部",
-      "article": "文章",
-      "term": "术语"
-    }
+      "articles": "资讯",
+      "finance_terms": "金融基础术语",
+      "quantitative": "定量",
+      "qualitative": "定性",
+      "trade": "交易策略",
+      "risk_manage": "风控"
+    },
+    "image": {
+      "alt": "搜索结果插图"
+    },
+    "back_to_category": "返回分类"
   },
   "strategy": {
     "title": "投资策略",
@@ -109,6 +153,55 @@
       "value": "价值投资",
       "growth": "成长投资",
       "dividend": "股息投资"
+    }
+  },
+  "investor": {
+    "title": "投资者故事",
+    "description": "学习成功投资者的经验和见解",
+    "image": {
+      "alt": "投资者故事插图"
+    },
+    "modal": {
+      "close": "关闭故事详情"
+    }
+  },
+  "learn": {
+    "slider": {
+      "label": "学习内容滑块"
+    },
+    "slide": {
+      "label": "幻灯片"
+    }
+  },
+  "news": {
+    "slider": {
+      "label": "资讯内容滑块"
+    },
+    "image": {
+      "alt": "资讯文章插图"
+    }
+  },
+  "finance_terms": {
+    "title": "金融基础术语",
+    "description": "提供金融领域中常用的、帮助理解市场运作和投资决策的基本概念和词汇",
+    "term": {
+      "image": {
+        "alt": "金融术语插图"
+      }
+    }
+  },
+  "quantitative": {
+    "title": "定量分析指标",
+    "description": "在金融分析中用于评估投资的性能、风险和回报。这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。"
+  },
+  "qualitative": {
+    "title": "定性分析指标",
+    "description": "指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。"
+  },
+  "article_details": {
+    "breadcrumb": {
+      "articles": "返回分类",
+      "separator": ">"
     }
   }
 }

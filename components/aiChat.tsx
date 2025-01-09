@@ -141,22 +141,24 @@ export default function AIChat() {
 
           <div className={styles.chatContainer}>
             <div className={styles.messageList}>
-              {messages.length === 0 && Array.isArray(suggestedTopics) && suggestedTopics.length > 0 && (
-                <div className={styles.topicsList}>
-                  <div className={styles.topicsHeader}>
-                    {t("suggestedTopics")}
-                  </div>
-                  {suggestedTopics.map((topic, index) => (
-                    <div
-                      key={index}
-                      className={styles.topicItem}
-                      onClick={() => handleTopicClick(topic)}
-                    >
-                      {topic.title}
+              {messages.length === 0 &&
+                Array.isArray(suggestedTopics) &&
+                suggestedTopics.length > 0 && (
+                  <div className={styles.topicsList}>
+                    <div className={styles.topicsHeader}>
+                      {t("suggestedTopics")}
                     </div>
-                  ))}
-                </div>
-              )}
+                    {suggestedTopics.map((topic, index) => (
+                      <div
+                        key={index}
+                        className={styles.topicItem}
+                        onClick={() => handleTopicClick(topic)}
+                      >
+                        {topic.title}
+                      </div>
+                    ))}
+                  </div>
+                )}
 
               {messages.map((msg, index) => (
                 <div

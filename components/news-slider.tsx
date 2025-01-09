@@ -6,6 +6,7 @@ import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -57,6 +58,8 @@ const NewsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const { className, items, onChange, sliderIndex = 0, category } = props;
     const swiperRef = useRef<SwiperRef>(null);
     const router = useRouter();
+    const t = useTranslations("common");
+    const newsT = useTranslations("news");
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -90,6 +93,7 @@ const NewsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
           onSlideChange={(swiper) => onChange(swiper)}
           className={`${className}`}
+          aria-label={newsT("slider.label")}
         >
           {items.map((page, index) => (
             <SwiperSlide key={index}>
@@ -98,11 +102,15 @@ const NewsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                   {page.map((item, idx) => (
                     <li key={idx} onClick={() => goDetails(item)}>
                       <div className={`${styles["cover"]} ss-news-img`}>
-                        <img src={item.image} width="100%" alt="" />
+                        <img
+                          src={item.image}
+                          width="100%"
+                          alt={`${newsT("image.alt")} - ${item.title}`}
+                        />
                       </div>
                       <h4>{item.title}</h4>
                       <div className={`${styles["date"]} ss-news-date`}>
-                        {dayjs(item.createdAt).format("YYYY-MM-DD")}
+                        {dayjs(item.createdAt).format(t("dateFormat.short"))}
                       </div>
                     </li>
                   ))}

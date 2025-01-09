@@ -3,16 +3,20 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { FaRegUserCircle } from "react-icons/fa";
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
 
 const User = () => {
   const [rotate, setRotate] = useState(false);
   const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const [admin, setAdmin] = useState(false);
+  const locale = useLocale();
+  const router = useRouter();
+
+  const t = useTranslations("navigation");
 
   useEffect(() => {
-    // console.log("session::", session);
     if (!session) return;
     const { admin, email, image, name } = session?.user as any;
     setUsername(name);
@@ -21,11 +25,12 @@ const User = () => {
 
   // 退出
   const quit = () => {
-    signOut({ callbackUrl: "/" });
+    signOut({ callbackUrl: `/${locale}` });
   };
+
   // 管理
   const manage = () => {
-    window.location.href = "/admin/dashboard";
+    router.push("/admin/dashboard");
   };
 
   return (
@@ -34,9 +39,10 @@ const User = () => {
         {!session ? (
           <Link
             href="/login"
+            locale={locale}
             className="text-white space-x-3 no-underline self-center text-[14px] w-[60px] h-[60px] leading-[60px] text-center hover:bg-[#313131]"
           >
-            登录
+            {t("login")}
           </Link>
         ) : (
           <div
@@ -52,29 +58,25 @@ const User = () => {
             {rotate && (
               <div className="absolute top-[59px] right-[0px] w-[200px] bg-[#313131] p-5 py-2.5 shadow-[0_5px_5px_rgba(0,0,0,0.3)]">
                 <div className="leading-[40px] text-[#999]">
-                  {admin ? "管理员：" : "您好："}
+                  {admin ? t("admin") : t("hello")}
                 </div>
                 <div className="leading-[24px] text-[18px] truncate">
                   {username}
                 </div>
                 <div className="leading-[40px] flex justify-center gap-10 mt-[15px]">
-                  <a
-                    href="#"
-                    className="text-yellow-400 hover:text-yellow-300"
+                  <button
+                    className="text-yellow-400 hover:text-yellow-300 bg-transparent border-0 cursor-pointer"
                     onClick={quit}
                   >
-                    退出登录
-                  </a>{" "}
-                  {admin ? (
-                    <a
-                      className=" text-yellow-400 hover:text-yellow-300"
-                      href="#"
+                    {t("logout")}
+                  </button>
+                  {admin && (
+                    <button
+                      className="text-yellow-400 hover:text-yellow-300 bg-transparent border-0 cursor-pointer"
                       onClick={manage}
                     >
-                      管理
-                    </a>
-                  ) : (
-                    ""
+                      {t("manage")}
+                    </button>
                   )}
                 </div>
               </div>

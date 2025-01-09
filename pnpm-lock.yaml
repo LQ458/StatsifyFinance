@@ -46,6 +46,9 @@ importers:
       cookie:
         specifier: ^1.0.1
         version: 1.0.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       echarts:
         specifier: ^5.5.1
         version: 5.5.1
