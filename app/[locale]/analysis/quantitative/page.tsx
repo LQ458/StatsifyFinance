@@ -11,7 +11,7 @@ import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/analysis/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 import AIChat from "@/components/aiChat";
-
+import { useTranslations } from "next-intl";
 interface Item {
   _id: string;
   title: string;
@@ -32,6 +32,7 @@ interface Category {
 interface twoDimension extends Array<Item[]> {}
 
 const Analysis = () => {
+  const t = useTranslations("quantitative");
   const [currentNav, setCurrentNav] = useState("");
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [isNoData, setIsNoData] = useState(false);
@@ -230,11 +231,9 @@ const Analysis = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                定量分析指标
+                {t("title")}
               </h1>
-              <p className="text-[#B8B8B8] text-[16px]">
-                在金融分析中用于评估投资的性能、风险和回报。这些指标基于数学和统计方法，帮助投资者和分析师做出客观的投资决策。
-              </p>
+              <p className="text-[#B8B8B8] text-[16px]">{t("description")}</p>
 
               <div className="mt-[30px] text-left">
                 <div className={`${styles.tab} ss-tab`}>

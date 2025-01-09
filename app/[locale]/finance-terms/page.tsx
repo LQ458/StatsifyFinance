@@ -8,7 +8,7 @@ import Slider, {
   SwiperComponentHandle,
 } from "@/components/finance-terms-slider";
 import { IoIosArrowDown } from "react-icons/io";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 // 定义对象类型
 interface Item {
   _id: string;
@@ -25,8 +25,8 @@ interface ChangeData {
 }
 
 const FinanceTerms = () => {
-  const t = useTranslations('finance_terms');
-  const commonT = useTranslations('common');
+  const t = useTranslations("finance_terms");
+  const commonT = useTranslations("common");
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(true);
   const [noPrev, setNoPrev] = useState(true); // 默认没有上一页
@@ -101,11 +101,9 @@ const FinanceTerms = () => {
         <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1180px] mx-auto text-center self-center translate-y-[-60px] finance-terms-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              {t('title')}
+              {t("title")}
             </h1>
-            <p className="text-[#B8B8B8] text-[16px]">
-              {t('description')}
-            </p>
+            <p className="text-[#B8B8B8] text-[16px]">{t("description")}</p>
 
             <div className="mt-[30px] text-left">
               <div className={`${styles.tabContent} ss-tab-content`}>
@@ -146,7 +144,9 @@ const FinanceTerms = () => {
         </div>
       </div>
       <Footer position="relative" />
-      {loading && <div className="global-loading bg-loading">{commonT('loading')}</div>}
+      {loading && (
+        <div className="global-loading bg-loading">{commonT("loading")}</div>
+      )}
     </main>
   );
 };

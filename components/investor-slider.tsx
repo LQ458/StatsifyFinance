@@ -15,6 +15,7 @@ import {
 } from "swiper/modules";
 import Str2html from "./str2html";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -50,7 +51,7 @@ export interface SwiperComponentHandle {
   slideTo: (index: number) => void;
 }
 
-const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
+const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0 } = props;
     const swiperRef = useRef<SwiperRef>(null);
@@ -58,6 +59,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const [isShow, setShowstate] = useState(false);
     const [intro, setIntro] = useState("");
     const scrollRef = useRef<HTMLDivElement>(null);
+    const t = useTranslations("investor");
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -112,7 +114,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                   className="cursor-pointer h-[450px] ss-img-height"
                   onClick={() => handleClick(item.content)}
                 >
-                  <img className="h-full" src={`${item.image}`} alt="" />
+                  <img
+                    className="h-full"
+                    src={`${item.image}`}
+                    alt={`${t("image.alt")} - ${item.title}`}
+                  />
                 </div>
                 <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">
                   {item.title}
@@ -127,6 +133,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
           <div
             className={`${styles["modal-close"]}`}
             onClick={() => handleClose()}
+            aria-label={t("modal.close")}
           ></div>
           <div ref={scrollRef} className={`${styles["modal-content"]}`}>
             <Str2html htmlString={intro} />
@@ -136,5 +143,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = "LearnSlider";
-export default LearnSlider;
+InvestorSlider.displayName = "InvestorSlider";
+export default InvestorSlider;

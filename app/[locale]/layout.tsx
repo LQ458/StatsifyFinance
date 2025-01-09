@@ -17,8 +17,8 @@ export default function LocaleLayout({ children, params: { locale } }: Props) {
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <NextIntlClientProvider 
-      locale={locale} 
+    <NextIntlClientProvider
+      locale={locale}
       messages={messages}
       timeZone="Asia/Shanghai"
     >

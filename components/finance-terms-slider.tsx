@@ -4,6 +4,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/finance-terms.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
+import { useTranslations } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -43,10 +44,11 @@ export interface SwiperComponentHandle {
   slideTo: (index: number) => void;
 }
 
-const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
+const FinanceTermsSlider = forwardRef<SwiperComponentHandle, sliderProps>(
   (props, ref) => {
     const { className, items, onChange, sliderIndex = 0 } = props;
     const swiperRef = useRef<SwiperRef>(null);
+    const t = useTranslations("finance_terms");
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -83,7 +85,11 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                       <div
                         className={`${styles["cover"]} ss-finance-terms-img`}
                       >
-                        <img src={item.image} width="100%" alt="" />
+                        <img
+                          src={item.image}
+                          width="100%"
+                          alt={`${t("term.image.alt")} - ${item.title}`}
+                        />
                       </div>
                       <p>{item.content}</p>
                       <h4>
@@ -102,5 +108,5 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     );
   },
 );
-LearnSlider.displayName = "LearnSlider";
-export default LearnSlider;
+FinanceTermsSlider.displayName = "FinanceTermsSlider";
+export default FinanceTermsSlider;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type TipType = "success" | "warning" | "error";
 
@@ -11,6 +12,7 @@ interface TipProps {
 
 const Message = ({ type, message, duration = 2000, onClose }: TipProps) => {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations("common.message");
 
   useEffect(() => {
     // 在组件渲染后短暂延迟，触发淡入效果
@@ -28,9 +30,16 @@ const Message = ({ type, message, duration = 2000, onClose }: TipProps) => {
   return (
     <div
       className={`tip tip-${type} ${visible ? "fade-in" : "fade-out"} ss-tip`}
+      role="alert"
+      aria-live="polite"
+      aria-label={`${t("type." + type)}: ${message}`}
     >
       <span className="tip-message">{message}</span>
-      <button className="tip-close" onClick={() => setVisible(false)}></button>
+      <button
+        className="tip-close"
+        onClick={() => setVisible(false)}
+        aria-label={t("close")}
+      ></button>
     </div>
   );
 };

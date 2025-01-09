@@ -7,12 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 type TipType = "success" | "warning" | "error";
 
 const Login = () => {
-  const t = useTranslations('login');
+  const t = useTranslations("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msgType, setMsgType] = useState<TipType>("error");
@@ -58,7 +58,7 @@ const Login = () => {
       <div className="flex-grow w-full flex bg-login-bg bg-cover bg-center">
         <div className="bg-[rgba(29,30,32,0.7)] flex border-[#333333] border-solid border-[1px] self-center m-auto w-[37%] h-[27rem] border-t-[#ffd700] border-t-2  min-w-[600px] ss-login-container">
           <div className="flex flex-col m-12 ml-32 mr-32 gap-5 self-center flex-grow ss-login-box">
-            <h1 className="text-white text-lg">{t('title')}</h1>
+            <h1 className="text-white text-lg">{t("title")}</h1>
             <form className="flex flex-col" onSubmit={handleSubmit}>
               <div className="flex flex-row">
                 <div className="bg-[#666666] border-[#333333] mt-2 mb-3 w-full border-solid border-[1px] flex flex-row p-2 pt-1 pb-1 gap-[0.5px]">
@@ -72,7 +72,7 @@ const Login = () => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder={t('email')}
+                    placeholder={t("email")}
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
                 </div>
@@ -88,7 +88,7 @@ const Login = () => {
                   <input
                     value={password}
                     type="password"
-                    placeholder={t('password')}
+                    placeholder={t("password")}
                     onChange={(e) => setPassword(e.target.value)}
                     className="bg-transparent placeholder-[#999999] text-white outline-none border-none flex-grow mt-auto mb-auto"
                   />
@@ -104,12 +104,15 @@ const Login = () => {
                 type="submit"
                 className="bg-[rgba(255,215,0,0.7)] border-[#333333] border-solid border-[1px] flex flex-row p-2 pt-2 pb-2 mt-6 cursor-pointer"
               >
-                <p className="text-white m-auto">{t('submit')}</p>
+                <p className="text-white m-auto">{t("submit")}</p>
               </button>
               <div className="flex flex-row text-sm ml-auto mr-auto mt-3">
-                <p className="text-[#666666]">{t('register')}</p>
-                <Link href="/register" className="text-[rgba(255,215,0,0.7)]">
-                  立即注册
+                <p className="text-[#666666]">{t("registerNote")}</p>
+                <Link
+                  href="/register"
+                  className="text-[rgba(255,215,0,0.7)] ml-2"
+                >
+                  {t("register")}
                 </Link>
               </div>
             </form>

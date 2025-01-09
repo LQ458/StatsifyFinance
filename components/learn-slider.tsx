@@ -10,6 +10,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
+import { useTranslations } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -50,6 +51,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const swiperRef = useRef<SwiperRef>(null);
     const [autoHeight, setAutoHeight] = useState(false);
     const [resetSwiper, setReSetSwiper] = useState(true);
+    const t = useTranslations("learn");
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -105,9 +107,14 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
             initialSlide={sliderIndex} // 从索引为2的滑块（即第3个滑块）开始显示
             onSlideChange={(swiper) => onChange(swiper)}
             className={`${className}`}
+            aria-label={t("slider.label")}
           >
             {items.map((item, idx) => (
-              <SwiperSlide key={idx} className="w-full h-full">
+              <SwiperSlide
+                key={idx}
+                className="w-full h-full"
+                aria-label={`${t("slide.label")} ${idx + 1}: ${item.title}`}
+              >
                 <div className={`${styles["slide-item"]} ss-slide-item`}>
                   <Str2html htmlString={item.content} />
                 </div>

@@ -11,7 +11,7 @@ import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/analysis/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 import AIChat from "@/components/aiChat";
-
+import { useTranslations } from "next-intl";
 interface Item {
   _id: string;
   title: string;
@@ -32,6 +32,7 @@ interface Category {
 interface twoDimension extends Array<Item[]> {}
 
 const Analysis = () => {
+  const t = useTranslations("qualitative");
   const [currentNav, setCurrentNav] = useState("");
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [isNoData, setIsNoData] = useState(false);
@@ -229,11 +230,9 @@ const Analysis = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                定性分析指标
+                {t("title")}
               </h1>
-              <p className="text-[#B8B8B8] text-[16px]">
-                指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。
-              </p>
+              <p className="text-[#B8B8B8] text-[16px]">{t("description")}</p>
 
               <div className="mt-[30px] text-left">
                 <div className={`${styles.tab} ss-tab`}>
