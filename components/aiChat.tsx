@@ -81,42 +81,62 @@ export default function AIChat() {
     handleSend(topic.title);
   };
 
-  const handleSend = async (message?: string) => {
-    const textToSend = message || inputValue;
-    if (!textToSend.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputValue.trim()) return;
 
-    const userMessage: Message = {
-      role: "user" as const,
-      content: textToSend,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    if (!message) setInputValue("");
     setLoading(true);
+    const userMessage = inputValue.trim();
+    setInputValue("");
+
+    // 添加用户消息
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "user",
+        content: userMessage,
+      },
+    ]);
 
     try {
-      const response = await fetch("/api/chat", {
+      // 创建新的 AI 消息
+      const aiMessageId = Date.now();
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: aiMessageId,
+          role: "assistant",
+          content: "",
+        },
+      ]);
+
+      // 创建 EventSource
+      const eventSource = new EventSource(`/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: textToSend }),
+        body: JSON.stringify({ message: userMessage }),
       });
 
-      const data = await response.json();
+      // 处理流式响应
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === aiMessageId
+              ? { ...msg, content: msg.content + data.text }
+              : msg,
+          ),
+        );
+      };
 
-      if (data.success) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant" as const,
-            content: data.message,
-          },
-        ]);
-      }
+      // 处理结束
+      eventSource.onerror = () => {
+        eventSource.close();
+        setLoading(false);
+      };
     } catch (error) {
-      console.error("Failed to get AI response:", error);
-    } finally {
+      console.error("Failed to send message:", error);
       setLoading(false);
     }
   };
@@ -208,12 +228,12 @@ export default function AIChat() {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                 placeholder={t("placeholder")}
                 className={styles.input}
               />
               <button
-                onClick={() => handleSend()}
+                onClick={() => handleSendMessage()}
                 className={styles.sendButton}
                 disabled={loading}
               >

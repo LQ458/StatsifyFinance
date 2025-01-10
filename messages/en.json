@@ -126,9 +126,9 @@
     "empty": "No results found",
     "noInput": "Please enter search keywords",
     "result": {
-      "prefix": "Found ",
-      "suffix": " results for \"",
-      "count": " items"
+      "prefix": "Found results for \"",
+      "suffix": "\" in ",
+      "count": " item(s)"
     },
     "filter": {
       "all": "All",

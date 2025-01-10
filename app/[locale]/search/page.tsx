@@ -60,24 +60,20 @@ const Search = () => {
         signal: newController.signal,
       });
       const result = await response.json();
-      let filterList: Item[] = [];
-      result?.data?.list &&
-        result.data.list.map((item: Item) => {
-          let tempData = {
+
+      // 直接使用 map 返回新数组,避免创建临时数组
+      const filterList = result?.data?.list
+        ? result.data.list.map((item: Item) => ({
             ...item,
             title: addMark(item.title, currentSearchKeyword),
-          };
-          if (item.enTitle) {
-            tempData.enTitle = addMark(item.enTitle, currentSearchKeyword);
-          }
-          filterList.push(tempData);
-        });
+            enTitle: item.enTitle
+              ? addMark(item.enTitle, currentSearchKeyword)
+              : undefined,
+          }))
+        : [];
+
       setData(filterList);
-      if (filterList.length === 0) {
-        setNoData(true);
-      } else {
-        setNoData(false);
-      }
+      setNoData(filterList.length === 0);
     } catch (error: any) {
       if (error.name === "AbortError") {
         console.log("请求被取消");
@@ -89,7 +85,9 @@ const Search = () => {
 
   // 标记
   const addMark = (content: string, keyword: string) => {
-    const regex = new RegExp(keyword, "gi");
+    // 转义正则表达式特殊字符
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escapedKeyword, "gi");
     let result = content.replace(
       regex,
       (match) => `<span style="color:#FFD700">${match}</span>`,
@@ -175,56 +173,62 @@ const Search = () => {
                 <li
                   className={`${currentNav === "articles" ? styles.active : ""}`}
                 >
-                  <Link href="#" onClick={() => tabClick("articles")}>
+                  <button
+                    onClick={() => tabClick("articles")}
+                    className="whitespace-nowrap"
+                  >
                     {t("filter.articles")}
-                  </Link>
+                  </button>
                 </li>
                 <li
                   className={`${currentNav === "finance-terms" ? styles.active : ""}`}
                 >
-                  <Link
-                    href="#"
+                  <button
                     onClick={() => tabClick("finance-terms")}
                     className="whitespace-nowrap"
                   >
                     {t("filter.finance_terms")}
-                  </Link>
+                  </button>
                 </li>
                 <li
                   className={`${currentNav === "quantitative" ? styles.active : ""}`}
                 >
-                  <Link href="#" onClick={() => tabClick("quantitative")}>
+                  <button
+                    onClick={() => tabClick("quantitative")}
+                    className="whitespace-nowrap"
+                  >
                     {t("filter.quantitative")}
-                  </Link>
+                  </button>
                 </li>
                 <li
                   className={`${currentNav === "qualitative" ? styles.active : ""}`}
                 >
-                  <Link href="#" onClick={() => tabClick("qualitative")}>
+                  <button
+                    onClick={() => tabClick("qualitative")}
+                    className="whitespace-nowrap"
+                  >
                     {t("filter.qualitative")}
-                  </Link>
+                  </button>
                 </li>
                 <li
                   className={`${currentNav === "trade" ? styles.active : ""}`}
                 >
-                  <Link
-                    href="#"
+                  <button
                     onClick={() => tabClick("trade")}
                     className="whitespace-nowrap"
                   >
                     {t("filter.trade")}
-                  </Link>
+                  </button>
                 </li>
                 <li
                   className={`${currentNav === "risk-manage" ? styles.active : ""}`}
                 >
-                  <Link
-                    href="#"
+                  <button
                     onClick={() => tabClick("risk-manage")}
                     className="whitespace-nowrap"
                   >
                     {t("filter.risk_manage")}
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
