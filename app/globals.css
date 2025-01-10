@@ -869,9 +869,9 @@
     overflow: hidden;
     overflow-x: auto;
   }
-  .search-container .ss-search-nav ul li a {
+  /* .search-container .ss-search-nav ul li button {
     padding: 0 10px;
-  }
+  } */
 
   .search-container .ss-search-main {
     font-size: 14px;
