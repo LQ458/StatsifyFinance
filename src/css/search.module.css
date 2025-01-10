@@ -20,7 +20,7 @@
 .nav ul li.active {
   border-bottom: 2px solid #ffd700;
 }
-.nav ul li a {
+.nav ul li button {
   display: block;
   height: 100%;
   padding: 0 25px;
