@@ -10,6 +10,7 @@
     "format": "npx prettier --write ."
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^0.0.4",
     "@ant-design/cssinjs": "^1.22.1",
     "@ant-design/icons": "^5.5.2",
     "@types/echarts": "^4.9.22",
@@ -17,6 +18,7 @@
     "@vercel/speed-insights": "^1.0.14",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-react": "^1.0.6",
+    "ai": "^4.0.33",
     "antd": "^5.21.5",
     "antd-style": "^3.7.1",
     "axios": "^1.7.7",
@@ -33,7 +35,8 @@
     "react-icons": "^5.2.1",
     "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.6.1",
-    "swiper": "^11.1.9"
+    "swiper": "^11.1.9",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

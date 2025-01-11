@@ -57,7 +57,22 @@
       "suggestedTopics": "推荐话题",
       "thinking": "AI 思考中...",
       "placeholder": "请输入您的问题...",
-      "send": "发送"
+      "send": "发送",
+      "error": {
+        "topics": "获取推荐话题失败",
+        "send": "发送消息失败，请重试",
+        "network": "网络连接错误",
+        "server": "服务器错误，请稍后重试",
+        "tooLong": "消息过长，请缩短后重试",
+        "empty": "请输入消息内容"
+      },
+      "tips": {
+        "welcome": "您好！我是 StatsifyFinance 的 AI 助手，专门解答金融分析相关问题。",
+        "examples": "您可以问我：",
+        "example1": "• 什么是量化交易？",
+        "example2": "• 如何分析股票基本面？",
+        "example3": "• 风险管理的基本原则是什么？"
+      }
     },
     "dateFormat": {
       "short": "YYYY年MM月DD日",

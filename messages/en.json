@@ -57,7 +57,22 @@
       "suggestedTopics": "Suggested Topics",
       "thinking": "AI is thinking...",
       "placeholder": "Type your message here...",
-      "send": "Send"
+      "send": "Send",
+      "error": {
+        "topics": "Failed to get suggested topics",
+        "send": "Failed to send message, please try again",
+        "network": "Network connection error",
+        "server": "Server error, please try again later",
+        "tooLong": "Message too long, please shorten it",
+        "empty": "Please enter a message"
+      },
+      "tips": {
+        "welcome": "Hello! I'm the AI assistant of StatsifyFinance, specialized in financial analysis.",
+        "examples": "You can ask me:",
+        "example1": "• What is quantitative trading?",
+        "example2": "• How to analyze stock fundamentals?",
+        "example3": "• What are the basic principles of risk management?"
+      }
     },
     "dateFormat": {
       "short": "YYYY-MM-DD",
