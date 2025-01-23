@@ -61,10 +61,13 @@
       "error": {
         "topics": "Failed to get suggested topics",
         "send": "Failed to send message, please try again",
-        "network": "Network connection error",
+        "network": "Network connection error, please check your connection",
         "server": "Server error, please try again later",
         "tooLong": "Message too long, please shorten it",
-        "empty": "Please enter a message"
+        "empty": "Please enter a message",
+        "failed": "Message processing failed, please try again",
+        "unknown": "An unknown error occurred, please try again",
+        "empty_response": "Server returned empty response, please try again"
       },
       "tips": {
         "welcome": "Hello! I'm the AI assistant of StatsifyFinance, specialized in financial analysis.",
@@ -77,6 +80,27 @@
     "dateFormat": {
       "short": "YYYY-MM-DD",
       "long": "YYYY-MM-DD HH:mm:ss"
+    },
+    "screencapture": {
+      "capture": "Screenshot Analysis",
+      "hint": "Hold left mouse button and drag to select screenshot area",
+      "questions": {
+        "title": "Choose Analysis Question",
+        "explain": "Explain the content of this image",
+        "concept": "Explain related financial concepts",
+        "example": "Provide application examples",
+        "suggest": "Give relevant suggestions"
+      }
+    },
+    "textSelector": {
+      "analyze": "Analyze",
+      "questions": {
+        "title": "Choose Analysis Question",
+        "explain": "Explain the meaning of this content",
+        "concept": "Explain related financial concepts",
+        "example": "Provide application examples",
+        "suggest": "Give relevant suggestions"
+      }
     }
   },
   "footer": {
@@ -97,14 +121,47 @@
     }
   },
   "analysis": {
-    "quantitative": "Quantitative",
+    "quantitativeTitle": "Quantitative",
     "qualitative": "Qualitative",
     "title": "Market Analysis",
     "trade": "Trade Strategy",
     "investor": "Investor",
     "risk-manage": "Risk Management",
     "description": "Comprehensive market analysis helps you make better investment decisions",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "quantitative": {
+      "categories": {
+        "profitability": "Profitability",
+        "liquidity": "Liquidity",
+        "solvency": "Solvency",
+        "efficiency": "Efficiency",
+        "growth": "Growth",
+        "valuation": "Valuation"
+      }
+    },
+    "screenshot": {
+      "title": "Screenshot Analysis",
+      "description": "Upload a screenshot for financial analysis",
+      "upload": "Upload Screenshot",
+      "analyze": "Analyze",
+      "question": "What would you like to know about this image?",
+      "placeholder": "e.g., What are the key financial metrics shown in this image?",
+      "error": {
+        "upload": "Failed to upload image",
+        "format": "Invalid image format",
+        "size": "Image size too large",
+        "empty": "Please select an image first"
+      }
+    },
+    "textSelection": {
+      "title": "Text Analysis",
+      "analyze": "Analyze Selected Text",
+      "placeholder": "What would you like to know about the selected text?",
+      "error": {
+        "noSelection": "Please select some text first",
+        "tooLong": "Selected text is too long"
+      }
+    }
   },
   "login": {
     "title": "Login",

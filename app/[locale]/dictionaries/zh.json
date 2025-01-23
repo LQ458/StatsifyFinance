@@ -1,0 +1,103 @@
+{
+  "common": {
+    "aiChat": {
+      "title": "AI助手",
+      "placeholder": "输入您的问题...",
+      "send": "发送",
+      "thinking": "思考中...",
+      "suggestedTopics": "推荐话题",
+      "imageUploaded": "已上传截图",
+      "selectedText": "选中的文本",
+      "tips": {
+        "welcome": "👋 您好!我是您的AI助手,很高兴为您服务。",
+        "examples": "以下是一些您可以问我的问题示例:",
+        "example1": "• 解释一下什么是股票市盈率(P/E)?",
+        "example2": "• 如何开始投资理财?",
+        "example3": "• 分析一下当前的市场趋势?"
+      },
+      "error": {
+        "empty": "请输入内容",
+        "tooLong": "内容过长",
+        "network": "网络错误",
+        "server": "服务器错误",
+        "send": "发送失败",
+        "topics": "获取话题失败",
+        "analyze": "分析失败",
+        "analyzeImage": "图片分析失败"
+      }
+    },
+    "screenCapture": {
+      "capture": "截图",
+      "analyzing": "正在分析截图...",
+      "selectArea": "请选择截图区域",
+      "questions": {
+        "title": "您想了解什么?",
+        "explain": "解释图中的内容",
+        "trend": "分析数据趋势",
+        "highlight": "指出重要信息",
+        "suggest": "给出建议"
+      }
+    },
+    "textSelector": {
+      "analyze": "分析",
+      "analyzing": "正在分析...",
+      "questions": {
+        "title": "您想了解什么?",
+        "explain": "解释这段内容",
+        "concept": "相关概念",
+        "example": "举例说明",
+        "suggest": "给出建议"
+      }
+    },
+    "slider": {
+      "label": "滑块导航",
+      "next": "下一个",
+      "prev": "上一个"
+    },
+    "slide": {
+      "label": "幻灯片"
+    },
+    "select": "选择语言",
+    "zh": "中文",
+    "en": "English",
+    "type": {
+      "success": "成功",
+      "error": "错误",
+      "warning": "警告",
+      "info": "信息"
+    },
+    "close": "关闭",
+    "copyright": "© 2024 StatsifyFinance. 保留所有权利。",
+    "social": {
+      "weibo": "微博",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "wechat": "微信",
+      "linkedin": "LinkedIn"
+    },
+    "login": "登录",
+    "logout": "退出",
+    "hello": "你好",
+    "admin": "管理员",
+    "manage": "管理",
+    "learn": "学习",
+    "analysis": "分析",
+    "strategy": "策略",
+    "articles": "文章",
+    "finance_terms": "金融术语",
+    "term": {
+      "image": {
+        "alt": "术语图片"
+      }
+    },
+    "image": {
+      "alt": "图片"
+    },
+    "modal": {
+      "close": "关闭模态框"
+    },
+    "dateFormat": {
+      "short": "YYYY-MM-DD"
+    }
+  }
+}
