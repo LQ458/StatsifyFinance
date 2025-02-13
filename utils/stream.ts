@@ -1,5 +1,14 @@
 import { ReadableStream } from "stream/web";
 
+// 处理多余空行的函数
+function normalizeText(text: string): string {
+  return text
+    .replace(/\n{3,}/g, "\n\n") // 将3个及以上连续换行替换为2个
+    .replace(/\n\s+\n/g, "\n\n") // 删除空行中的空格
+    .replace(/([：:])\n{2,}/g, "$1\n") // 标题后的多个换行替换为单个换行
+    .replace(/\n{2,}([•\-\d])/g, "\n$1"); // 列表项前的多个换行替换为单个换行
+}
+
 export async function streamText(response: Response): Promise<Response> {
   try {
     // 检查响应状态
@@ -43,9 +52,11 @@ export async function streamText(response: Response): Promise<Response> {
                   const parsed = JSON.parse(data);
                   if (parsed.choices?.[0]?.delta?.content) {
                     const content = parsed.choices[0].delta.content;
+                    // 对内容进行格式化处理
+                    const normalizedContent = normalizeText(content);
                     controller.enqueue(
                       new TextEncoder().encode(
-                        `0:${JSON.stringify(content)}\n`,
+                        `0:${JSON.stringify(normalizedContent)}\n`,
                       ),
                     );
                   }

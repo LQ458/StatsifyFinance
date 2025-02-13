@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { createDeepSeek } from "@ai-sdk/deepseek";
-import { streamText } from "ai";
 import { z } from "zod";
+import { streamText } from "@/utils/stream";
 
 // 验证请求体的 schema
 const requestSchema = z.object({
@@ -43,7 +42,11 @@ Expertise Areas:
    - Investment Strategies: Develop data-driven investment strategies
 
 Response Guidelines:
-1. ${isEnglish ? "ALWAYS respond in English regardless of the input language" : "使用中文回答"}
+1. ${
+    isEnglish
+      ? "ALWAYS respond in English regardless of the input language"
+      : "使用中文回答"
+  }
 2. Be concise, keeping each response under 300 words
 3. Provide direct answers without restating the user's question
 4. List key points in a clear and logical order
@@ -51,17 +54,21 @@ Response Guidelines:
 6. Use Markdown code blocks for any code examples and ensure proper formatting
 7. Clearly state uncertainty if the answer is not definitive; avoid speculation
 8. Maintain objectivity and neutrality, refraining from providing specific investment advice
+9. Follow these formatting rules:
+   - Use a single blank line between paragraphs
+   - No extra blank lines between titles and content
+   - Use proper markdown list formatting with no extra spacing
+   - Keep content concise and well-structured
 
 Additional Requirements:
 - If the question falls outside the scope of financial analysis, briefly explain your inability to answer and suggest consulting relevant experts
 - Maintain a professional and credible tone to ensure trustworthiness
-- ${isEnglish ? "Remember to ALWAYS respond in English, regardless of the input language" : "始终使用中文回答"}`;
+- ${
+    isEnglish
+      ? "Remember to ALWAYS respond in English, regardless of the input language"
+      : "始终使用中文回答"
+  }`;
 };
-
-const deepseek = createDeepSeek({
-  apiKey: process.env.DEEPSEEK_API_KEY ?? "",
-  baseURL: process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com",
-});
 
 export async function POST(request: Request) {
   try {
@@ -70,22 +77,38 @@ export async function POST(request: Request) {
     const { message, locale } = requestSchema.parse(body);
 
     // 检查 API key 是否配置
-    if (!process.env.DEEPSEEK_API_KEY) {
+    if (!process.env.DEEPSEEK_ALT_API_KEY) {
       throw new Error("DEEPSEEK_API_KEY not configured");
     }
 
-    const stream = await streamText({
-      model: deepseek("deepseek-chat"),
-      messages: [
-        { role: "system", content: getSystemPrompt(locale) },
-        { role: "user", content: message },
-      ],
-      temperature: 0.7,
-      maxTokens: 1000,
-    });
+    // 调用 API
+    const response = await fetch(
+      process.env.DEEPSEEK_ALT_BASE_URL ??
+        "https://api.siliconflow.cn/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
+          messages: [
+            { role: "system", content: getSystemPrompt(locale) },
+            { role: "user", content: message },
+          ],
+          temperature: 0.7,
+          stream: true,
+        }),
+      },
+    );
 
-    // 使用 SDK 提供的方法返回流式响应
-    return stream.toDataStreamResponse();
+    if (!response.ok) {
+      throw new Error(`DeepSeek API error: ${response.status}`);
+    }
+
+    // 返回流式响应
+    return streamText(response);
   } catch (error: unknown) {
     console.error("Chat API Error:", error);
 
@@ -108,7 +131,7 @@ export async function POST(request: Request) {
     }
 
     // API 调用错误
-    if (error instanceof Error && error.message.includes("deepseek")) {
+    if (error instanceof Error && error.message.includes("DeepSeek")) {
       return NextResponse.json(
         { success: false, error: "AI 服务暂时不可用" },
         { status: 503 },

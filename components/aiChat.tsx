@@ -14,6 +14,7 @@ import type { SyntaxHighlighterProps } from "react-syntax-highlighter";
 import { useTranslations } from "next-intl";
 import ScreenCaptureButton from "./ScreenCaptureButton";
 import ScreenCapture from "./ScreenCapture";
+import mathStyles from "@/src/css/math-formula.module.css";
 
 interface Message {
   id?: string;
@@ -618,6 +619,42 @@ ${t("tips.example3")}`;
                       a: ({ node, ...props }) => (
                         <a className={styles.markdownLink} {...props} />
                       ),
+                      // 添加数学公式组件
+                      math: ({ node, inline, ...props }) => {
+                        const [copied, setCopied] = useState(false);
+                        const mathRef = useRef<HTMLDivElement>(null);
+
+                        const handleCopy = () => {
+                          if (mathRef.current) {
+                            const text = mathRef.current.textContent || "";
+                            navigator.clipboard.writeText(text).then(() => {
+                              setCopied(true);
+                              setTimeout(() => setCopied(false), 2000);
+                            });
+                          }
+                        };
+
+                        return inline ? (
+                          <span className={mathStyles.inlineMath} {...props} />
+                        ) : (
+                          <div className={mathStyles.mathContainer}>
+                            <div className={mathStyles.displayMath}>
+                              <div
+                                ref={mathRef}
+                                className={mathStyles.mathContent}
+                                {...props}
+                              />
+                              <button
+                                className={mathStyles.copyButton}
+                                onClick={handleCopy}
+                                aria-label="Copy formula"
+                              >
+                                {copied ? "已复制" : "复制"}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      },
                     }}
                   >
                     {message.content}

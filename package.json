@@ -11,7 +11,6 @@
     "init-vectors": "ts-node -r tsconfig-paths/register scripts/init-vectors.ts"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "^0.0.4",
     "@ant-design/cssinjs": "^1.22.1",
     "@ant-design/icons": "^5.5.2",
     "@mantine/hooks": "^7.15.3",

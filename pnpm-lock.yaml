@@ -10,9 +10,6 @@ overrides:
 importers:
   .:
     dependencies:
-      "@ai-sdk/deepseek":
-        specifier: ^0.0.4
-        version: 0.0.4(zod@3.24.1)
       "@ant-design/cssinjs":
         specifier: ^1.18.0-alpha.0
         version: 1.22.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -172,24 +169,6 @@ importers:
         version: 5.6.3
 
 packages:
-  "@ai-sdk/deepseek@0.0.4":
-    resolution:
-      {
-        integrity: sha512-m+AIF5kcRsmPQX0KhVjB0h6O6fQkuizYFUDFPYOp/rghc3QbtFLM33n2Z+9UAkZYzVjVU5m1juSJP1aMvAukDQ==,
-      }
-    engines: { node: ">=18" }
-    peerDependencies:
-      zod: ^3.0.0
-
-  "@ai-sdk/openai-compatible@0.0.16":
-    resolution:
-      {
-        integrity: sha512-XBzNy/12DcObUP0ljUmySx+IxZ/4ytf0yCNEl5AFoE6mNJk4SBephavw0jgjcXjP8ffwaHvV8cCmN9Xh0aZZhw==,
-      }
-    engines: { node: ">=18" }
-    peerDependencies:
-      zod: ^3.0.0
-
   "@ai-sdk/provider-utils@2.0.7":
     resolution:
       {
@@ -6619,19 +6598,6 @@ packages:
       }
 
 snapshots:
-  "@ai-sdk/deepseek@0.0.4(zod@3.24.1)":
-    dependencies:
-      "@ai-sdk/openai-compatible": 0.0.16(zod@3.24.1)
-      "@ai-sdk/provider": 1.0.4
-      "@ai-sdk/provider-utils": 2.0.7(zod@3.24.1)
-      zod: 3.24.1
-
-  "@ai-sdk/openai-compatible@0.0.16(zod@3.24.1)":
-    dependencies:
-      "@ai-sdk/provider": 1.0.4
-      "@ai-sdk/provider-utils": 2.0.7(zod@3.24.1)
-      zod: 3.24.1
-
   "@ai-sdk/provider-utils@2.0.7(zod@3.24.1)":
     dependencies:
       "@ai-sdk/provider": 1.0.4
