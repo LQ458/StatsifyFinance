@@ -20,7 +20,7 @@
     "bcryptjs": "^2.4.3",
     "cookie": "^1.0.1",
     "echarts": "^5.5.1",
-    "mongoose": "^8.5.2",
+    "mongoose": "^8.8.3",
     "next": "^14.2.16",
     "next-auth": "^4.24.7",
     "react": "^18",
