@@ -1,0 +1,108 @@
+.chatContainer {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.chatHistory {
+  width: 250px;
+  height: 100%;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.chatHistory h3 {
+  margin: 0 0 1rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historyItem {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historyItem:hover {
+  background: var(--bg-hover);
+}
+
+.historyItem.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.historyItemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.historyTitle {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.historyDate {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.active .historyDate {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.deleteButton {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.historyItem:hover .deleteButton {
+  opacity: 1;
+}
+
+.deleteButton:hover {
+  background: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
+}
+
+.active .deleteButton {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.active .deleteButton:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+@media (max-width: 768px) {
+  .chatHistory {
+    display: none;
+  }
+}

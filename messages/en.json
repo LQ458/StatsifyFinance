@@ -54,27 +54,26 @@
     },
     "aiChat": {
       "title": "AI Assistant",
-      "suggestedTopics": "Suggested Topics",
-      "thinking": "AI is thinking...",
-      "placeholder": "Type your message here...",
+      "placeholder": "Enter your question...",
       "send": "Send",
-      "error": {
-        "topics": "Failed to get suggested topics",
-        "send": "Failed to send message, please try again",
-        "network": "Network connection error, please check your connection",
-        "server": "Server error, please try again later",
-        "tooLong": "Message too long, please shorten it",
-        "empty": "Please enter a message",
-        "failed": "Message processing failed, please try again",
-        "unknown": "An unknown error occurred, please try again",
-        "empty_response": "Server returned empty response, please try again"
-      },
+      "thinking": "Thinking...",
+      "suggestedTopics": "Suggested Questions",
       "tips": {
         "welcome": "Hello! I'm the AI assistant of StatsifyFinance, specialized in financial analysis.",
         "examples": "You can ask me:",
         "example1": "• What is quantitative trading?",
         "example2": "• How to analyze stock fundamentals?",
         "example3": "• What are the basic principles of risk management?"
+      },
+      "error": {
+        "empty": "Please enter a question",
+        "tooLong": "Question is too long",
+        "network": "Network error",
+        "server": "Server error",
+        "empty_response": "Server returned empty response",
+        "failed": "Failed to send",
+        "unknown": "Unknown error",
+        "topics": "Failed to get suggested topics"
       }
     },
     "dateFormat": {

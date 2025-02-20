@@ -630,3 +630,284 @@
 .screenshotPlaceholder > button {
   pointer-events: auto;
 }
+
+/* 聊天历史记录 */
+.chatHistory {
+  @apply border-b border-gray-700 p-4 max-h-[200px] overflow-y-auto;
+}
+
+.chatHistory h3 {
+  @apply text-gray-300 text-sm mb-2 font-medium;
+}
+
+.historyItem {
+  @apply flex justify-between items-center p-2 rounded cursor-pointer hover:bg-gray-700 transition-colors duration-200;
+}
+
+.historyItem.active {
+  @apply bg-gray-700;
+}
+
+.historyItem span {
+  @apply text-gray-300 text-sm;
+}
+
+.historyDate {
+  @apply text-gray-500 text-xs;
+}
+
+/* 滚动条样式 */
+.chatHistory::-webkit-scrollbar {
+  @apply w-1 bg-transparent;
+}
+
+.chatHistory::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-sm;
+}
+
+.chatHistory::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* 暗色主题支持 */
+:global(.dark) .chatWindow {
+  @apply bg-gray-900;
+}
+
+:global(.dark) .chatHeader {
+  @apply bg-gray-800;
+}
+
+:global(.dark) .message {
+  @apply text-gray-100;
+}
+
+:global(.dark) .input {
+  @apply bg-gray-800;
+}
+
+/* 响应式布局 */
+@media (max-width: 640px) {
+  .chatWindow {
+    @apply right-0 bottom-0 w-full h-full rounded-none;
+  }
+
+  .chatButton {
+    @apply right-2 bottom-2;
+  }
+
+  .scrollButton {
+    @apply right-4 bottom-24;
+  }
+}
+
+/* 聊天历史抽屉 */
+.historyDrawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #2a2a2a;
+  border-right: 1px solid #3a3a3a;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.size-small .historyDrawer {
+  width: 100%;
+  transform: translateX(-100%);
+}
+
+.size-large .historyDrawer {
+  width: 250px;
+  transform: translateX(-250px);
+}
+
+.size-full .historyDrawer {
+  width: 300px;
+  transform: none;
+}
+
+.historyDrawer.visible {
+  transform: translateX(0);
+}
+
+/* 历史记录列表样式 */
+.historyList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.historyItem {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historyItemContent {
+  flex: 1;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.historyTitle {
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.historyDate {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.deleteButton {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: #888;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.historyItem:hover .deleteButton {
+  opacity: 1;
+}
+
+.deleteButton:hover {
+  color: #ff4d4f;
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+  .chatWindow {
+    width: calc(100% - 40px);
+    height: calc(100vh - 100px);
+    bottom: 70px;
+  }
+
+  .size-small,
+  .size-large {
+    width: calc(100% - 40px);
+    height: calc(100vh - 100px);
+  }
+
+  .size-full {
+    width: 100%;
+    height: calc(100vh - 64px);
+    bottom: 0;
+    right: 0;
+  }
+
+  .historyDrawer {
+    width: 100%;
+  }
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.historyHeader h3 {
+  color: #ffffff;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.newChatButton {
+  background: #ffd700;
+  color: #1a1a1a;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.newChatButton:hover {
+  background: #ffed4a;
+}
+
+.historyList {
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.historyItem {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historyItemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.historyTitle {
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 修复hover闪烁问题 */
+.historyItem:hover {
+  border-color: #ffd700;
+  background: #2a2a2a;
+  transform: none;
+}
+
+.historyItem.active {
+  background: #2a2a2a;
+  border-color: #ffd700;
+}
+
+.chatTitle {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+  margin: 0 8px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chatTitle svg {
+  font-size: 1.2rem;
+  color: #ffd700;
+}

@@ -1,5 +1,29 @@
 import { ReadableStream } from "stream/web";
 
+// 超时处理函数
+async function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  errorMessage: string,
+): Promise<T> {
+  let timeoutHandle: NodeJS.Timeout;
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeoutHandle = setTimeout(() => {
+      reject(new Error(`Timeout after ${timeoutMs}ms: ${errorMessage}`));
+    }, timeoutMs);
+  });
+
+  try {
+    const result = await Promise.race([promise, timeoutPromise]);
+    clearTimeout(timeoutHandle!);
+    return result;
+  } catch (error) {
+    clearTimeout(timeoutHandle!);
+    throw error;
+  }
+}
+
 // 处理多余空行的函数
 function normalizeText(text: string): string {
   return text
@@ -9,14 +33,17 @@ function normalizeText(text: string): string {
     .replace(/\n{2,}([•\-\d])/g, "\n$1"); // 列表项前的多个换行替换为单个换行
 }
 
-export async function streamText(response: Response): Promise<Response> {
+// 处理流式响应
+export async function streamText(
+  response: Response,
+  headers: Headers,
+): Promise<Response> {
   try {
-    // 检查响应状态
     if (!response.ok) {
+      console.error(`[Stream] HTTP error! status: ${response.status}`);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // 获取响应流
     const reader = response.body?.getReader();
     if (!reader) {
       throw new Error("No reader available");
@@ -77,16 +104,71 @@ export async function streamText(response: Response): Promise<Response> {
       },
     });
 
-    // 返回新的响应
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
+    return new Response(stream as any, {
+      headers: headers,
     });
   } catch (error) {
-    console.error("streamText error:", error);
+    console.error("[Stream] streamText error:", error);
     throw error;
   }
 }
+
+// 处理数据块
+// function processChunk(
+//   chunk: string,
+//   controller: ReadableStreamDefaultController<any>
+// ) {
+//   try {
+//     if (!chunk.startsWith("data: ")) {
+//       return;
+//     }
+
+//     const data = chunk.slice(6);
+//     if (data === "[DONE]") {
+//       console.log("[Stream] Received DONE signal");
+//       controller.enqueue(new TextEncoder().encode("d:[DONE]\n"));
+//       return;
+//     }
+
+//     // 首先尝试JSON解析
+//     try {
+//       const parsed = JSON.parse(data);
+//       if (parsed.choices?.[0]?.delta?.content) {
+//         const content = parsed.choices[0].delta.content;
+//         const normalizedContent = normalizeText(content);
+//         if (normalizedContent) {
+//           console.log(
+//             "[Stream] Processing JSON content:",
+//             normalizedContent.length,
+//             "chars:",
+//             normalizedContent
+//           );
+//           controller.enqueue(
+//             new TextEncoder().encode(`0:${normalizedContent}\n`)
+//           );
+//           return;
+//         }
+//       }
+//     } catch (jsonError) {
+//       // JSON解析失败,尝试作为纯文本处理
+//       if (data && typeof data === "string") {
+//         const normalizedContent = normalizeText(data);
+//         if (normalizedContent) {
+//           console.log(
+//             "[Stream] Processing text content:",
+//             normalizedContent.length,
+//             "chars:",
+//             normalizedContent
+//           );
+//           controller.enqueue(
+//             new TextEncoder().encode(`0:${normalizedContent}\n`)
+//           );
+//           return;
+//         }
+//       }
+//       console.log("[Stream] Failed to process as JSON or text:", data);
+//     }
+//   } catch (e) {
+//     console.error("[Stream] Error processing chunk:", e, "Raw chunk:", chunk);
+//   }
+// }

@@ -93,6 +93,8 @@ export async function POST(req: NextRequest) {
   try {
     const { image, question, locale = "zh" } = await req.json();
 
+    const base_url = process.env.DEEPSEEK_ALT_BASE_URL;
+
     if (!image || typeof image !== "string") {
       return new Response("Invalid image data", { status: 400 });
     }
@@ -108,31 +110,28 @@ export async function POST(req: NextRequest) {
     const result = await client.generalBasic(base64Data);
 
     // 调用DeepSeek API进行分析
-    const response = await fetch(
-      "https://api.deepseek.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "deepseek-chat",
-          messages: [
-            {
-              role: "system",
-              content: getSystemPrompt(locale),
-            },
-            {
-              role: "user",
-              content: getPrompt(question, result, locale),
-            },
-          ],
-          temperature: 0.7,
-          stream: true,
-        }),
+    const response = await fetch(`${base_url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
       },
-    );
+      body: JSON.stringify({
+        model: process.env.DEEPSEEK_ALT_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: getSystemPrompt(locale),
+          },
+          {
+            role: "user",
+            content: getPrompt(question, result, locale),
+          },
+        ],
+        temperature: 0.7,
+        stream: true,
+      }),
+    });
 
     if (!response.ok) {
       console.error("DeepSeek API error:", await response.text());
