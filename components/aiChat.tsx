@@ -1,5 +1,11 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   MessageOutlined,
   DownOutlined,
@@ -7,24 +13,25 @@ import {
   MenuUnfoldOutlined,
   DeleteOutlined,
   RobotOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
+import styles from "@/src/css/ai-chat.module.css";
+import { useTranslations } from "next-intl";
+import ScreenCaptureButton from "./ScreenCaptureButton";
+import ScreenCapture from "./ScreenCapture";
+import { useSession } from "next-auth/react";
+import { Modal, message, Tooltip } from "antd";
+import { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
-import styles from "@/src/css/ai-chat.module.css";
-import type { SyntaxHighlighterProps } from "react-syntax-highlighter";
-import { useTranslations } from "next-intl";
-import ScreenCaptureButton from "./ScreenCaptureButton";
-import ScreenCapture from "./ScreenCapture";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import mathStyles from "@/src/css/math-formula.module.css";
-import { useSession } from "next-auth/react";
-import { Modal, message, Tooltip } from "antd";
-import { Components } from "react-markdown";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import type { SyntaxHighlighterProps } from "react-syntax-highlighter";
 
 interface ChatError {
   message: string;
@@ -39,6 +46,7 @@ interface Message {
   imageUrl?: string;
   status?: "sending" | "error" | "success";
   error?: ChatError;
+  _timestamp?: number;
 }
 
 interface SuggestedTopic {
@@ -90,27 +98,11 @@ const decryptData = (text: string) => {
   }
 };
 
-// 预设问题
-const suggestedQuestions = [
-  {
-    title: "什么是量化交易？",
-    content: "请解释量化交易的概念、优势和主要策略。",
-  },
-  {
-    title: "如何分析股票基本面？",
-    content: "请介绍分析股票基本面的主要方法和关键指标。",
-  },
-  {
-    title: "风险管理的基本原则是什么？",
-    content: "请说明金融投资中风险管理的基本原则和具体方法。",
-  },
-];
-
 // 获取初始消息
 const getInitialMessage = (t: any): Message => ({
   id: "initial",
   role: "assistant" as const,
-  content: t("tips.welcome"),
+  content: t("aiChat.tips.welcome"),
   type: "text",
   status: "success",
 });
@@ -125,7 +117,7 @@ interface ExtendedComponents extends Partial<Components> {
 }
 
 export default function AIChat() {
-  const t = useTranslations("common.aiChat");
+  const t = useTranslations("common");
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -151,10 +143,29 @@ export default function AIChat() {
   const [chatHistories, setChatHistories] = useState<ChatHistory[]>([]);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  // 预设问题
+  const suggestedQuestions = useMemo(
+    () => [
+      {
+        title: t("aiChat.tips.example1").replace("• ", ""),
+        content: t("aiChat.tips.example1").replace("• ", ""),
+      },
+      {
+        title: t("aiChat.tips.example2").replace("• ", ""),
+        content: t("aiChat.tips.example2").replace("• ", ""),
+      },
+      {
+        title: t("aiChat.tips.example3").replace("• ", ""),
+        content: t("aiChat.tips.example3").replace("• ", ""),
+      },
+    ],
+    [t],
+  );
   // 保存尺寸偏好
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -202,7 +213,8 @@ export default function AIChat() {
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = messageList;
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      // 调整阈值为50px，更好地识别是否在底部
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 50;
 
       if (!isUserScrolling) {
         setShouldAutoScroll(isNearBottom);
@@ -220,32 +232,66 @@ export default function AIChat() {
     if (!messageList) return;
 
     const handleWheel = () => {
-      setIsUserScrolling(true);
-      setShouldAutoScroll(false);
+      // 检查是否向上滚动
+      const { scrollTop, scrollHeight, clientHeight } = messageList;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 50;
+
+      // 仅当不在底部时才设置用户滚动状态
+      if (!isNearBottom) {
+        setIsUserScrolling(true);
+        setShouldAutoScroll(false);
+      }
 
       // 重置用户滚动状态的计时器
       const timer = setTimeout(() => {
-        setIsUserScrolling(false);
-      }, 150); // 150ms 后重置
+        // 重新检查是否在底部
+        if (messageList) {
+          const { scrollTop, scrollHeight, clientHeight } = messageList;
+          const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+          // 仅当在底部时重置滚动状态
+          if (isAtBottom) {
+            setIsUserScrolling(false);
+            setShouldAutoScroll(true);
+          }
+        }
+      }, 200); // 调整为200ms
 
       return () => clearTimeout(timer);
     };
 
+    // 添加触摸事件监听，对于移动设备
+    const handleTouchMove = () => {
+      handleWheel();
+    };
+
     messageList.addEventListener("wheel", handleWheel);
-    messageList.addEventListener("touchmove", handleWheel);
+    messageList.addEventListener("touchmove", handleTouchMove);
+    messageList.addEventListener("scroll", handleWheel, { passive: true });
 
     return () => {
       messageList.removeEventListener("wheel", handleWheel);
-      messageList.removeEventListener("touchmove", handleWheel);
+      messageList.removeEventListener("touchmove", handleTouchMove);
+      messageList.removeEventListener("scroll", handleWheel);
     };
   }, []);
 
   // 自动滚动到底部
   useEffect(() => {
-    if (shouldAutoScroll && messageListRef.current && !isUserScrolling) {
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    if (shouldAutoScroll && messageListRef.current) {
+      const smoothScroll = () => {
+        if (messageListRef.current) {
+          messageListRef.current.scrollTo({
+            top: messageListRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      };
+
+      // 延迟一点执行滚动，确保DOM已更新
+      const timer = setTimeout(smoothScroll, 10);
+      return () => clearTimeout(timer);
     }
-  }, [messages, shouldAutoScroll, isUserScrolling]);
+  }, [messages, shouldAutoScroll]);
 
   // 滚动到底部的函数
   const scrollToBottom = () => {
@@ -294,8 +340,6 @@ export default function AIChat() {
 
   // 获取聊天历史
   const fetchChatHistory = async () => {
-    if (!session?.user) return;
-
     try {
       const response = await fetch("/api/chat");
       if (!response.ok) throw new Error("获取历史记录失败");
@@ -309,21 +353,40 @@ export default function AIChat() {
   };
 
   useEffect(() => {
-    if (session?.user) {
-      fetchChatHistory();
-    }
-  }, [session]);
+    fetchChatHistory();
+  }, []);
 
   // 更新访客消息计数
   const updateGuestMessageCount = () => {
     if (!session?.user) {
-      const count = parseInt(
-        localStorage.getItem(GUEST_MESSAGE_COUNT_KEY) || "0",
-      );
-      localStorage.setItem(
-        GUEST_MESSAGE_COUNT_KEY,
-        encryptData((count + 1).toString()),
-      );
+      try {
+        // 从localStorage获取当前计数
+        const encrypted = localStorage.getItem(GUEST_MESSAGE_COUNT_KEY);
+        let count = 0;
+
+        if (encrypted) {
+          const decrypted = decryptData(encrypted);
+          if (decrypted !== null) {
+            count = parseInt(decrypted);
+          }
+        }
+
+        // 增加计数并重新加密存储
+        count += 1;
+        localStorage.setItem(
+          GUEST_MESSAGE_COUNT_KEY,
+          encryptData(count.toString()),
+        );
+
+        // 如果达到最大次数，显示提示
+        if (count >= MAX_GUEST_MESSAGES) {
+          message.warning("您已用完免费聊天次数，请登录以继续使用");
+        }
+      } catch (e) {
+        console.error("更新访客消息计数错误:", e);
+        // 出错时仍设置一个计数，防止绕过限制
+        localStorage.setItem(GUEST_MESSAGE_COUNT_KEY, encryptData("1"));
+      }
     }
   };
 
@@ -331,344 +394,487 @@ export default function AIChat() {
   const checkGuestMessageLimit = () => {
     if (session?.user) return true;
 
-    const encrypted = localStorage.getItem(GUEST_MESSAGE_COUNT_KEY);
-    if (!encrypted) return true;
+    try {
+      const encrypted = localStorage.getItem(GUEST_MESSAGE_COUNT_KEY);
+      if (!encrypted) return true;
 
-    const count = parseInt(decryptData(encrypted) || "0");
-    if (count >= MAX_GUEST_MESSAGES) {
-      setShowLoginModal(true);
-      return false;
+      const decrypted = decryptData(encrypted);
+      if (decrypted === null) return true;
+
+      const count = parseInt(decrypted);
+
+      if (count >= MAX_GUEST_MESSAGES) {
+        setShowLoginModal(true);
+        message.warning("您已用完免费聊天次数，请登录以继续使用");
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.error("检查访客消息限制错误:", e);
+      // 发生错误时返回true，允许用户继续
+      return true;
     }
-    return true;
   };
 
-  const handleSendMessage = async (message?: string) => {
-    const textToSend = message || inputValue.trim();
-    if (!textToSend) {
-      setError(t("error.empty"));
-      return;
-    }
+  // 处理发送消息
+  const handleSendMessage = useCallback(
+    async (message?: string) => {
+      const textToSend = message || inputValue.trim();
+      if (!textToSend) {
+        setError(t("error.empty"));
+        return;
+      }
 
-    if (textToSend.length > 1000) {
-      setError(t("error.tooLong"));
-      return;
-    }
+      if (textToSend.length > 1000) {
+        setError(t("error.tooLong"));
+        return;
+      }
 
-    setLoading(true);
-    setError(null);
-    setInputValue("");
+      // 检查访客消息限制
+      if (!session?.user && !checkGuestMessageLimit()) {
+        return;
+      }
 
-    // 使用更精确的时间戳
-    const userMessageId = `user_${Date.now()}`;
-    const userMessage: Message = {
-      id: userMessageId,
-      role: "user",
-      content: textToSend,
-    };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+      setLoading(true);
+      setError(null);
+      setInputValue("");
 
-    try {
-      // 确保AI消息ID与用户消息ID不会冲突
-      const aiMessageId = `assistant_${Date.now()}`;
-      const aiMessage: Message = {
-        id: aiMessageId,
-        role: "assistant",
-        content: "",
+      // 使用更精确的时间戳
+      const userMessageId = `user_${Date.now()}`;
+      const userMessage: Message = {
+        id: userMessageId,
+        role: "user",
+        content: textToSend,
       };
-      setMessages([...newMessages, aiMessage]);
+      // 添加用户消息
+      setMessages((prev) => [...prev, userMessage]);
 
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: textToSend,
-          locale: window.location.pathname.startsWith("/en") ? "en" : "zh",
-        }),
-      });
+      try {
+        // AI消息ID使用不同的时间戳
+        const aiMessageId = `assistant_${Date.now()}`;
+        // 添加AI空消息
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: aiMessageId,
+            role: "assistant",
+            content: "",
+            status: "sending",
+            _timestamp: Date.now(),
+          },
+        ]);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: textToSend,
+            locale: window.location.pathname.startsWith("/en") ? "en" : "zh",
+            conversationId: currentConversationId || undefined,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // 如果这是一个新对话，从响应头获取conversationId
+        if (!currentConversationId) {
+          const newConversationId = response.headers.get("X-Conversation-Id");
+          if (newConversationId) {
+            setCurrentConversationId(newConversationId);
+          }
+        }
+
+        // 检查是否为访客用户
+        const isGuest = response.headers.get("X-Guest-User") === "true";
+        if (isGuest) {
+          // 增加访客消息计数
+          updateGuestMessageCount();
+        }
+
+        if (!response.body) {
+          throw new Error("No response body");
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        let accumulatedContent = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const text = decoder.decode(value);
+          const chunks = text.split("\n").filter(Boolean);
+
+          for (const chunk of chunks) {
+            try {
+              // 处理特殊格式的chunk (0:"文本")
+              if (chunk.startsWith("0:")) {
+                // 提取引号中的文本内容
+                const content = chunk.substring(2).trim();
+                if (content.startsWith('"') && content.endsWith('"')) {
+                  const extractedText = content
+                    .slice(1, -1)
+                    .replace(/\\"/g, '"') // 处理转义的引号
+                    .replace(/\\n/g, "\n"); // 处理换行符
+
+                  accumulatedContent += extractedText;
+                  // 只更新AI消息的内容
+                  setMessages((prevMessages) => {
+                    // 使用role和id双重检查确保更新正确的消息
+                    const aiMessageIndex = prevMessages.findIndex(
+                      (msg) =>
+                        msg.id === aiMessageId && msg.role === "assistant",
+                    );
+                    if (aiMessageIndex === -1) return prevMessages;
+
+                    const newMessages = [...prevMessages];
+                    newMessages[aiMessageIndex] = {
+                      ...newMessages[aiMessageIndex],
+                      content: accumulatedContent,
+                      status: "success",
+                    };
+                    return newMessages;
+                  });
+                  continue;
+                }
+              }
+
+              // 尝试标准JSON解析
+              try {
+                const { content } = JSON.parse(chunk);
+                if (typeof content === "string") {
+                  accumulatedContent += content;
+                  // 只更新AI消息的内容
+                  setMessages((prevMessages) => {
+                    const aiMessageIndex = prevMessages.findIndex(
+                      (msg) =>
+                        msg.id === aiMessageId && msg.role === "assistant",
+                    );
+                    if (aiMessageIndex === -1) return prevMessages;
+
+                    const newMessages = [...prevMessages];
+                    newMessages[aiMessageIndex] = {
+                      ...newMessages[aiMessageIndex],
+                      content: accumulatedContent,
+                      status: "success",
+                    };
+                    return newMessages;
+                  });
+                }
+              } catch (jsonError) {
+                console.debug("Non-JSON chunk received:", chunk);
+              }
+            } catch (e) {
+              console.debug("Error processing chunk:", chunk, e);
+            }
+          }
+        }
+
+        // 完成后获取更新的聊天历史
+        if (session?.user || !session?.user) {
+          fetchChatHistory();
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        if (error instanceof Error) {
+          if (error.message.includes("Failed to fetch")) {
+            setError(t("error.network"));
+          } else if (error.message.includes("HTTP error")) {
+            setError(t("error.server"));
+          } else if (error.message.includes("No response body")) {
+            setError(t("error.empty_response"));
+          } else {
+            setError(t("error.failed"));
+          }
+        } else {
+          setError(t("error.unknown"));
+        }
+      } finally {
+        setLoading(false);
       }
+    },
+    [
+      inputValue,
+      t,
+      session,
+      currentConversationId,
+      checkGuestMessageLimit,
+      updateGuestMessageCount,
+      fetchChatHistory,
+    ],
+  );
 
-      if (!response.body) {
-        throw new Error("No response body");
-      }
+  // 处理图片分析，类似地优化实时渲染
+  const handleImageAnalysis = useCallback(
+    async (imageData: string, question: string) => {
+      setLoading(true);
+      setError(null);
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+      try {
+        const imageMessageId = `user_${Date.now()}`;
+        const imageMessage: Message = {
+          id: imageMessageId,
+          role: "user",
+          content: question,
+          type: "image",
+          imageUrl: imageData,
+          status: "sending",
+        };
 
-      let accumulatedContent = "";
+        // 添加用户消息
+        setMessages((prev) => [...prev, imageMessage]);
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+        const response = await fetch("/api/analyze-image", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: imageData,
+            question: question,
+            locale: window.location.pathname.startsWith("/en") ? "en" : "zh",
+          }),
+        });
 
-        const text = decoder.decode(value);
-        const chunks = text.split("\n").filter(Boolean);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        for (const chunk of chunks) {
-          try {
-            // 处理特殊格式的chunk (0:"文本")
-            if (chunk.startsWith("0:")) {
-              // 提取引号中的文本内容
-              const content = chunk.substring(2).trim();
-              if (content.startsWith('"') && content.endsWith('"')) {
-                const extractedText = content
-                  .slice(1, -1)
-                  .replace(/\\"/g, '"') // 处理转义的引号
-                  .replace(/\\n/g, "\n"); // 处理换行符
+        if (!response.body) {
+          throw new Error("No response body");
+        }
 
-                accumulatedContent += extractedText;
-                // 只更新AI消息的内容
-                setMessages((prevMessages) => {
-                  // 使用role和id双重检查确保更新正确的消息
-                  const aiMessageIndex = prevMessages.findIndex(
-                    (msg) => msg.id === aiMessageId && msg.role === "assistant",
-                  );
-                  if (aiMessageIndex === -1) return prevMessages;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-                  const newMessages = [...prevMessages];
-                  newMessages[aiMessageIndex] = {
-                    ...newMessages[aiMessageIndex],
-                    content: accumulatedContent,
-                    status: "success",
-                  };
-                  return newMessages;
-                });
+        const aiMessageId = `assistant_${Date.now()}`;
+
+        // 添加AI空消息
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: aiMessageId,
+            role: "assistant",
+            content: "",
+            type: "text",
+            status: "sending",
+            _timestamp: Date.now(),
+          },
+        ]);
+
+        let accumulatedContent = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const text = decoder.decode(value);
+          const chunks = text.split("\n").filter(Boolean);
+
+          for (const chunk of chunks) {
+            try {
+              // 处理结束标记
+              if (chunk === "d:[DONE]") {
+                console.log("[Chat Frontend] Image analysis complete");
                 continue;
               }
-            }
 
-            // 尝试标准JSON解析
-            try {
-              const { content } = JSON.parse(chunk);
-              if (typeof content === "string") {
-                accumulatedContent += content;
-                // 只更新AI消息的内容
-                setMessages((prevMessages) => {
-                  const aiMessageIndex = prevMessages.findIndex(
-                    (msg) => msg.id === aiMessageId && msg.role === "assistant",
-                  );
-                  if (aiMessageIndex === -1) return prevMessages;
+              // 处理内容
+              if (chunk.startsWith("0:")) {
+                const content = chunk.slice(2);
+                console.log(
+                  "[Chat Frontend] Processing image analysis content:",
+                  content,
+                );
 
-                  const newMessages = [...prevMessages];
-                  newMessages[aiMessageIndex] = {
-                    ...newMessages[aiMessageIndex],
-                    content: accumulatedContent,
-                    status: "success",
-                  };
-                  return newMessages;
-                });
+                if (content) {
+                  accumulatedContent += content;
+                  // 只更新AI消息的内容
+                  setMessages((prevMessages) => {
+                    const aiMessageIndex = prevMessages.findIndex(
+                      (msg) =>
+                        msg.id === aiMessageId && msg.role === "assistant",
+                    );
+                    if (aiMessageIndex === -1) return prevMessages;
+
+                    const newMessages = [...prevMessages];
+                    newMessages[aiMessageIndex] = {
+                      ...newMessages[aiMessageIndex],
+                      content: accumulatedContent,
+                      status: "success",
+                    };
+                    return newMessages;
+                  });
+                }
               }
-            } catch (jsonError) {
-              console.debug("Non-JSON chunk received:", chunk);
+            } catch (e) {
+              console.error("Error processing image analysis chunk:", chunk, e);
             }
-          } catch (e) {
-            console.debug("Error processing chunk:", chunk, e);
           }
         }
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      if (error instanceof Error) {
-        if (error.message.includes("Failed to fetch")) {
-          setError(t("error.network"));
-        } else if (error.message.includes("HTTP error")) {
-          setError(t("error.server"));
-        } else if (error.message.includes("No response body")) {
-          setError(t("error.empty_response"));
-        } else {
-          setError(t("error.failed"));
-        }
-      } else {
-        setError(t("error.unknown"));
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleScreenshotStart = useCallback(() => {
-    setIsScreenshotting(true);
-  }, []);
-
-  const handleScreenshotEnd = useCallback(() => {
-    setIsScreenshotting(false);
-  }, []);
-
-  const handleShowChat = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const handleImageAnalysis = async (imageData: string, question: string) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const imageMessageId = `user_${Date.now()}`;
-      const imageMessage: Message = {
-        id: imageMessageId,
-        role: "user",
-        content: question,
-        type: "image",
-        imageUrl: imageData,
-        status: "sending",
-      };
-      const newMessages = [...messages, imageMessage];
-      setMessages(newMessages);
-
-      const response = await fetch("/api/analyze-image", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image: imageData,
-          question: question,
-          locale: window.location.pathname.startsWith("/en") ? "en" : "zh",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      if (!response.body) {
-        throw new Error("No response body");
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      const aiMessageId = `assistant_${Date.now()}`;
-      const aiMessage: Message = {
-        id: aiMessageId,
-        role: "assistant",
-        content: "",
-        type: "text",
-        status: "sending",
-      };
-      setMessages([...newMessages, aiMessage]);
-
-      let accumulatedContent = "";
-      console.log("[Chat Frontend] Starting to read image analysis stream");
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.log("[Chat Frontend] Image analysis stream complete");
-          break;
-        }
-
-        const text = decoder.decode(value);
-        console.log("[Chat Frontend] Received image analysis chunk:", text);
-        const chunks = text.split("\n").filter(Boolean);
-
-        for (const chunk of chunks) {
-          try {
-            // 处理结束标记
-            if (chunk === "d:[DONE]") {
-              console.log("[Chat Frontend] Image analysis complete");
-              continue;
-            }
-
-            // 处理内容
-            if (chunk.startsWith("0:")) {
-              const content = chunk.slice(2);
-              console.log(
-                "[Chat Frontend] Processing image analysis content:",
-                content,
-              );
-
-              if (content) {
-                accumulatedContent += content;
-                // 只更新AI消息的内容
-                setMessages((prevMessages) => {
-                  const aiMessageIndex = prevMessages.findIndex(
-                    (msg) => msg.id === aiMessageId && msg.role === "assistant",
-                  );
-                  if (aiMessageIndex === -1) return prevMessages;
-
-                  const newMessages = [...prevMessages];
-                  newMessages[aiMessageIndex] = {
-                    ...newMessages[aiMessageIndex],
-                    content: accumulatedContent,
-                    status: "success",
-                  };
-                  return newMessages;
-                });
-              }
-            }
-          } catch (e) {
-            console.error(
-              "[Chat Frontend] Error processing image analysis chunk:",
-              chunk,
-              e,
-            );
+      } catch (error) {
+        console.error("Error analyzing image:", error);
+        if (error instanceof Error) {
+          if (error.message.includes("Failed to fetch")) {
+            setError(t("error.network"));
+          } else if (error.message.includes("HTTP error")) {
+            setError(t("error.server"));
+          } else if (error.message.includes("No response body")) {
+            setError(t("error.empty_response"));
+          } else {
+            setError(t("error.failed"));
           }
-        }
-      }
-    } catch (error) {
-      console.error("Error analyzing image:", error);
-      if (error instanceof Error) {
-        if (error.message.includes("Failed to fetch")) {
-          setError(t("error.network"));
-        } else if (error.message.includes("HTTP error")) {
-          setError(t("error.server"));
-        } else if (error.message.includes("No response body")) {
-          setError(t("error.empty_response"));
         } else {
-          setError(t("error.failed"));
+          setError(t("error.unknown"));
         }
-      } else {
-        setError(t("error.unknown"));
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
+    },
+    [t],
+  );
+
+  // 重试发送消息
+  const handleRetry = useCallback(
+    (message: Message) => {
+      // 移除错误消息
+      setMessages((prev) => prev.filter((msg) => msg.id !== message.id));
+      // 重新发送
+      handleSendMessage(message.content);
+    },
+    [handleSendMessage],
+  ); // 添加handleSendMessage到依赖数组
+
+  // 添加MathComponent
+  const MathComponent: React.FC<{
+    node: any;
+    inline: boolean;
+    children: React.ReactNode;
+  }> = ({ node, inline, children }) => {
+    const [copied, setCopied] = useState(false);
+    const mathRef = useRef<HTMLDivElement>(null);
+
+    const handleCopy = () => {
+      if (mathRef.current) {
+        const text = mathRef.current.textContent || "";
+        navigator.clipboard.writeText(text).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      }
+    };
+
+    return inline ? (
+      <span className={mathStyles.inlineMath}>{children}</span>
+    ) : (
+      <div className={mathStyles.mathContainer}>
+        <div className={mathStyles.displayMath}>
+          <div ref={mathRef} className={mathStyles.mathContent}>
+            {children}
+          </div>
+          <button
+            className={mathStyles.copyButton}
+            onClick={handleCopy}
+            aria-label="Copy formula"
+          >
+            {copied ? "已复制" : "复制"}
+          </button>
+        </div>
+      </div>
+    );
   };
 
-  // 加载特定对话
-  const loadConversation = async (conversationId: string) => {
-    try {
-      const response = await fetch(
-        `/api/chat?conversationId=${conversationId}`,
+  // 渲染消息
+  const renderMessage = useCallback(
+    (message: Message, index: number) => {
+      return (
+        <div
+          key={`${message.id}-${index}-${message._timestamp || 0}`}
+          className={`${styles.message} ${
+            message.role === "user"
+              ? styles.userMessage
+              : styles.assistantMessage
+          }`}
+        >
+          {message.type === "image" && message.imageUrl && (
+            <img
+              src={message.imageUrl}
+              alt="Captured screenshot"
+              className={styles.messageImage}
+            />
+          )}
+          <ReactMarkdown
+            key={`md-${message.id}-${index}`}
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex, rehypeRaw]}
+            components={
+              {
+                code({ node, inline, className, children, ...props }: any) {
+                  const match = /language-(\w+)/.exec(className || "");
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      style={tomorrow as SyntaxHighlighterProps["style"]}
+                      language={match[1]}
+                      PreTag="div"
+                      {...props}
+                    >
+                      {String(children).replace(/\n$/, "")}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+                p: ({ node, children, ...props }) => {
+                  if (
+                    children &&
+                    Array.isArray(children) &&
+                    children.length > 0
+                  ) {
+                    return (
+                      <p className={styles.markdownParagraph} {...props}>
+                        {children}
+                      </p>
+                    );
+                  }
+                  if (typeof children === "string" && children.trim()) {
+                    return (
+                      <p className={styles.markdownParagraph} {...props}>
+                        {children}
+                      </p>
+                    );
+                  }
+                  return null;
+                },
+                math: MathComponent,
+              } as ExtendedComponents
+            }
+          >
+            {message.content || " "}
+          </ReactMarkdown>
+          {message.status === "error" && message.error && (
+            <div className={styles.messageError}>
+              <span>{message.error.message}</span>
+              <button
+                onClick={() => handleRetry(message)}
+                className={styles.retryButton}
+              >
+                重试
+              </button>
+            </div>
+          )}
+        </div>
       );
-      if (!response.ok) throw new Error("加载对话失败");
-
-      const { data } = await response.json();
-      if (data && data[0]) {
-        // 确保所有消息都有必需的字段
-        const validatedMessages = data[0].messages.map((msg: any) => ({
-          id: msg.id || Date.now().toString(),
-          role: msg.role,
-          content: msg.content || "",
-          type: msg.type || "text",
-          status: msg.status || "success",
-          ...(msg.imageUrl && { imageUrl: msg.imageUrl }),
-          ...(msg.error && { error: msg.error }),
-        }));
-
-        // 如果只有一条欢迎消息,显示预设问题
-        if (
-          validatedMessages.length === 1 &&
-          validatedMessages[0].role === "assistant"
-        ) {
-          setSuggestedTopics(suggestedQuestions);
-        } else {
-          setSuggestedTopics([]);
-        }
-        setMessages(validatedMessages);
-        setCurrentConversationId(conversationId);
-      }
-    } catch (error) {
-      console.error("加载对话失败:", error);
-      message.error("加载对话失败");
-    }
-  };
+    },
+    [shouldAutoScroll, handleRetry],
+  );
 
   // 切换历史记录显示
   const toggleHistory = useCallback(() => {
@@ -678,7 +884,7 @@ export default function AIChat() {
   // 根据窗口大小自动调整历史记录显示
   useEffect(() => {
     if (chatSize === "full") {
-      setIsHistoryVisible(true);
+      setIsHistoryVisible(false);
     } else if (chatSize === "small") {
       setIsHistoryVisible(false);
     }
@@ -694,7 +900,18 @@ export default function AIChat() {
     }
   }, [t, chatSize]);
 
-  // 修改ChatHistory组件
+  // 获取当前聊天标题
+  const getCurrentChatTitle = useCallback(() => {
+    if (!currentConversationId) return t("aiChat.title");
+
+    const currentChat = chatHistories.find(
+      (chat) => chat.conversationId === currentConversationId,
+    );
+
+    return currentChat?.title || t("aiChat.title");
+  }, [currentConversationId, chatHistories, t]);
+
+  // 定义ChatHistory组件
   const ChatHistory = () => {
     if (!session?.user) return null;
 
@@ -703,9 +920,9 @@ export default function AIChat() {
         className={`${styles.historyDrawer} ${isHistoryVisible ? styles.visible : ""}`}
       >
         <div className={styles.historyHeader}>
-          <h3>聊天记录</h3>
+          <h3>{t("aiChat.chatHistory")}</h3>
           <button className={styles.newChatButton} onClick={startNewChat}>
-            新对话
+            {t("aiChat.newChat")}
           </button>
         </div>
         <div className={styles.historyList}>
@@ -779,132 +996,74 @@ export default function AIChat() {
     }
   };
 
-  // 添加MathComponent
-  const MathComponent: React.FC<{
-    node: any;
-    inline: boolean;
-    children: React.ReactNode;
-  }> = ({ node, inline, children }) => {
-    const [copied, setCopied] = useState(false);
-    const mathRef = useRef<HTMLDivElement>(null);
+  // 加载特定对话
+  const loadConversation = async (conversationId: string) => {
+    setLoading(true);
+    setError(null);
 
-    const handleCopy = () => {
-      if (mathRef.current) {
-        const text = mathRef.current.textContent || "";
-        navigator.clipboard.writeText(text).then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-        });
+    try {
+      // 获取特定对话详情
+      const response = await fetch(
+        `/api/chat?conversationId=${conversationId}`,
+      );
+      if (!response.ok) throw new Error("加载对话失败");
+
+      const { data } = await response.json();
+
+      if (data && data.length > 0) {
+        const chat = data[0];
+
+        // 确保消息数组按时间戳排序
+        const sortedMessages = Array.isArray(chat.messages)
+          ? [...chat.messages].sort((a, b) => {
+              return (
+                new Date(a.timestamp).getTime() -
+                new Date(b.timestamp).getTime()
+              );
+            })
+          : [];
+
+        // 将后端消息格式转换为前端格式
+        const formattedMessages: Message[] = sortedMessages.map(
+          (msg: any, index: number) => ({
+            id: `${msg.role}_${new Date(msg.timestamp).getTime() || index}`,
+            role: msg.role as "user" | "assistant" | "system",
+            content: msg.content || "",
+            status: "success",
+          }),
+        );
+
+        // 清除输入框并更新状态
+        setInputValue("");
+        setMessages(formattedMessages);
+        setCurrentConversationId(chat.conversationId);
+        setIsHistoryVisible(false);
+      } else {
+        setError(t("error.conversation_not_found"));
       }
-    };
-
-    return inline ? (
-      <span className={mathStyles.inlineMath}>{children}</span>
-    ) : (
-      <div className={mathStyles.mathContainer}>
-        <div className={mathStyles.displayMath}>
-          <div ref={mathRef} className={mathStyles.mathContent}>
-            {children}
-          </div>
-          <button
-            className={mathStyles.copyButton}
-            onClick={handleCopy}
-            aria-label="Copy formula"
-          >
-            {copied ? "已复制" : "复制"}
-          </button>
-        </div>
-      </div>
-    );
+    } catch (error) {
+      console.error("加载对话失败:", error);
+      setError(t("error.load_conversation"));
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // 渲染消息
-  const renderMessage = (message: Message, index: number) => {
-    return (
-      <div
-        key={`${message.id}-${index}`}
-        className={`${styles.message} ${
-          message.role === "user" ? styles.userMessage : styles.assistantMessage
-        }`}
-      >
-        {message.type === "image" && message.imageUrl && (
-          <img
-            src={message.imageUrl}
-            alt="Captured screenshot"
-            className={styles.messageImage}
-          />
-        )}
-        <ReactMarkdown
-          key={`md-${message.id}-${index}`}
-          remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeKatex, rehypeRaw]}
-          components={
-            {
-              code({ node, inline, className, children, ...props }: any) {
-                const match = /language-(\w+)/.exec(className || "");
-                return !inline && match ? (
-                  <SyntaxHighlighter
-                    style={tomorrow as SyntaxHighlighterProps["style"]}
-                    language={match[1]}
-                    PreTag="div"
-                    {...props}
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              p: ({ node, children, ...props }) => {
-                if (
-                  children &&
-                  Array.isArray(children) &&
-                  children.length > 0
-                ) {
-                  return (
-                    <p className={styles.markdownParagraph} {...props}>
-                      {children}
-                    </p>
-                  );
-                }
-                if (typeof children === "string" && children.trim()) {
-                  return (
-                    <p className={styles.markdownParagraph} {...props}>
-                      {children}
-                    </p>
-                  );
-                }
-                return null;
-              },
-              math: MathComponent,
-            } as ExtendedComponents
-          }
-        >
-          {message.content || " "}
-        </ReactMarkdown>
-        {message.status === "error" && message.error && (
-          <div className={styles.messageError}>
-            <span>{message.error.message}</span>
-            <button
-              onClick={() => handleRetry(message)}
-              className={styles.retryButton}
-            >
-              重试
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  };
+  // 复制消息内容
+  const copyMessageContent = (content: string, messageId: string) => {
+    navigator.clipboard.writeText(content);
+    message.success({
+      content: t("common.copy.success"),
+      icon: <CheckOutlined style={{ color: "#52c41a" }} />,
+    });
 
-  // 重试发送消息
-  const handleRetry = (message: Message) => {
-    // 移除错误消息
-    setMessages((prev) => prev.filter((msg) => msg.id !== message.id));
-    // 重新发送
-    handleSendMessage(message.content);
+    // 设置当前复制的消息ID
+    setCopiedMessageId(messageId);
+
+    // 2秒后重置
+    setTimeout(() => {
+      setCopiedMessageId(null);
+    }, 2000);
   };
 
   return (
@@ -941,32 +1100,80 @@ export default function AIChat() {
               </Tooltip>
             )}
             <span className={styles.chatTitle}>
-              <RobotOutlined /> {chatSize === "small" ? "" : t("title")}
+              <RobotOutlined />{" "}
+              {chatSize === "small" ? "" : getCurrentChatTitle()}
             </span>
             <div className={styles.headerControls}>
-              <ScreenCaptureButton onStartScreenshot={handleScreenshotStart} />
+              <ScreenCaptureButton
+                onStartScreenshot={() => setIsScreenshotting(true)}
+              />
               <div className={styles.sizeButtons}>
-                <button
-                  className={`${styles.sizeButton} ${chatSize === "small" ? styles.active : ""}`}
-                  onClick={() => setSize("small")}
-                  aria-label="Small size"
-                >
-                  ⬇️
-                </button>
-                <button
-                  className={`${styles.sizeButton} ${chatSize === "large" ? styles.active : ""}`}
-                  onClick={() => setSize("large")}
-                  aria-label="Large size"
-                >
-                  ⬆️
-                </button>
-                <button
-                  className={`${styles.sizeButton} ${chatSize === "full" ? styles.active : ""}`}
-                  onClick={() => setSize("full")}
-                  aria-label="Full size"
-                >
-                  ↕️
-                </button>
+                <Tooltip title={t("size.small")}>
+                  <button
+                    className={`${styles.sizeButton} ${chatSize === "small" ? styles.active : ""}`}
+                    onClick={() => setSize("small")}
+                    aria-label="Small size"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="6" y="10" width="12" height="8" rx="2"></rect>
+                    </svg>
+                  </button>
+                </Tooltip>
+                <Tooltip title={t("size.large")}>
+                  <button
+                    className={`${styles.sizeButton} ${chatSize === "large" ? styles.active : ""}`}
+                    onClick={() => setSize("large")}
+                    aria-label="Large size"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="4" y="8" width="16" height="12" rx="2"></rect>
+                    </svg>
+                  </button>
+                </Tooltip>
+                <Tooltip title={t("size.full")}>
+                  <button
+                    className={`${styles.sizeButton} ${chatSize === "full" ? styles.active : ""}`}
+                    onClick={() => setSize("full")}
+                    aria-label="Full size"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+                      <path d="M21 8V5a2 2 0 0 0-2-2h-3"></path>
+                      <path d="M3 16v3a2 2 0 0 0 2 2h3"></path>
+                      <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
+                    </svg>
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -1049,9 +1256,9 @@ export default function AIChat() {
 
       <ScreenCapture
         onCapture={handleImageAnalysis}
-        onScreenshotEnd={handleScreenshotEnd}
+        onScreenshotEnd={() => setIsScreenshotting(false)}
         isSelecting={isScreenshotting}
-        onQuestionSelected={handleShowChat}
+        onQuestionSelected={() => setIsOpen(true)}
       />
     </>
   );

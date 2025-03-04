@@ -58,14 +58,14 @@
   bottom: 0;
   right: 0;
   border-radius: 0;
-  margin-top: 64px;
+  top: 64px;
+  margin-top: 0;
 }
 
 .sizeButton {
   background: none;
   border: none;
-  color: #ffd700;
-  font-size: 20px;
+  color: #aaa;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -73,8 +73,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .sizeButtons {
@@ -84,12 +86,13 @@
 }
 
 .sizeButton:hover {
-  color: #ffed4a;
+  color: #ffd700;
+  background-color: rgba(42, 42, 42, 0.8);
 }
 
 .sizeButton.active {
-  color: #ffed4a;
-  transform: scale(1.1);
+  color: #ffd700;
+  background-color: rgba(42, 42, 42, 0.6);
 }
 
 @keyframes slideIn {

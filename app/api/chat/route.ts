@@ -95,6 +95,25 @@ async function handleSession(
   }
 }
 
+// 为访客用户生成ID
+function generateGuestId(req: Request) {
+  // 使用IP地址和用户代理作为唯一标识的基础
+  const ip = req.headers.get("x-forwarded-for") || "unknown-ip";
+  const userAgent = req.headers.get("user-agent") || "unknown-ua";
+
+  // 使用简单的哈希函数计算唯一标识
+  let hash = 0;
+  const str = `${ip}-${userAgent}`;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // 转换为32bit整数
+  }
+
+  // 返回前缀为guest的ID
+  return `guest-${Math.abs(hash)}`;
+}
+
 export async function POST(req: Request) {
   try {
     // 确保数据库连接
@@ -105,9 +124,13 @@ export async function POST(req: Request) {
 
     // 验证用户会话
     const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
+    let userId = session?.user?.id;
+    let isGuest = false;
+
+    // 如果用户未登录，生成访客ID
     if (!userId) {
-      throw new APIError("未登录", 401, "UNAUTHORIZED");
+      userId = generateGuestId(req);
+      isGuest = true;
     }
 
     // 获取系统提示词
@@ -166,7 +189,51 @@ export async function POST(req: Request) {
       headers.set("X-Conversation-Id", String(chat.conversationId));
     }
 
-    return streamText(response, headers);
+    // 设置访客标志
+    if (isGuest) {
+      headers.set("X-Guest-User", "true");
+    }
+
+    // 添加助手消息到数据库
+    const assistantMessage = {
+      role: "assistant",
+      content: "", // 内容将在流式响应中生成
+      timestamp: new Date(),
+    };
+    messages.push(assistantMessage);
+
+    // 更新聊天记录标题 (如果是第一条消息)
+    if (messages.length <= 2) {
+      chat.title =
+        message.length > 20 ? message.substring(0, 20) + "..." : message;
+    }
+
+    // 更新数据库
+    await Chat.updateOne(
+      { conversationId: chat.conversationId },
+      {
+        $set: {
+          messages: messages,
+          title: chat.title,
+          updatedAt: new Date(),
+        },
+      },
+    );
+
+    return streamText(response, headers, async (content) => {
+      // 在流结束时更新助手消息的内容
+      if (content) {
+        await Chat.updateOne(
+          {
+            conversationId: chat.conversationId,
+            "messages.timestamp": assistantMessage.timestamp,
+          },
+          {
+            $set: { "messages.$.content": content },
+          },
+        );
+      }
+    });
   } catch (error) {
     console.error("Chat API Error:", error);
 
@@ -198,8 +265,11 @@ export async function GET(request: Request) {
     await DBconnect();
 
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new APIError("未登录", 401, "UNAUTHORIZED");
+    let userId = session?.user?.id;
+
+    // 如果用户未登录，尝试使用访客ID
+    if (!userId) {
+      userId = generateGuestId(request);
     }
 
     const { searchParams } = new URL(request.url);
@@ -207,10 +277,10 @@ export async function GET(request: Request) {
 
     const query = conversationId
       ? {
-          userId: String(session.user.id),
+          userId: String(userId),
           conversationId: String(conversationId),
         }
-      : { userId: String(session.user.id) };
+      : { userId: String(userId) };
 
     const chats = await Chat.find(query)
       .sort({ updatedAt: -1 })
@@ -249,8 +319,11 @@ export async function DELETE(request: Request) {
     await DBconnect();
 
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new APIError("未登录", 401, "UNAUTHORIZED");
+    let userId = session?.user?.id;
+
+    // 如果用户未登录，尝试使用访客ID
+    if (!userId) {
+      userId = generateGuestId(request);
     }
 
     const { searchParams } = new URL(request.url);
@@ -261,7 +334,7 @@ export async function DELETE(request: Request) {
     }
 
     const result = await Chat.deleteOne({
-      userId: String(session.user.id),
+      userId: String(userId),
       conversationId: String(conversationId),
     });
 

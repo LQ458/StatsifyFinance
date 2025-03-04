@@ -39,6 +39,10 @@
     "more": "More",
     "back": "Back",
     "noData": "No data available",
+    "suggestedTopics": "Suggested Topics",
+    "placeholder": "Enter your question...",
+    "thinking": "Thinking...",
+    "send": "Send",
     "language": {
       "select": "Select language",
       "zh": "Chinese",
@@ -58,6 +62,8 @@
       "send": "Send",
       "thinking": "Thinking...",
       "suggestedTopics": "Suggested Questions",
+      "chatHistory": "Chat History",
+      "newChat": "New Chat",
       "tips": {
         "welcome": "Hello! I'm the AI assistant of StatsifyFinance, specialized in financial analysis.",
         "examples": "You can ask me:",
@@ -100,6 +106,23 @@
         "example": "Provide application examples",
         "suggest": "Give relevant suggestions"
       }
+    },
+    "copy": {
+      "success": "Copied to clipboard",
+      "message": "Copy message",
+      "math": "Copy formula"
+    },
+    "size": {
+      "small": "Small Window",
+      "large": "Medium Window",
+      "full": "Full Screen"
+    },
+    "retry": "Retry",
+    "error": {
+      "failed": "Failed to send message",
+      "network": "Network error",
+      "server": "Server error",
+      "unknown": "Unknown error"
     }
   },
   "footer": {

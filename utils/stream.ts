@@ -36,7 +36,8 @@ function normalizeText(text: string): string {
 // 处理流式响应
 export async function streamText(
   response: Response,
-  headers: Headers,
+  headers?: Headers,
+  onComplete?: (fullContent: string) => Promise<void>,
 ): Promise<Response> {
   try {
     if (!response.ok) {
@@ -49,6 +50,9 @@ export async function streamText(
       throw new Error("No reader available");
     }
 
+    // 用于累积完整内容的变量
+    let fullContent = "";
+
     // 创建新的流
     const stream = new ReadableStream({
       async start(controller) {
@@ -57,6 +61,15 @@ export async function streamText(
             const { done, value } = await reader.read();
 
             if (done) {
+              // 执行完成回调
+              if (onComplete) {
+                try {
+                  await onComplete(fullContent);
+                } catch (callbackError) {
+                  console.error("[Stream] Callback error:", callbackError);
+                }
+              }
+
               // 发送完成标记
               controller.enqueue(new TextEncoder().encode("d:[DONE]\n"));
               controller.close();
@@ -81,6 +94,10 @@ export async function streamText(
                     const content = parsed.choices[0].delta.content;
                     // 对内容进行格式化处理
                     const normalizedContent = normalizeText(content);
+
+                    // 累积完整内容
+                    fullContent += content;
+
                     controller.enqueue(
                       new TextEncoder().encode(
                         `0:${JSON.stringify(normalizedContent)}\n`,
@@ -105,7 +122,13 @@ export async function streamText(
     });
 
     return new Response(stream as any, {
-      headers: headers,
+      headers:
+        headers ||
+        new Headers({
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        }),
     });
   } catch (error) {
     console.error("[Stream] streamText error:", error);

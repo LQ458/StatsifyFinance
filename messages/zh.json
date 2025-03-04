@@ -37,6 +37,10 @@
     "logout": "退出",
     "search": "搜索",
     "more": "更多",
+    "suggestedTopics": "建议问题",
+    "thinking": "思考中...",
+    "placeholder": "输入您的问题...",
+    "send": "发送",
     "back": "返回",
     "noData": "暂无数据",
     "language": {
@@ -54,10 +58,10 @@
     },
     "aiChat": {
       "title": "AI助手",
-      "placeholder": "输入您的问题...",
-      "send": "发送",
       "thinking": "思考中...",
       "suggestedTopics": "建议问题",
+      "chatHistory": "聊天记录",
+      "newChat": "新对话",
       "tips": {
         "welcome": "您好！我是 StatsifyFinance 的 AI 助手，专门解答金融分析相关问题。",
         "examples": "您可以问我：",
@@ -100,6 +104,23 @@
         "example": "举例说明应用场景",
         "suggest": "给出相关建议"
       }
+    },
+    "copy": {
+      "success": "已复制到剪贴板",
+      "message": "复制消息",
+      "math": "复制公式"
+    },
+    "size": {
+      "small": "小窗口",
+      "large": "中窗口",
+      "full": "全屏模式"
+    },
+    "retry": "重试",
+    "error": {
+      "failed": "发送消息失败",
+      "network": "网络错误",
+      "server": "服务器错误",
+      "unknown": "未知错误"
     }
   },
   "footer": {
