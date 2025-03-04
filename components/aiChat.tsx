@@ -504,6 +504,9 @@ export default function AIChat() {
 
         let accumulatedContent = "";
 
+        let blockFlag = false
+        let inlineFlag = false
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -524,6 +527,28 @@ export default function AIChat() {
                     .replace(/\\n/g, "\n"); // 处理换行符
 
                   accumulatedContent += extractedText;
+
+                  // // 检查是否有公式，等公式完整后再更新
+                  // if (extractedText.indexOf("[") > -1) {
+                  //   blockFlag  = true
+                  //   continue;
+                  // }
+                  // if (extractedText.indexOf("]") > -1) {
+                  //   blockFlag  = false
+                  // }
+
+                  // if (extractedText.indexOf("(") > -1) {
+                  //   inlineFlag  = true
+                  //   continue;
+                  // }
+                  // if (extractedText.indexOf(")") > -1) {
+                  //   inlineFlag  = false
+                  // }
+
+                  // if (blockFlag || inlineFlag) {
+                  //   continue;
+                  // }
+
                   // 只更新AI消息的内容
                   setMessages((prevMessages) => {
                     // 使用role和id双重检查确保更新正确的消息
@@ -793,6 +818,13 @@ export default function AIChat() {
   // 渲染消息
   const renderMessage = useCallback(
     (message: Message, index: number) => {
+      const replaceLatexSymbols = (inputStr: string) => {
+        inputStr = inputStr.replace(/\\\[/g, '　$$$$').replace(/\\\]/g, '$$$$　');
+        inputStr = inputStr.replace(/\\\(/g, '$').replace(/\\\)/g, '$');
+        return inputStr;
+      }
+      let content = replaceLatexSymbols(message.content)
+      // console.log('content:',content)
       return (
         <div
           key={`${message.id}-${index}-${message._timestamp || 0}`}
@@ -857,7 +889,7 @@ export default function AIChat() {
               } as ExtendedComponents
             }
           >
-            {message.content || " "}
+            {content || " "}
           </ReactMarkdown>
           {message.status === "error" && message.error && (
             <div className={styles.messageError}>
