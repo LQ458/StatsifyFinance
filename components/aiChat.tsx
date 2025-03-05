@@ -503,9 +503,7 @@ export default function AIChat() {
         const decoder = new TextDecoder();
 
         let accumulatedContent = "";
-
-        let blockFlag = false
-        let inlineFlag = false
+        let timmer = null
 
         while (true) {
           const { done, value } = await reader.read();
@@ -528,44 +526,29 @@ export default function AIChat() {
 
                   accumulatedContent += extractedText;
 
-                  // // 检查是否有公式，等公式完整后再更新
-                  // if (extractedText.indexOf("[") > -1) {
-                  //   blockFlag  = true
-                  //   continue;
-                  // }
-                  // if (extractedText.indexOf("]") > -1) {
-                  //   blockFlag  = false
-                  // }
+                  if (!timmer) {
+                    timmer = setTimeout(() => { 
 
-                  // if (extractedText.indexOf("(") > -1) {
-                  //   inlineFlag  = true
-                  //   continue;
-                  // }
-                  // if (extractedText.indexOf(")") > -1) {
-                  //   inlineFlag  = false
-                  // }
+                      // 只更新AI消息的内容
+                      setMessages((prevMessages) => {
+                        // 使用role和id双重检查确保更新正确的消息
+                        const aiMessageIndex = prevMessages.findIndex(
+                          (msg) =>
+                            msg.id === aiMessageId && msg.role === "assistant",
+                        );
+                        if (aiMessageIndex === -1) return prevMessages;
 
-                  // if (blockFlag || inlineFlag) {
-                  //   continue;
-                  // }
-
-                  // 只更新AI消息的内容
-                  setMessages((prevMessages) => {
-                    // 使用role和id双重检查确保更新正确的消息
-                    const aiMessageIndex = prevMessages.findIndex(
-                      (msg) =>
-                        msg.id === aiMessageId && msg.role === "assistant",
-                    );
-                    if (aiMessageIndex === -1) return prevMessages;
-
-                    const newMessages = [...prevMessages];
-                    newMessages[aiMessageIndex] = {
-                      ...newMessages[aiMessageIndex],
-                      content: accumulatedContent,
-                      status: "success",
-                    };
-                    return newMessages;
-                  });
+                        const newMessages = [...prevMessages];
+                        newMessages[aiMessageIndex] = {
+                          ...newMessages[aiMessageIndex],
+                          content: accumulatedContent,
+                          status: "success",
+                        };
+                        return newMessages;
+                      });
+                      timmer = null
+                    }, 300)
+                  }                  
                   continue;
                 }
               }
@@ -819,12 +802,11 @@ export default function AIChat() {
   const renderMessage = useCallback(
     (message: Message, index: number) => {
       const replaceLatexSymbols = (inputStr: string) => {
-        inputStr = inputStr.replace(/\\\[/g, '　$$$$').replace(/\\\]/g, '$$$$　');
-        inputStr = inputStr.replace(/\\\(/g, '$').replace(/\\\)/g, '$');
+        inputStr = inputStr.replace(/\\\\\[|\\\[/g, '\n$$$$\n').replace(/\\\\\]|\\\]/g, '\n$$$$\n');
+        inputStr = inputStr.replace(/\\\\\(|\\\(/g, '$').replace(/\\\\\)|\\\)/g, '$');
         return inputStr;
       }
       let content = replaceLatexSymbols(message.content)
-      // console.log('content:',content)
       return (
         <div
           key={`${message.id}-${index}-${message._timestamp || 0}`}
