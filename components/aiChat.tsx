@@ -503,7 +503,7 @@ export default function AIChat() {
         const decoder = new TextDecoder();
 
         let accumulatedContent = "";
-        let timmer = null
+        let timer = null
 
         while (true) {
           const { done, value } = await reader.read();
@@ -526,8 +526,8 @@ export default function AIChat() {
 
                   accumulatedContent += extractedText;
 
-                  if (!timmer) {
-                    timmer = setTimeout(() => { 
+                  if (!timer) {
+                    timer = setTimeout(() => { 
 
                       // 只更新AI消息的内容
                       setMessages((prevMessages) => {
@@ -546,7 +546,7 @@ export default function AIChat() {
                         };
                         return newMessages;
                       });
-                      timmer = null
+                      timer = null
                     }, 300)
                   }                  
                   continue;
