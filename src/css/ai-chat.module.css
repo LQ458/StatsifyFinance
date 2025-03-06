@@ -34,7 +34,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  z-index: 11000;
   animation: slideIn 0.3s ease;
   transition: all 0.3s ease;
 }
@@ -363,7 +363,7 @@
     bottom: 0;
     right: 0;
     border-radius: 0;
-    margin-top: 64px;
+    /* margin-top: 64px; */
   }
 
   .chatButton {
@@ -692,7 +692,7 @@
 /* 响应式布局 */
 @media (max-width: 640px) {
   .chatWindow {
-    @apply right-0 bottom-0 w-full h-full rounded-none;
+    /* @apply right-0 bottom-0 w-full h-full rounded-none; */
   }
 
   .chatButton {
@@ -730,7 +730,7 @@
 
 .size-full .historyDrawer {
   width: 300px;
-  transform: none;
+  transform: translateX(-300px);
 }
 
 .historyDrawer.visible {

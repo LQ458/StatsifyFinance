@@ -963,7 +963,7 @@ export default function AIChat() {
                   {new Date(chat.updatedAt).toLocaleString()}
                 </div>
               </div>
-              <Tooltip title="删除对话">
+              <Tooltip title="删除对话" zIndex={ 11100 }>
                 <button
                   className={styles.deleteButton}
                   onClick={(e) => {
@@ -1097,7 +1097,7 @@ export default function AIChat() {
         >
           <div className={styles.chatHeader}>
             {session?.user && (
-              <Tooltip title={isHistoryVisible ? "隐藏历史" : "显示历史"}>
+              <Tooltip title={isHistoryVisible ? "隐藏历史" : "显示历史"} zIndex={ 11100 }>
                 <button
                   className={styles.historyToggle}
                   onClick={toggleHistory}
@@ -1122,7 +1122,7 @@ export default function AIChat() {
                 onStartScreenshot={() => setIsScreenshotting(true)}
               />
               <div className={styles.sizeButtons}>
-                <Tooltip title={t("size.small")}>
+                <Tooltip title={t("size.small")} zIndex={ 11100 }>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "small" ? styles.active : ""}`}
                     onClick={() => setSize("small")}
@@ -1143,7 +1143,7 @@ export default function AIChat() {
                     </svg>
                   </button>
                 </Tooltip>
-                <Tooltip title={t("size.large")}>
+                <Tooltip title={t("size.large")} zIndex={ 11100 }>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "large" ? styles.active : ""}`}
                     onClick={() => setSize("large")}
@@ -1164,7 +1164,7 @@ export default function AIChat() {
                     </svg>
                   </button>
                 </Tooltip>
-                <Tooltip title={t("size.full")}>
+                <Tooltip title={t("size.full")} zIndex={ 11100 }>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "full" ? styles.active : ""}`}
                     onClick={() => setSize("full")}
