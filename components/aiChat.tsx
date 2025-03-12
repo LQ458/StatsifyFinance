@@ -522,7 +522,8 @@ export default function AIChat() {
                   const extractedText = content
                     .slice(1, -1)
                     .replace(/\\"/g, '"') // 处理转义的引号
-                    .replace(/\\n/g, "\n"); // 处理换行符
+                    .replace(/\\n/g, "\n") // 处理换行符
+                    .replace(/%/g, '\\%'); // 在LaTeX中%为注释符，写在%后面的内容会被注释，在这里加上转义\变为\%就能正常输出了
 
                   accumulatedContent += extractedText;
 
@@ -807,6 +808,7 @@ export default function AIChat() {
         return inputStr;
       }
       let content = replaceLatexSymbols(message.content)
+      // console.log('content::',  content )
       return (
         <div
           key={`${message.id}-${index}-${message._timestamp || 0}`}
