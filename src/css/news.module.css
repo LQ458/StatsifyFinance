@@ -166,6 +166,9 @@
   line-height: 36px;
   color: #999;
   overflow-y: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 .newsMain img {
   display: inline-block;

@@ -5,7 +5,7 @@ interface NavItem {
 
 const mainNavList: NavItem[] = [
   {
-    value: "quantitative",
+    value: "quantitativeTitle",
     path: "/analysis/quantitative",
   },
   {

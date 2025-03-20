@@ -37,6 +37,10 @@
     "logout": "退出",
     "search": "搜索",
     "more": "更多",
+    "suggestedTopics": "建议问题",
+    "thinking": "思考中...",
+    "placeholder": "输入您的问题...",
+    "send": "发送",
     "back": "返回",
     "noData": "暂无数据",
     "language": {
@@ -53,30 +57,70 @@
       "close": "关闭消息"
     },
     "aiChat": {
-      "title": "AI 助手",
-      "suggestedTopics": "推荐话题",
-      "thinking": "AI 思考中...",
-      "placeholder": "请输入您的问题...",
-      "send": "发送",
-      "error": {
-        "topics": "获取推荐话题失败",
-        "send": "发送消息失败，请重试",
-        "network": "网络连接错误",
-        "server": "服务器错误，请稍后重试",
-        "tooLong": "消息过长，请缩短后重试",
-        "empty": "请输入消息内容"
-      },
+      "title": "AI助手",
+      "thinking": "思考中...",
+      "suggestedTopics": "建议问题",
+      "chatHistory": "聊天记录",
+      "newChat": "新对话",
       "tips": {
         "welcome": "您好！我是 StatsifyFinance 的 AI 助手，专门解答金融分析相关问题。",
         "examples": "您可以问我：",
         "example1": "• 什么是量化交易？",
         "example2": "• 如何分析股票基本面？",
         "example3": "• 风险管理的基本原则是什么？"
+      },
+      "error": {
+        "empty": "请输入问题",
+        "tooLong": "问题太长了",
+        "network": "网络错误",
+        "server": "服务器错误",
+        "empty_response": "服务器返回为空",
+        "failed": "发送失败",
+        "unknown": "未知错误",
+        "topics": "获取推荐话题失败"
       }
     },
     "dateFormat": {
       "short": "YYYY年MM月DD日",
       "long": "YYYY年MM月DD日 HH:mm:ss"
+    },
+    "screencapture": {
+      "capture": "截图分析",
+      "hint": "按住鼠标左键并拖动选择截图区域",
+      "questions": {
+        "title": "选择分析问题",
+        "explain": "解释这张图片的内容",
+        "concept": "解释相关的金融概念",
+        "example": "举例说明应用场景",
+        "suggest": "给出相关建议"
+      }
+    },
+    "textSelector": {
+      "analyze": "分析",
+      "questions": {
+        "title": "选择分析问题",
+        "explain": "解释这段内容的含义",
+        "concept": "解释相关的金融概念",
+        "example": "举例说明应用场景",
+        "suggest": "给出相关建议"
+      }
+    },
+    "copy": {
+      "success": "已复制到剪贴板",
+      "message": "复制消息",
+      "math": "复制公式"
+    },
+    "size": {
+      "small": "小窗口",
+      "large": "中窗口",
+      "full": "全屏模式"
+    },
+    "retry": "重试",
+    "error": {
+      "failed": "发送消息失败",
+      "network": "网络错误",
+      "server": "服务器错误",
+      "unknown": "未知错误"
     }
   },
   "footer": {
@@ -97,7 +141,7 @@
     }
   },
   "analysis": {
-    "quantitative": "定量",
+    "quantitativeTitle": "定量",
     "qualitative": "定性",
     "title": "市场分析",
     "trade": "交易策略",
@@ -106,7 +150,17 @@
     "trade-description-1": "使用数学、统计学、编程和大数据分析等技术，",
     "trade-description-2": "基于历史数据和市场信号制定的交易策略",
     "description": "全面的市场分析帮助您做出更好的投资决策",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "quantitative": {
+      "categories": {
+        "profitability": "盈利能力",
+        "liquidity": "流动性",
+        "solvency": "偿债能力",
+        "efficiency": "运营效率",
+        "growth": "成长能力",
+        "valuation": "估值水平"
+      }
+    }
   },
   "login": {
     "title": "登录",
