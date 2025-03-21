@@ -504,6 +504,8 @@ export default function AIChat() {
 
         let accumulatedContent = "";
         let timer = null
+        let isBlockLaTeX = false
+        let isInlineLateX = false
 
         while (true) {
           const { done, value } = await reader.read();
@@ -523,7 +525,8 @@ export default function AIChat() {
                     .slice(1, -1)
                     .replace(/\\"/g, '"') // 处理转义的引号
                     .replace(/\\n/g, "\n") // 处理换行符
-                    .replace(/%/g, '\\%'); // 在LaTeX中%为注释符，写在%后面的内容会被注释，在这里加上转义\变为\%就能正常输出了
+                    // .replace(/%/g, '\\%') // 在LaTeX中%为注释符，写在%后面的内容会被注释，在这里加上转义\变为\%就能正常输出了 --20250321注掉,在后面公式代码标记替换中有对\\转\的处理,让公式格式在对话时解析正常,里面有%号的地方也已经能正确识别
+                    .replace(/\$/g, '\\$');
 
                   accumulatedContent += extractedText;
 
@@ -805,6 +808,7 @@ export default function AIChat() {
       const replaceLatexSymbols = (inputStr: string) => {
         inputStr = inputStr.replace(/\\\\\[|\\\[/g, '\n$$$$\n').replace(/\\\\\]|\\\]/g, '\n$$$$\n');
         inputStr = inputStr.replace(/\\\\\(|\\\(/g, '$').replace(/\\\\\)|\\\)/g, '$');
+        inputStr = inputStr.replace(/\\{2}/g, '\\');
         return inputStr;
       }
       let content = replaceLatexSymbols(message.content)
