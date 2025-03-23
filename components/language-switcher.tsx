@@ -14,7 +14,7 @@ const LanguageSwitcher = () => {
 
   const handleLocaleChange = async (newLocale: string) => {
     try {
-      await router.replace(pathname, { locale: newLocale });
+      await router.replace(pathname, { locale: newLocale as "zh" | "en" });
     } catch (error) {
       console.error("Failed to switch language:", error);
     }

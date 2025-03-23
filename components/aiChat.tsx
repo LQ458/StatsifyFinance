@@ -503,9 +503,9 @@ export default function AIChat() {
         const decoder = new TextDecoder();
 
         let accumulatedContent = "";
-        let timer = null
-        let isBlockLaTeX = false
-        let isInlineLateX = false
+        let timer = null;
+        let isBlockLaTeX = false;
+        let isInlineLateX = false;
 
         while (true) {
           const { done, value } = await reader.read();
@@ -526,13 +526,12 @@ export default function AIChat() {
                     .replace(/\\"/g, '"') // 处理转义的引号
                     .replace(/\\n/g, "\n") // 处理换行符
                     // .replace(/%/g, '\\%') // 在LaTeX中%为注释符，写在%后面的内容会被注释，在这里加上转义\变为\%就能正常输出了 --20250321注掉,在后面公式代码标记替换中有对\\转\的处理,让公式格式在对话时解析正常,里面有%号的地方也已经能正确识别
-                    .replace(/\$/g, '\\$');
+                    .replace(/\$/g, "\\$");
 
                   accumulatedContent += extractedText;
 
                   if (!timer) {
-                    timer = setTimeout(() => { 
-
+                    timer = setTimeout(() => {
                       // 只更新AI消息的内容
                       setMessages((prevMessages) => {
                         // 使用role和id双重检查确保更新正确的消息
@@ -550,9 +549,9 @@ export default function AIChat() {
                         };
                         return newMessages;
                       });
-                      timer = null
-                    }, 300)
-                  }                  
+                      timer = null;
+                    }, 300);
+                  }
                   continue;
                 }
               }
@@ -806,12 +805,16 @@ export default function AIChat() {
   const renderMessage = useCallback(
     (message: Message, index: number) => {
       const replaceLatexSymbols = (inputStr: string) => {
-        inputStr = inputStr.replace(/\\\\\[|\\\[/g, '\n$$$$\n').replace(/\\\\\]|\\\]/g, '\n$$$$\n');
-        inputStr = inputStr.replace(/\\\\\(|\\\(/g, '$').replace(/\\\\\)|\\\)/g, '$');
-        inputStr = inputStr.replace(/\\{2}/g, '\\');
+        inputStr = inputStr
+          .replace(/\\\\\[|\\\[/g, "\n$$$$\n")
+          .replace(/\\\\\]|\\\]/g, "\n$$$$\n");
+        inputStr = inputStr
+          .replace(/\\\\\(|\\\(/g, "$")
+          .replace(/\\\\\)|\\\)/g, "$");
+        inputStr = inputStr.replace(/\\{2}/g, "\\");
         return inputStr;
-      }
-      let content = replaceLatexSymbols(message.content)
+      };
+      let content = replaceLatexSymbols(message.content);
       // console.log('content::',  content )
       return (
         <div
@@ -969,7 +972,7 @@ export default function AIChat() {
                   {new Date(chat.updatedAt).toLocaleString()}
                 </div>
               </div>
-              <Tooltip title="删除对话" zIndex={ 11100 }>
+              <Tooltip title="删除对话" zIndex={11100}>
                 <button
                   className={styles.deleteButton}
                   onClick={(e) => {
@@ -1103,7 +1106,10 @@ export default function AIChat() {
         >
           <div className={styles.chatHeader}>
             {session?.user && (
-              <Tooltip title={isHistoryVisible ? "隐藏历史" : "显示历史"} zIndex={ 11100 }>
+              <Tooltip
+                title={isHistoryVisible ? "隐藏历史" : "显示历史"}
+                zIndex={11100}
+              >
                 <button
                   className={styles.historyToggle}
                   onClick={toggleHistory}
@@ -1128,7 +1134,7 @@ export default function AIChat() {
                 onStartScreenshot={() => setIsScreenshotting(true)}
               />
               <div className={styles.sizeButtons}>
-                <Tooltip title={t("size.small")} zIndex={ 11100 }>
+                <Tooltip title={t("size.small")} zIndex={11100}>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "small" ? styles.active : ""}`}
                     onClick={() => setSize("small")}
@@ -1149,7 +1155,7 @@ export default function AIChat() {
                     </svg>
                   </button>
                 </Tooltip>
-                <Tooltip title={t("size.large")} zIndex={ 11100 }>
+                <Tooltip title={t("size.large")} zIndex={11100}>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "large" ? styles.active : ""}`}
                     onClick={() => setSize("large")}
@@ -1170,7 +1176,7 @@ export default function AIChat() {
                     </svg>
                   </button>
                 </Tooltip>
-                <Tooltip title={t("size.full")} zIndex={ 11100 }>
+                <Tooltip title={t("size.full")} zIndex={11100}>
                   <button
                     className={`${styles.sizeButton} ${chatSize === "full" ? styles.active : ""}`}
                     onClick={() => setSize("full")}
