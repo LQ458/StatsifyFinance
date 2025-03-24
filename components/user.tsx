@@ -39,7 +39,7 @@ const User = () => {
         {!session ? (
           <Link
             href="/login"
-            locale={locale}
+            locale={locale as "zh" | "en"}
             className="text-white space-x-3 no-underline self-center text-[14px] w-[60px] h-[60px] leading-[60px] text-center hover:bg-[#313131]"
           >
             {t("login")}
