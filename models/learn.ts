@@ -28,6 +28,10 @@ const learnSchema = new Schema({
     type: String,
     required: true,
   },
+  enContent: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
     required: false,

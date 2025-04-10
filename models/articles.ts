@@ -7,6 +7,10 @@ const articlesSchema = new Schema({
     type: String,
     required: true,
   },
+  enTitle: {
+    type: String,
+    required: true,
+  },
   category: {
     type: String,
     required: true,
@@ -15,7 +19,15 @@ const articlesSchema = new Schema({
     type: String,
     required: true,
   },
+  enDesc: {
+    type: String,
+    required: true,
+  },
   content: {
+    type: String,
+    required: true,
+  },
+  enContent: {
     type: String,
     required: true,
   },

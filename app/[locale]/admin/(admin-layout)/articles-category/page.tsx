@@ -21,6 +21,7 @@ import {
 type Category = {
   _id: string;
   title: string;
+  enTitle: string;
   desc: string;
   type: string;
   image: string;
@@ -121,6 +122,10 @@ function CategoryPage() {
             dataIndex: "title",
           },
           {
+            title: "英文分类名",
+            dataIndex: "enTitle",
+          },
+          {
             title: "排序",
             dataIndex: "order",
           },
@@ -136,7 +141,9 @@ function CategoryPage() {
                     onClick={() => {
                       setOpen(true);
                       setCurrentId(r._id);
-                      myForm.setFieldsValue(r);
+                      setTimeout(()=>{
+                        myForm.setFieldsValue(r);
+                      },200)                      
                     }}
                   />
                   <Popconfirm
@@ -204,6 +211,18 @@ function CategoryPage() {
               {
                 required: true,
                 message: "分类名不能为空",
+              },
+            ]}
+          >
+            <Input placeholder="请输入分类名" />
+          </Form.Item>
+          <Form.Item
+            label="英文分类名"
+            name="enTitle"
+            rules={[
+              {
+                required: true,
+                message: "英文分类名不能为空",
               },
             ]}
           >

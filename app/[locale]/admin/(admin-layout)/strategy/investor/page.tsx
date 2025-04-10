@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Row,
+  Col,
   Card,
   Form,
   Input,
@@ -31,9 +33,11 @@ const MyEditor = dynamic(() => import("../../../_components/my-editor"), {
 type Article = {
   _id: string;
   title: string;
+  enTitle: string;
   desc: string;
   image: string;
   content: string;
+  enContent: string;
   category: string;
   createdAt: string;
 };
@@ -51,6 +55,7 @@ function InvestorPage() {
   const [imageUrl, setImageUrl] = useState<string>("");
   // 编辑器内容
   const [html, setHtml] = useState("");
+  const [enHtml, setEnHtml] = useState("");
 
   const [query, setQuery] = useState({
     per,
@@ -77,6 +82,7 @@ function InvestorPage() {
       setCurrentId("");
       setImageUrl("");
       setHtml("");
+      setEnHtml("");
     }
   }, [open]);
 
@@ -142,6 +148,11 @@ function InvestorPage() {
             width: 200,
           },
           {
+            title: "英文姓名",
+            dataIndex: "enTitle",
+            width: 200,
+          },
+          {
             title: "照片",
             align: "center",
             width: "100px",
@@ -183,8 +194,11 @@ function InvestorPage() {
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
-                      setHtml(r.content);
-                      myForm.setFieldsValue(r);
+                      setHtml(r.content);                      
+                      setEnHtml(r.enContent);
+                      setTimeout(()=>{
+                        myForm.setFieldsValue(r);
+                      },200)
                     }}
                   />
                   <Popconfirm
@@ -233,7 +247,7 @@ function InvestorPage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/learn/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -246,6 +260,7 @@ function InvestorPage() {
                   ...v,
                   image: imageUrl,
                   content: html,
+                  enContent: enHtml,
                   type,
                 }),
               }).then((res) => res.json());
@@ -259,23 +274,45 @@ function InvestorPage() {
             setQuery({ ...query }); // 改变query会重新去取数据
           }}
         >
-          <Form.Item
-            label="姓名"
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: "姓名不能为空",
-              },
-            ]}
-          >
-            <Input placeholder="请输入标题" />
-          </Form.Item>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Col span={12}>
+              <Form.Item
+                label="姓名"
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "姓名不能为空",
+                  },
+                ]}
+              >
+                <Input placeholder="请输入标题" />
+              </Form.Item>
+            </Col>
+            <Col span={12} >
+              <Form.Item
+                label="英文姓名"
+                name="enTitle"
+                rules={[
+                  {
+                    required: true,
+                    message: "英文姓名不能为空",
+                  },
+                ]}
+              >
+                <Input placeholder="请输入标题" />
+              </Form.Item>
+            </Col>
+          </Row>
+          
           <Form.Item label="照片">
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>
           <Form.Item label="介绍">
             <MyEditor html={html} setHtml={setHtml} />
+          </Form.Item>
+          <Form.Item label="英文介绍">
+            <MyEditor html={enHtml} setHtml={setEnHtml} />
           </Form.Item>
         </Form>
       </Modal>
