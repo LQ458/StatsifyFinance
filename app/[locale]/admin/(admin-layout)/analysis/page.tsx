@@ -69,7 +69,6 @@ function AnalysisPage() {
   // 编辑器内容
   const [html, setHtml] = useState("");
   const [enHtml, setEnHtml] = useState("");
-  
 
   const [query, setQuery] = useState({
     per,
@@ -269,9 +268,9 @@ function AnalysisPage() {
                       setHtml(r.content);
                       setEnHtml(r.enContent);
                       setSelectedValue(r.category);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)  
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -320,7 +319,12 @@ function AnalysisPage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/learn/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -362,7 +366,7 @@ function AnalysisPage() {
                 <Input placeholder="请输入标题" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="英文标题"
                 name="enTitle"
@@ -378,10 +382,6 @@ function AnalysisPage() {
             </Col>
           </Row>
 
-
-
-          
-          
           <Form.Item
             label="分类"
             name="category"

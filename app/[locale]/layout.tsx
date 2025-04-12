@@ -1,6 +1,7 @@
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { notFound } from "next/navigation";
 import { locales } from "../i18n";
+import "katex/dist/katex.min.css";
 
 type Props = {
   children: React.ReactNode;

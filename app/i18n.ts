@@ -20,14 +20,10 @@ const getBrowserLocale = () => {
 };
 
 export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as Locale)) notFound();
+  // 验证语言环境是否支持
+  if (!locales.includes(locale as any)) notFound();
 
   return {
-    messages: {
-      ...(await import(`../messages/${locale}.json`)).default,
-      ...(await import(`../messages/en.json`)).default, // 英文作为fallback
-    },
-    defaultLocale,
-    fallbackLocale: defaultLocale,
+    messages: (await import(`../messages/${locale}/quant-wiki.json`)).default,
   };
 });

@@ -245,9 +245,9 @@ function ArticlePage() {
                       setHtml(r.content);
                       setEnHtml(r.enContent);
                       setSelectedValue(r.category);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)  
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -296,7 +296,12 @@ function ArticlePage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/articles/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -305,7 +310,12 @@ function ArticlePage() {
             } else {
               const res = await fetch("/api/admin/articles", {
                 method: "POST",
-                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
               }).then((res) => res.json());
               if (!res.success) {
                 return message.error(res.errorMessage || "操作失败！");
@@ -332,22 +342,22 @@ function ArticlePage() {
                 <Input placeholder="请输入标题" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
-                  label="英文标题"
-                  name="enTitle"
-                  rules={[
-                    {
-                      required: true,
-                      message: "英文标题不能为空",
-                    },
-                  ]}
-                >
-                  <Input placeholder="请输入标题" />
-                </Form.Item>
+                label="英文标题"
+                name="enTitle"
+                rules={[
+                  {
+                    required: true,
+                    message: "英文标题不能为空",
+                  },
+                ]}
+              >
+                <Input placeholder="请输入标题" />
+              </Form.Item>
             </Col>
           </Row>
-          
+
           <Form.Item
             label="分类"
             name="category"
@@ -374,13 +384,13 @@ function ArticlePage() {
                 <Input.TextArea placeholder="请输入简介" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item label="英文简介" name="enDesc">
                 <Input.TextArea placeholder="请输入简介" />
               </Form.Item>
             </Col>
           </Row>
-          
+
           <Form.Item label="封面">
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>

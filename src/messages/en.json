@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "quantitativeFinance": "Quantitative Finance Wiki"
+  },
+  "quant-wiki": {
+    "title": "Quantitative Finance Wiki",
+    "subtitle": "Explore the Theory and Practice of Quantitative Trading",
+    "searchPlaceholder": "Search articles...",
+    "difficulty": {
+      "all": "All Levels",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "tags": {
+      "all": "All Tags"
+    },
+    "relatedArticles": "Related Articles"
+  }
+}
