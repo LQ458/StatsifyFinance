@@ -10,12 +10,14 @@ import MainNav from "@/components/main-nav";
 import SideNav from "@/components/side-nav";
 import { mainNavList } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
+import { useTranslations, useLocale } from "next-intl";
 
 // 定义对象类型
 interface Item {
   title: string;
   enTitle: string;
   content: string;
+  enContent: string;
 }
 interface ChangeData {
   activeIndex: number;
@@ -25,6 +27,7 @@ interface ChangeData {
 interface Mapping {
   _id: string;
   title: string;
+  enTitle: string;
 }
 
 interface EventHandler {
@@ -32,6 +35,7 @@ interface EventHandler {
 }
 
 const RiskManage = () => {
+  const t = useTranslations("analysis");
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [isInitialRender, setIsInitialRender] = useState(true); // swiper初始化判定，用于跳过首次执行，避免首次执行覆盖地址栏传参
   const [loading, setLoading] = useState(true);
@@ -51,6 +55,7 @@ const RiskManage = () => {
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams();
+  const locale = useLocale();
 
   const updateIndex = (newIndex: number) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -153,8 +158,8 @@ const RiskManage = () => {
   }, [current]);
 
   const category: Mapping[] = [
-    { _id: "1", title: "风险控制" },
-    { _id: "2", title: "行业分类" },
+    { _id: "1", title: "风险控制", enTitle: "Risk Management" },
+    { _id: "2", title: "行业分类", enTitle: "Industry Classification" },
   ];
 
   const navClick: EventHandler = (id: string) => {
@@ -182,10 +187,10 @@ const RiskManage = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                风险控制
+                {t("risk-manage-title")}
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-                通过系统方法识别、量化、监测和管理影响投资回报的风险，以最小化损失并确保投资组合的稳定性。
+                {t("risk-manage-description")}
               </p>
 
               <div className="mt-[30px] text-left">
@@ -197,8 +202,7 @@ const RiskManage = () => {
                         className={`${current === idx ? styles["active"] : ""}`}
                         onClick={(e) => tabChange(idx, e)}
                       >
-                        {item.title}
-                        <br />
+                        {locale === 'zh' && <>{item.title}<br /></>}
                         {item.enTitle}
                       </li>
                     ))}

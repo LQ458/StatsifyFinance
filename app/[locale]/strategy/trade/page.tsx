@@ -9,12 +9,13 @@ import LearnSlider, { SwiperComponentHandle } from "@/components/learn-slider";
 import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Item {
   title: string;
   enTitle: string;
   content: string;
+  enContent: string;
 }
 interface ChangeData {
   activeIndex: number;
@@ -41,6 +42,7 @@ const Strategy = () => {
   const swiperRef = useRef<SwiperComponentHandle>(null);
   const tabRef = useRef<HTMLUListElement>(null);
   const searchParams = useSearchParams();
+  const locale = useLocale();
 
   const updateIndex = (newIndex: number) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -166,9 +168,8 @@ const Strategy = () => {
                       key={idx}
                       className={`${current === idx ? styles["active"] : ""}`}
                       onClick={(e) => tabChange(idx, e)}
-                    >
-                      {item.title}
-                      <br />
+                    >                      
+                      {locale === 'zh' && <>{item.title}<br /></>}
                       {item.enTitle}
                     </li>
                   ))}

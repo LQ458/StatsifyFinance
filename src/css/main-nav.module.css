@@ -9,6 +9,8 @@
 }
 .nav ul {
   display: flex;
+  overflow: hidden;
+  overflow-x: auto;
 }
 .nav ul li {
   color: #fff;

@@ -10,7 +10,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import styles from "@/src/css/learn.module.css";
 import { Navigation, Pagination, EffectCards } from "swiper/modules";
 import Str2html from "./str2html";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -23,7 +23,9 @@ import Image from "next/image";
 // 定义对象类型
 interface Item {
   title: string;
+  enTitle: string;
   content: string;
+  enContent: string;
 }
 
 interface ChangeData {
@@ -52,6 +54,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const [autoHeight, setAutoHeight] = useState(false);
     const [resetSwiper, setReSetSwiper] = useState(true);
     const t = useTranslations("learn");
+    const locale = useLocale();
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -116,7 +119,7 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                 aria-label={`${t("slide.label")} ${idx + 1}: ${item.title}`}
               >
                 <div className={`${styles["slide-item"]} ss-slide-item`}>
-                  <Str2html htmlString={item.content} />
+                  <Str2html htmlString={locale === 'zh' ? item.content : item.enContent} />
                 </div>
               </SwiperSlide>
             ))}

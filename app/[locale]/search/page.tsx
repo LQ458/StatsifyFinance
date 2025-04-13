@@ -8,7 +8,7 @@ import Str2html from "@/components/str2html";
 import { IoSearch } from "react-icons/io5";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 type Item = {
   _id: string;
@@ -17,12 +17,14 @@ type Item = {
   desc: string;
   image: string;
   content: string;
+  enContent: string;
   category: string;
   createdAt: string;
 };
 
 const Search = () => {
   const t = useTranslations("search");
+  const locale = useLocale();
   const commonT = useTranslations("common");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [keywords, setKeywords] = useState("");
@@ -311,11 +313,10 @@ const Search = () => {
                     <li key={idx}>
                       <div className={`${styles.learn}`}>
                         <h3>
-                          <Str2html htmlString={item.title} />
-                          <Str2html htmlString={item.enTitle || ""} />
+                          <Str2html htmlString={locale === 'zh' ? item.title : item.enTitle || ""} />
                         </h3>
                         <div className="text-[14px]">
-                          <Str2html htmlString={item.content} />
+                          <Str2html htmlString={locale === 'zh' ? item.content : item.enContent || ""} />
                         </div>
                         <div className="text-[14px] text-[#666] mt-[10px]">
                           {dayjs(item.createdAt).format(

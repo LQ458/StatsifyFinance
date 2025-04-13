@@ -11,13 +11,14 @@ import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/analysis/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
 import AIChat from "@/components/aiChat";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 interface Item {
   _id: string;
   title: string;
   category: string;
   enTitle: string;
   content: string;
+  enContent: string;
 }
 interface ChangeData {
   activeIndex: number;
@@ -33,6 +34,7 @@ interface twoDimension extends Array<Item[]> {}
 
 const Analysis = () => {
   const t = useTranslations("quantitative");
+  const locale = useLocale();
   const [currentNav, setCurrentNav] = useState("");
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [isNoData, setIsNoData] = useState(false);
@@ -244,8 +246,7 @@ const Analysis = () => {
                         className={`${current === idx ? styles["active"] : ""}`}
                         onClick={(e) => tabChange(idx, e)}
                       >
-                        {item.title}
-                        <br />
+                        {locale === 'zh' && <>{item.title}<br /></>}
                         {item.enTitle}
                       </li>
                     ))}

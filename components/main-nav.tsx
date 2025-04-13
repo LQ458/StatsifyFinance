@@ -3,10 +3,11 @@ import React from "react";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import styles from "../src/css/main-nav.module.css";
-import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 interface NavItem {
   value: string;
+  enValue: string;
   path: string;
 }
 
@@ -15,8 +16,8 @@ interface ChildComponentProps {
 }
 
 const MainNav: React.FC<ChildComponentProps> = ({ navItems }) => {
-  const t = useTranslations("analysis");
   const pathname = usePathname();
+  const locale = useLocale();
 
   return (
     <div className={`${styles.nav} w-full ss-main-nav`}>
@@ -26,7 +27,7 @@ const MainNav: React.FC<ChildComponentProps> = ({ navItems }) => {
             key={idx}
             className={`${pathname.indexOf(item.path) > -1 ? styles.active : ""}`}
           >
-            <Link href={item.path}>{t(item.value)}</Link>
+            <Link href={item.path}>{locale === 'zh' ? item.value : item.enValue}</Link>
           </li>
         ))}
       </ul>
