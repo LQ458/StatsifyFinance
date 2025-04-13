@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Row,
+  Col,
   Card,
   Form,
   Input,
@@ -32,15 +34,19 @@ const MyEditor = dynamic(() => import("../../_components/my-editor"), {
 type Article = {
   _id: string;
   title: string;
+  enTitle: string;
   desc: string;
+  enDesc: string;
   image: string;
   content: string;
+  enContent: string;
   category: string;
   createdAt: string;
 };
 type Category = {
   _id: string;
   title: string;
+  enTitle: string;
 };
 
 function AnalysisPage() {
@@ -62,6 +68,7 @@ function AnalysisPage() {
   const [imageUrl, setImageUrl] = useState<string>("");
   // 编辑器内容
   const [html, setHtml] = useState("");
+  const [enHtml, setEnHtml] = useState("");
 
   const [query, setQuery] = useState({
     per,
@@ -110,6 +117,7 @@ function AnalysisPage() {
       setCurrentId("");
       setImageUrl("");
       setHtml("");
+      setEnHtml("");
     }
   }, [open]);
 
@@ -211,9 +219,20 @@ function AnalysisPage() {
             render(v, r) {
               let categoryStr = "";
               category.forEach((item) => {
-                console.log("找到：", item._id === v.category, item.title);
                 if (item._id === v.category) {
                   categoryStr = item.title;
+                }
+              });
+              return categoryStr;
+            },
+          },
+          {
+            title: "英文分类",
+            render(v, r) {
+              let categoryStr = "";
+              category.forEach((item) => {
+                if (item._id === v.category) {
+                  categoryStr = item.enTitle;
                 }
               });
               return categoryStr;
@@ -247,8 +266,11 @@ function AnalysisPage() {
                       setCurrentId(r._id);
                       setImageUrl(r.image);
                       setHtml(r.content);
+                      setEnHtml(r.enContent);
                       setSelectedValue(r.category);
-                      myForm.setFieldsValue(r);
+                      setTimeout(() => {
+                        myForm.setFieldsValue(r);
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -297,7 +319,12 @@ function AnalysisPage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/learn/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -310,6 +337,7 @@ function AnalysisPage() {
                   ...v,
                   image: imageUrl,
                   content: html,
+                  enContent: enHtml,
                   type: tabVal,
                 }),
               }).then((res) => res.json());
@@ -323,21 +351,37 @@ function AnalysisPage() {
             setQuery({ ...query }); // 改变query会重新去取数据
           }}
         >
-          <Form.Item
-            label="标题"
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: "标题不能为空",
-              },
-            ]}
-          >
-            <Input placeholder="请输入标题" />
-          </Form.Item>
-          <Form.Item label="英文标题" name="enTitle">
-            <Input placeholder="请输入英文标题" />
-          </Form.Item>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Col span={12}>
+              <Form.Item
+                label="标题"
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "标题不能为空",
+                  },
+                ]}
+              >
+                <Input placeholder="请输入标题" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="英文标题"
+                name="enTitle"
+                rules={[
+                  {
+                    required: true,
+                    message: "英文标题不能为空",
+                  },
+                ]}
+              >
+                <Input placeholder="请输入英文标题" />
+              </Form.Item>
+            </Col>
+          </Row>
+
           <Form.Item
             label="分类"
             name="category"
@@ -362,6 +406,9 @@ function AnalysisPage() {
           </Form.Item>
           <Form.Item label="详情">
             <MyEditor html={html} setHtml={setHtml} />
+          </Form.Item>
+          <Form.Item label="英文详情">
+            <MyEditor html={enHtml} setHtml={setEnHtml} />
           </Form.Item>
         </Form>
       </Modal>

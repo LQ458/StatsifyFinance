@@ -7,6 +7,10 @@ const categorySchema = new Schema({
     type: String,
     required: true,
   },
+  enTitle: {
+    type: String,
+    required: true,
+  },
   order: {
     type: Number,
     default: 1,

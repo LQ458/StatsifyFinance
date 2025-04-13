@@ -15,7 +15,7 @@ import {
 } from "swiper/modules";
 import Str2html from "./str2html";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 // Import Swiper styles
 import "swiper/css";
@@ -28,8 +28,10 @@ import Image from "next/image";
 // 定义对象类型
 interface Item {
   title: string;
+  enTitle: string;
   image: string;
   content: string;
+  enContent: string;
 }
 
 interface ChangeData {
@@ -60,6 +62,7 @@ const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
     const [intro, setIntro] = useState("");
     const scrollRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("investor");
+    const locale = useLocale();
 
     useImperativeHandle(ref, () => ({
       slideNext() {
@@ -112,7 +115,7 @@ const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
               <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666] ss-img-width">
                 <div
                   className="cursor-pointer h-[450px] ss-img-height"
-                  onClick={() => handleClick(item.content)}
+                  onClick={() => handleClick(locale === 'zh' ? item.content : item.enContent)}
                 >
                   <img
                     className="h-full"
@@ -121,7 +124,7 @@ const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                   />
                 </div>
                 <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">
-                  {item.title}
+                  {locale === 'zh' ? item.title : item.enTitle}
                 </div>
               </div>
             </SwiperSlide>

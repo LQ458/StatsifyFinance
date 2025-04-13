@@ -1,28 +1,28 @@
 import { ReadableStream } from "stream/web";
 
 // 超时处理函数
-async function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  errorMessage: string,
-): Promise<T> {
-  let timeoutHandle: NodeJS.Timeout;
+// async function withTimeout<T>(
+//   promise: Promise<T>,
+//   timeoutMs: number,
+//   errorMessage: string,
+// ): Promise<T> {
+//   let timeoutHandle: NodeJS.Timeout;
 
-  const timeoutPromise = new Promise<never>((_, reject) => {
-    timeoutHandle = setTimeout(() => {
-      reject(new Error(`Timeout after ${timeoutMs}ms: ${errorMessage}`));
-    }, timeoutMs);
-  });
+//   const timeoutPromise = new Promise<never>((_, reject) => {
+//     timeoutHandle = setTimeout(() => {
+//       reject(new Error(`Timeout after ${timeoutMs}ms: ${errorMessage}`));
+//     }, timeoutMs);
+//   });
 
-  try {
-    const result = await Promise.race([promise, timeoutPromise]);
-    clearTimeout(timeoutHandle!);
-    return result;
-  } catch (error) {
-    clearTimeout(timeoutHandle!);
-    throw error;
-  }
-}
+//   try {
+//     const result = await Promise.race([promise, timeoutPromise]);
+//     clearTimeout(timeoutHandle!);
+//     return result;
+//   } catch (error) {
+//     clearTimeout(timeoutHandle!);
+//     throw error;
+//   }
+// }
 
 // 处理多余空行的函数
 function normalizeText(text: string): string {
@@ -49,6 +49,8 @@ export async function streamText(
     if (!reader) {
       throw new Error("No reader available");
     }
+
+    console.log("[Stream] streamText start");
 
     // 用于累积完整内容的变量
     let fullContent = "";

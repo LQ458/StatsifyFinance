@@ -10,10 +10,13 @@ import SideNav from "@/components/side-nav";
 import EChartComponent from "@/components/echarts";
 import * as echarts from "echarts";
 import { mainNavList } from "@/src/data/strategy/mainNav";
+import { useTranslations, useLocale } from "next-intl";
+
 
 interface Mapping {
   _id: string;
   title: string;
+  enTitle: string;
 }
 
 interface EventHandler {
@@ -28,9 +31,11 @@ interface chartCategory {
 const IndustrySectors = () => {
   const [currentNav, setCurrentNav] = useState("2");
   const router = useRouter();
+  const t = useTranslations("analysis");
+
   const category: Mapping[] = [
-    { _id: "1", title: "风险控制" },
-    { _id: "2", title: "行业分类" },
+    { _id: "1", title: "风险控制", enTitle: "Risk Management" },
+    { _id: "2", title: "行业分类", enTitle: "Industry Classification" },
   ];
 
   const navClick: EventHandler = (id: string) => {
@@ -317,12 +322,10 @@ const IndustrySectors = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                行业分类
+                {t("industry-classification-title")}
               </h1>
               <p className="text-[#B8B8B8] text-[16px]">
-                14个行业分类，每个行业都是经济巨轮的重要组成部分，
-                <br />
-                是一颗璀璨的明珠，闪耀着创新与智慧的光芒
+                {t("industry-classification-description")}
               </p>
 
               <div className="mt-[30px] text-left h-[580px] bg-[#1d1e20] pb-[40px] ss-echart-wrap">

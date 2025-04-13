@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 import Link from "next/link";
 import Str2html from "@/components/str2html";
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Item {
   _id: string;
@@ -14,12 +14,15 @@ interface Item {
   category: string;
   enTitle: string;
   content: string;
+  enContent: string;
 }
 
 export default function Home() {
   const t = useTranslations("home");
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<Item[]>([]);
+  const locale = useLocale();
+
 
   // 获取数据
   const getFeaturedData = async () => {
@@ -107,12 +110,12 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="flex-grow-[1] h-[100%] bg-[rgba(42,43,48,.5)] text-white px-[20px] text-[16px] truncate">
-                          {item.title}
+                          {locale === 'zh' ? item.title : item.enTitle}
                         </div>
                       </div>
                       <div className="absolute left-0 right-0 top-[50px] bg-[rgba(63,64,68,.3)] border-0 border-t border-[rgba(0,0,0,.3)] p-[20px] text-white text-[14px] duration-300 transition invisible opacity-0 translate-y-[-10%] group-hover:visible group-hover:opacity-100 group-hover:translate-y-[0] ss-vocabs-content">
                         <div className="vocab-content">
-                          <Str2html htmlString={item.content} />
+                          <Str2html htmlString={locale === 'zh' ? item.content : item.enContent || ""} />
                         </div>
                         <style jsx>{`
                           .vocab-content {

@@ -14,7 +14,10 @@ export const GET = async (req: NextRequest) => {
     if (title) {
       query = {
         type,
-        title: { $regex: title, $options: "i" }, // 模糊查询 title 包含 "abc"，不区分大小写
+        $or: [
+          { title: { $regex: title, $options: "i" } },
+          { enTitle: { $regex: title, $options: "i" } },
+        ],
       };
     } else {
       query = {

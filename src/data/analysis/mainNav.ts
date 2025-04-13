@@ -1,15 +1,18 @@
 interface NavItem {
   value: string;
+  enValue: string;
   path: string;
 }
 
 const mainNavList: NavItem[] = [
   {
-    value: "quantitativeTitle",
+    value: "定量",
+    enValue: "Quantitative",
     path: "/analysis/quantitative",
   },
   {
-    value: "qualitative",
+    value: "定性",
+    enValue: "Qualitative",
     path: "/analysis/qualitative",
   },
 ];

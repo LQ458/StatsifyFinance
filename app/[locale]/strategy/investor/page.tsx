@@ -11,11 +11,13 @@ import InvestorSlider, {
 import MainNav from "@/components/main-nav";
 import { mainNavList } from "@/src/data/strategy/mainNav";
 import { IoIosArrowDown } from "react-icons/io";
+import { useTranslations } from "next-intl";
 interface Item {
   title: string;
   enTitle: string;
   image: string;
   content: string;
+  enContent: string;
 }
 interface ChangeData {
   activeIndex: number;
@@ -24,6 +26,7 @@ interface ChangeData {
 }
 
 const Strategy = () => {
+  const t = useTranslations("analysis");
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [isInitialRender, setIsInitialRender] = useState(true); // swiper初始化判定，用于跳过首次执行，避免首次执行覆盖地址栏传参
   const [loading, setLoading] = useState(true);
@@ -130,10 +133,10 @@ const Strategy = () => {
         <div className={`${loading ? "invisible" : ""} flex flex-grow`}>
           <div className="w-[1000px] mx-auto text-center self-center mt-[-60px] investor-container">
             <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-              著名投资者
+              {t("investor-title")}
             </h1>
             <p className="text-[#B8B8B8] text-[16px]">
-              影响力巨大的投资者就像金融世界的摇滚明星
+              {t("investor-description")}
             </p>
 
             <div className="mt-[30px] text-left ss-slide-wrap">

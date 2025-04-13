@@ -1,19 +1,23 @@
 interface NavItem {
   value: string;
+  enValue: string;
   path: string;
 }
 
 const mainNavList: NavItem[] = [
   {
-    value: "trade",
+    value: "交易策略",
+    enValue: "Trade Strategy",
     path: "/strategy/trade",
   },
   {
-    value: "investor",
+    value: "投资者",
+    enValue: "Investor",
     path: "/strategy/investor",
   },
   {
-    value: "risk-manage",
+    value: "风控",
+    enValue: "Risk Management",
     path: "/strategy/risk-manage",
   },
 ];

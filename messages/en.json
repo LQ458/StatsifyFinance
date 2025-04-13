@@ -148,7 +148,16 @@
     "title": "Market Analysis",
     "trade": "Trade Strategy",
     "investor": "Investor",
+    "investor-title": "Famous Investors",
+    "investor-description": "Influential investors are like the rock stars of the financial world",
     "risk-manage": "Risk Management",
+    "trade-description-1": "Using techniques such as mathematics, statistics, programming and big data analysis,",
+    "trade-description-2": "trading strategies are developed based on historical data and market signals",
+    "risk-manage-title": "Risk Management",
+    "risk-manage-description": "Identify, quantify, monitor and manage risks that affect investment returns through a systematic approach to minimize losses and ensure portfolio stability.",
+    "industry-classification-title": "Industry Classification",
+    "industry-classification-description": "14 industry categories, each industry is an important part of the economic giant, a bright pearl, shining with innovation and wisdom",
+
     "description": "Comprehensive market analysis helps you make better investment decisions",
     "loading": "Loading...",
     "quantitative": {

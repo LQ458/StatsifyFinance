@@ -146,9 +146,17 @@
     "title": "市场分析",
     "trade": "交易策略",
     "investor": "投资者",
+    "investor-title": "著名投资者",
+    "investor-description": "影响力巨大的投资者就像金融世界的摇滚明星",
     "risk-manage": "风控",
     "trade-description-1": "使用数学、统计学、编程和大数据分析等技术，",
     "trade-description-2": "基于历史数据和市场信号制定的交易策略",
+    "risk-manage-title": "风险控制",
+    "risk-manage-description": "通过系统方法识别、量化、监测和管理影响投资回报的风险，以最小化损失并确保投资组合的稳定性。",
+    "industry-classification-title": "行业分类",
+    "industry-classification-description": "14个行业分类，每个行业都是经济巨轮的重要组成部分，是一颗璀璨的明珠，闪耀着创新与智慧的光芒",
+
+
     "description": "全面的市场分析帮助您做出更好的投资决策",
     "loading": "加载中...",
     "quantitative": {
@@ -267,10 +275,26 @@
     "title": "定性分析指标",
     "description": "指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。"
   },
+  
   "article_details": {
     "breadcrumb": {
       "articles": "返回分类",
       "separator": ">"
+    }
+  },
+  "quant-wiki": {
+    "title": "量化百科",
+    "subtitle": "探索量化交易的理论与实践",
+    "difficulty": {
+      "beginner": "入门",
+      "intermediate": "进阶",
+      "advanced": "高级"
+    },
+    "categories": {
+      "basics": "基础知识",
+      "strategies": "交易策略",
+      "math": "数学基础",
+      "technology": "技术工具"
     }
   }
 }

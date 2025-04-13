@@ -13,7 +13,16 @@ export const GET = async (req: NextRequest) => {
   let title = (req.nextUrl.searchParams.get("title") as string) || "";
   try {
     await DBconnect();
-    const query = title ? { title: { $regex: title, $options: "i" } } : {}; // 如果传入 title 则模糊查询，否则查询全部
+    let query = {}; // 如果传入 title 则模糊查询，否则查询全部
+    if (title) {
+      query = {
+        $or: [
+          { title: { $regex: title, $options: "i" } },
+          { enTitle: { $regex: title, $options: "i" } },
+        ],
+      };
+    }
+
     const data = await Articles.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * per)

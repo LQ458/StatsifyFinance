@@ -1,8 +1,8 @@
-import mongoose, { now } from "mongoose";
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const articlesSchema = new Schema({
+const quantWikiSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -35,6 +35,19 @@ const articlesSchema = new Schema({
     type: String,
     required: false,
   },
+  tags: {
+    type: [String],
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    enum: ["beginner", "intermediate", "advanced"],
+    required: true,
+  },
+  relatedArticles: {
+    type: [String],
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -45,6 +58,6 @@ const articlesSchema = new Schema({
   },
 });
 
-const Articles =
-  mongoose.models.Articles || mongoose.model("Articles", articlesSchema);
-export default Articles;
+const QuantWiki =
+  mongoose.models.QuantWiki || mongoose.model("QuantWiki", quantWikiSchema);
+export default QuantWiki;

@@ -1,10 +1,12 @@
 "use client";
 import React from "react";
 import styles from "../src/css/side-nav.module.css";
+import { useLocale } from "next-intl";
 
 interface NavItem {
   _id: string;
   title: string;
+  enTitle?: string;
 }
 
 interface ChildComponentProps {
@@ -18,6 +20,8 @@ const sideNav: React.FC<ChildComponentProps> = ({
   navItems,
   onItemClick,
 }) => {
+  const locale = useLocale();
+
   return (
     <div className={`${styles["sub-nav"]}`}>
       <ul>
@@ -28,9 +32,9 @@ const sideNav: React.FC<ChildComponentProps> = ({
                 <button
                   onClick={() => onItemClick(item._id)}
                   type="button"
-                  className="text-white w-full"
+                  className={`text-white w-full ${ styles["ellipsis"]}`}
                 >
-                  {item.title}
+                  {locale === 'zh' ? item.title : item.enTitle}
                 </button>
               </li>
             </React.Fragment>
