@@ -184,9 +184,9 @@ function FinanceTermsPage() {
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -274,7 +274,7 @@ function FinanceTermsPage() {
                 <Input placeholder="请输入标题" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="英文标题"
                 name="enTitle"
@@ -296,13 +296,13 @@ function FinanceTermsPage() {
                 <Input.TextArea placeholder="请输入内容" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item label="英文内容" name="enContent">
                 <Input.TextArea placeholder="请输入内容" />
               </Form.Item>
             </Col>
           </Row>
-          
+
           <Form.Item label="封面">
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>

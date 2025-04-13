@@ -173,9 +173,9 @@ function CategoryPage() {
                     onClick={() => {
                       setOpen(true);
                       setCurrentId(r._id);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)  
+                      }, 200);
                     }}
                   />
                   <Popconfirm

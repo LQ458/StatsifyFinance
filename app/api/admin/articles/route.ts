@@ -18,11 +18,11 @@ export const GET = async (req: NextRequest) => {
       query = {
         $or: [
           { title: { $regex: title, $options: "i" } },
-          { enTitle: { $regex: title, $options: "i" } }
+          { enTitle: { $regex: title, $options: "i" } },
         ],
       };
     }
-    
+
     const data = await Articles.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * per)

@@ -180,9 +180,9 @@ function StrategyPage() {
                       setImageUrl(r.image);
                       setHtml(r.content);
                       setEnHtml(r.enContent);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -231,7 +231,12 @@ function StrategyPage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/learn/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -273,7 +278,7 @@ function StrategyPage() {
                 <Input placeholder="请输入标题" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="英文标题"
                 name="enTitle"
@@ -288,7 +293,7 @@ function StrategyPage() {
               </Form.Item>
             </Col>
           </Row>
-         
+
           <Form.Item label="详情">
             <MyEditor html={html} setHtml={setHtml} />
           </Form.Item>

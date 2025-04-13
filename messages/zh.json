@@ -281,5 +281,20 @@
       "articles": "返回分类",
       "separator": ">"
     }
+  },
+  "quant-wiki": {
+    "title": "量化百科",
+    "subtitle": "探索量化交易的理论与实践",
+    "difficulty": {
+      "beginner": "入门",
+      "intermediate": "进阶",
+      "advanced": "高级"
+    },
+    "categories": {
+      "basics": "基础知识",
+      "strategies": "交易策略",
+      "math": "数学基础",
+      "technology": "技术工具"
+    }
   }
 }

@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
         type,
         $or: [
           { title: { $regex: title, $options: "i" } },
-          { enTitle: { $regex: title, $options: "i" } }
+          { enTitle: { $regex: title, $options: "i" } },
         ],
       };
     } else {

@@ -194,11 +194,11 @@ function InvestorPage() {
                       setOpen(true);
                       setCurrentId(r._id);
                       setImageUrl(r.image);
-                      setHtml(r.content);                      
+                      setHtml(r.content);
                       setEnHtml(r.enContent);
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         myForm.setFieldsValue(r);
-                      },200)
+                      }, 200);
                     }}
                   />
                   <Popconfirm
@@ -247,7 +247,12 @@ function InvestorPage() {
             if (currentId) {
               // 修改
               const res = await fetch("/api/admin/learn/" + currentId, {
-                body: JSON.stringify({ ...v, image: imageUrl, content: html, enContent: enHtml }),
+                body: JSON.stringify({
+                  ...v,
+                  image: imageUrl,
+                  content: html,
+                  enContent: enHtml,
+                }),
                 method: "PUT",
               }).then((res) => res.json());
               if (!res.success) {
@@ -289,7 +294,7 @@ function InvestorPage() {
                 <Input placeholder="请输入标题" />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="英文姓名"
                 name="enTitle"
@@ -304,7 +309,7 @@ function InvestorPage() {
               </Form.Item>
             </Col>
           </Row>
-          
+
           <Form.Item label="照片">
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>
