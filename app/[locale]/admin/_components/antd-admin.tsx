@@ -140,6 +140,23 @@ function AntdAdmin({ children }: any) {
                   },
                 ],
               },
+              {
+                key: "wiki",
+                icon: <FileOutlined />,
+                label: "wiki管理",
+                children: [
+                  {
+                    key: "/admin/wiki-category",
+                    icon: <MenuOutlined />,
+                    label: "分类管理",
+                  },
+                  {
+                    key: "/admin/wiki-articles",
+                    icon: <FileTextOutlined />,
+                    label: "wiki资讯列表",
+                  },
+                ],
+              },
             ]}
           />
         </Sider>
