@@ -28,7 +28,7 @@ type Category = {
 };
 
 function CategoryPage() {
-  const per = 10;
+  const per = 100;
   const page = 1;
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Category[]>([]);

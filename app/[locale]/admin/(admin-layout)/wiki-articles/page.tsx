@@ -28,6 +28,8 @@ const MyEditor = dynamic(() => import("../../_components/my-editor"), {
   ssr: false,
 });
 
+import MarkdownEditor from "../../_components/markdown-editor";
+
 type Article = {
   _id: string;
   title: string;
@@ -395,10 +397,10 @@ function ArticlePage() {
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>
           <Form.Item label="详情">
-            <MyEditor html={html} setHtml={setHtml} />
+            <MarkdownEditor value={html} onChange={setHtml} />
           </Form.Item>
           <Form.Item label="英文详情">
-            <MyEditor html={enHtml} setHtml={setEnHtml} />
+            <MarkdownEditor value={enHtml} onChange={setEnHtml} />
           </Form.Item>
         </Form>
       </Modal>

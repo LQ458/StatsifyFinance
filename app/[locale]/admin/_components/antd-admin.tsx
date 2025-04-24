@@ -153,7 +153,7 @@ function AntdAdmin({ children }: any) {
                   {
                     key: "/admin/wiki-articles",
                     icon: <FileTextOutlined />,
-                    label: "wiki资讯列表",
+                    label: "wiki列表",
                   },
                 ],
               },
