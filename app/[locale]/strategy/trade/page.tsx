@@ -168,8 +168,13 @@ const Strategy = () => {
                       key={idx}
                       className={`${current === idx ? styles["active"] : ""}`}
                       onClick={(e) => tabChange(idx, e)}
-                    >                      
-                      {locale === 'zh' && <>{item.title}<br /></>}
+                    >
+                      {locale === "zh" && (
+                        <>
+                          {item.title}
+                          <br />
+                        </>
+                      )}
                       {item.enTitle}
                     </li>
                   ))}

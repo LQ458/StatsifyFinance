@@ -27,7 +27,8 @@
     "manage": "管理",
     "logout": "退出登录",
     "hello": "您好: ",
-    "admin": "管理员: "
+    "admin": "管理员: ",
+    "wiki": "百科"
   },
   "common": {
     "loading": "加载中...",
@@ -156,7 +157,6 @@
     "industry-classification-title": "行业分类",
     "industry-classification-description": "14个行业分类，每个行业都是经济巨轮的重要组成部分，是一颗璀璨的明珠，闪耀着创新与智慧的光芒",
 
-
     "description": "全面的市场分析帮助您做出更好的投资决策",
     "loading": "加载中...",
     "quantitative": {
@@ -275,14 +275,14 @@
     "title": "定性分析指标",
     "description": "指评估企业管理质量、品牌价值和市场竞争力等非财务因素的主观判断，用于全面了解企业状况。"
   },
-  
+
   "article_details": {
     "breadcrumb": {
       "articles": "返回分类",
       "separator": ">"
     }
   },
-  "quant-wiki": {
+  "wiki": {
     "title": "量化百科",
     "subtitle": "探索量化交易的理论与实践",
     "difficulty": {

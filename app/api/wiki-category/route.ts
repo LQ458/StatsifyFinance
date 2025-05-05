@@ -28,7 +28,9 @@ export const GET = async (req: NextRequest) => {
       ];
     }
 
-    const articles = await Articles.find(articleQuery).sort({ createdAt: -1 }).lean();
+    const articles = await Articles.find(articleQuery)
+      .sort({ createdAt: -1 })
+      .lean();
 
     // 3. 文章挂到对应分类
     const matchedCategoryIds = new Set<string>();
@@ -43,7 +45,7 @@ export const GET = async (req: NextRequest) => {
 
     // 4. 处理搜索：保留匹配文章分类及其祖先分类
     let finalCategorySet = new Set<string>();
-    if (title) {      
+    if (title) {
       for (const id of Array.from(matchedCategoryIds)) {
         const current = categoryMap.get(id);
         if (current) {
@@ -77,7 +79,6 @@ export const GET = async (req: NextRequest) => {
       success: true,
       data: tree,
     });
-
   } catch (err) {
     console.error("分类树获取失败:", err);
     return NextResponse.json({

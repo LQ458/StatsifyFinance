@@ -1,46 +1,52 @@
 .container {
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   background-color: #1a1a1a;
   color: #ffffff;
   overflow: hidden;
+  height: calc(100vh - 60px);
 }
 
 .sidebar {
   flex: 0 0 300px;
   background-color: #1a1a1a;
   border-right: 1px solid #d4af37;
-  padding: 2rem;
+  padding: 1.5rem;
   overflow-y: auto;
+  height: 100%;
 }
 
-.mainContent {
+.content {
   flex: 1;
   padding: 2rem 3rem;
   overflow-y: auto;
   background-color: #1a1a1a;
+  height: 100%;
 }
 
 .title {
   color: #d4af37;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
   font-weight: bold;
 }
 
 .categories {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .categoryItem {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.categoryItem .categoryItem {
+  margin-left: 1.25rem;
 }
 
 .categoryHeader {
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.35rem 0.5rem;
   cursor: pointer;
   color: #d4af37;
   font-weight: 500;
@@ -53,9 +59,10 @@
 }
 
 .categoryName {
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
   color: #d4af37;
   font-weight: 500;
+  flex: 1;
 }
 
 .arrow {
@@ -63,6 +70,8 @@
   margin-right: 0.5rem;
   transition: transform 0.2s;
   font-size: 0.8rem;
+  width: 12px;
+  text-align: center;
 }
 
 .arrow.open {
@@ -70,17 +79,19 @@
 }
 
 .categoryContent {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .article {
-  padding: 0.5rem;
+  padding: 0.35rem 0.5rem 0.35rem 2rem;
   cursor: pointer;
   color: #ffffff;
   border-radius: 4px;
   transition:
     background-color 0.2s,
     color 0.2s;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .article:hover {
@@ -93,67 +104,82 @@
   color: #d4af37;
 }
 
-.placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #666;
-  font-size: 1.2rem;
-}
-
-/* Markdown 内容样式 */
-.mainContent h1 {
+/* 内容区域样式 */
+.content h1 {
   color: #d4af37;
-  font-size: 2rem;
+  font-size: 1.75rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid #333;
   padding-bottom: 0.5rem;
 }
 
-.mainContent h2 {
+.content h2 {
   color: #d4af37;
   font-size: 1.5rem;
-  margin: 2rem 0 1rem;
+  margin: 1.75rem 0 1rem;
 }
 
-.mainContent h3 {
+.content h3 {
   color: #d4af37;
-  font-size: 1.2rem;
-  margin: 1.5rem 0 1rem;
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.75rem;
 }
 
-.mainContent p {
+.content p {
   margin: 1rem 0;
   line-height: 1.6;
 }
 
-.mainContent ul,
-.mainContent ol {
+.content ul,
+.content ol {
   margin: 1rem 0;
   padding-left: 2rem;
 }
 
-.mainContent li {
+.content li {
   margin: 0.5rem 0;
 }
 
-/* KaTeX 公式样式 */
-.mainContent :global(.katex-display) {
-  margin: 2rem 0;
+.content img {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 400px;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* 数学公式样式 */
+.content :global(.katex-display) {
+  margin: 1.5rem 0;
   padding: 1rem;
-  background-color: rgba(212, 175, 55, 0.1);
+  background-color: rgba(212, 175, 55, 0.05);
   border-radius: 8px;
   overflow-x: auto;
 }
 
-.mainContent :global(.katex) {
+.content :global(.katex) {
   font-size: 1.1em;
   color: #ffffff;
 }
 
-.mainContent :global(.katex-inline) {
+.content :global(.katex-inline) {
   padding: 0 0.2rem;
+}
+
+/* 代码块样式 */
+.content pre {
+  background-color: rgba(212, 175, 55, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.content code {
+  font-family: "Fira Code", monospace;
+  font-size: 0.9em;
 }
 
 /* 响应式设计 */
@@ -164,13 +190,19 @@
 
   .sidebar {
     flex: none;
-    height: auto;
-    position: static;
+    max-height: 40vh;
     border-right: none;
     border-bottom: 1px solid #d4af37;
+    padding: 1rem;
   }
 
-  .mainContent {
+  .content {
     padding: 1rem;
+    height: 60vh;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 }

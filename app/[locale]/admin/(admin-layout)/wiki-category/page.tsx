@@ -62,7 +62,7 @@ function CategoryPage() {
     if (!open) {
       setCurrentId("");
     }
-  }, [open]);  
+  }, [open]);
 
   return (
     <Card
@@ -92,7 +92,7 @@ function CategoryPage() {
         </Form.Item>
         <Form.Item>
           <Button icon={<SearchOutlined />} htmlType="submit" type="primary" />
-        </Form.Item>        
+        </Form.Item>
       </Form>
       <Table
         style={{ marginTop: "16px" }}
@@ -148,9 +148,9 @@ function CategoryPage() {
                       setTimeout(() => {
                         // 数据库里存的是Null,这里为了正常回显,赋值为''
                         if (r.parentId === null) {
-                          r.parentId = ''
+                          r.parentId = "";
                         }
-                        myForm.setFieldsValue(r);                        
+                        myForm.setFieldsValue(r);
                       }, 200);
                     }}
                   />
@@ -196,26 +196,25 @@ function CategoryPage() {
             // console.log(v);
             if (currentId) {
               // 修改
-              let parentId = null
-              if (v.parentId !== '') {
-                parentId = v.parentId
+              let parentId = null;
+              if (v.parentId !== "") {
+                parentId = v.parentId;
               }
               await fetch("/api/admin/wiki-category/" + currentId, {
                 body: JSON.stringify({ ...v, parentId }),
                 method: "PUT",
               }).then((res) => res.json());
             } else {
-              let path:any = [];
-              let parentId = null
-              if (v.parentId !== '') {
-                const result  = list.find(item => item._id === v.parentId);
-                path = result?.path ? [...result.path, v.parentId] : []
-                parentId = v.parentId
-
+              let path: any = [];
+              let parentId = null;
+              if (v.parentId !== "") {
+                const result = list.find((item) => item._id === v.parentId);
+                path = result?.path ? [...result.path, v.parentId] : [];
+                parentId = v.parentId;
               }
               await fetch("/api/admin/wiki-category", {
                 method: "POST",
-                body: JSON.stringify({ ...v, path, parentId}),
+                body: JSON.stringify({ ...v, path, parentId }),
               }).then((res) => res.json());
             }
 
@@ -223,16 +222,11 @@ function CategoryPage() {
             setOpen(false);
             setQuery({ ...query }); // 改变query会重新去取数据
           }}
-          initialValues={{ parentId: '' }}
+          initialValues={{ parentId: "" }}
         >
-          <Form.Item
-            label="父级分类"
-            name="parentId"
-          >
-            <Select value={selectedValue} >
-              <Select.Option value=''>
-                    顶级分类
-              </Select.Option>
+          <Form.Item label="父级分类" name="parentId">
+            <Select value={selectedValue}>
+              <Select.Option value="">顶级分类</Select.Option>
               {list &&
                 list.map((item) => (
                   <Select.Option key={item._id} value={item._id}>

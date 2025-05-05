@@ -46,5 +46,6 @@ const articlesSchema = new Schema({
 });
 
 const Articles =
-  mongoose.models.wikiArticles || mongoose.model("wikiArticles", articlesSchema);
+  mongoose.models.wikiArticles ||
+  mongoose.model("wikiArticles", articlesSchema);
 export default Articles;

@@ -3,9 +3,9 @@ import React from "react";
 import { Card, Tag } from "antd";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import styles from "@/src/css/quant-wiki.module.css";
+import styles from "../src/css/wiki.module.css";
 
-interface QuantWikiCardProps {
+interface WikiCardProps {
   id: string;
   title: string;
   desc: string;
@@ -14,7 +14,7 @@ interface QuantWikiCardProps {
   difficulty: string;
 }
 
-const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
+const WikiCard: React.FC<WikiCardProps> = ({
   id,
   title,
   desc,
@@ -22,7 +22,7 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   tags,
   difficulty,
 }) => {
-  const t = useTranslations("quant-wiki");
+  const t = useTranslations("wiki");
 
   const getDifficultyColor = (level: string) => {
     switch (level) {
@@ -38,7 +38,7 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   };
 
   return (
-    <Link href={`/quant-wiki/${id}`}>
+    <Link href={`/wiki/${id}`}>
       <Card
         hoverable
         className={styles.card}
@@ -67,4 +67,4 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   );
 };
 
-export default QuantWikiCard;
+export default WikiCard;

@@ -119,7 +119,9 @@ const LearnSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                 aria-label={`${t("slide.label")} ${idx + 1}: ${item.title}`}
               >
                 <div className={`${styles["slide-item"]} ss-slide-item`}>
-                  <Str2html htmlString={locale === 'zh' ? item.content : item.enContent} />
+                  <Str2html
+                    htmlString={locale === "zh" ? item.content : item.enContent}
+                  />
                 </div>
               </SwiperSlide>
             ))}

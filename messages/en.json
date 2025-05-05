@@ -27,7 +27,8 @@
     "manage": "Manage",
     "logout": "Logout",
     "hello": "Hello: ",
-    "admin": "Admin: "
+    "admin": "Admin: ",
+    "wiki": "wiki"
   },
   "common": {
     "loading": "Loading...",

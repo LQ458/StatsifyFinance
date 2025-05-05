@@ -27,7 +27,9 @@ const MainNav: React.FC<ChildComponentProps> = ({ navItems }) => {
             key={idx}
             className={`${pathname.indexOf(item.path) > -1 ? styles.active : ""}`}
           >
-            <Link href={item.path}>{locale === 'zh' ? item.value : item.enValue}</Link>
+            <Link href={item.path}>
+              {locale === "zh" ? item.value : item.enValue}
+            </Link>
           </li>
         ))}
       </ul>
