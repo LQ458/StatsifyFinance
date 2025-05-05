@@ -23,6 +23,7 @@ import {
 import dynamic from "next/dynamic";
 import MyUpload from "../../_components/my-upload";
 import dayjs from "dayjs";
+const { Option } = Select;
 // 只在客户端中引入富文本编辑器，不在编译的时候做处理
 const MyEditor = dynamic(() => import("../../_components/my-editor"), {
   ssr: false,
@@ -74,6 +75,50 @@ function ArticlePage() {
   const [currentId, setCurrentId] = useState(""); // 使用一个当前id变量，表示是新增还是修改
   const [total, setTotal] = useState(0);
 
+  function buildCategoryTree(data: any[]) {
+    const map = new Map();
+    const roots: any = [];
+  
+    data.forEach(item => {
+      map.set(item._id, { ...item, children: [] });
+    });
+  
+    map.forEach(item => {
+
+      if (item.parentId !== null && map.has(item.parentId)) {
+        const parent = map.get(item.parentId)!;
+        parent.children.push(item);
+      } else {
+        // parent 不存在（可能为 null 或缺失），视为根节点
+        roots.push(item);
+      }
+      // if (item.parentId === null) {
+      //   roots.push(map.get(item._id));
+      // } else {
+      //   const parent = map.get(item.parentId);
+      //   if (parent) {
+      //     parent.children.push(map.get(item._id));
+      //   }
+      // }
+    });
+  
+    return roots;
+  }
+
+  function renderOptions(tree: any[], level = 0) {
+    return tree.flatMap((node) => {
+      const indent = '\u00A0\u00A0'.repeat(level); // 每级2个空格
+      const option = (
+        <Option key={node._id} value={node._id}>
+          {indent}{node.title}
+        </Option>
+      );
+      const children: any = renderOptions(node.children || [], level + 1);
+      return [option, ...children];
+    });
+  }
+
+
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
@@ -104,7 +149,8 @@ function ArticlePage() {
     await fetch(`/api/admin/wiki-category?page=1&per=1000`)
       .then((res) => res.json())
       .then((res) => {
-        setCategory(res.data?.list);
+        const treeData = buildCategoryTree(res.data?.list);
+        setCategory(treeData);
       });
   };
 
@@ -371,12 +417,13 @@ function ArticlePage() {
             ]}
           >
             <Select value={selectedValue}>
-              {category &&
+              {renderOptions(category)}
+              {/* {category &&
                 category.map((item) => (
                   <Select.Option key={item._id} value={item._id}>
                     {item.title}
                   </Select.Option>
-                ))}
+                ))} */}
             </Select>
           </Form.Item>
 

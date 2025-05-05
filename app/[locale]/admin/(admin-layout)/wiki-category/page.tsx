@@ -19,6 +19,8 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
+const { Option } = Select;
+
 type Category = {
   _id: string;
   title: string;
@@ -46,6 +48,49 @@ function CategoryPage() {
 
   const [total, setTotal] = useState(0);
 
+  function buildCategoryTree(data: any[]) {
+    const map = new Map();
+    const roots: any = [];
+  
+    data.forEach(item => {
+      map.set(item._id, { ...item, children: [] });
+    });
+  
+    map.forEach(item => {
+
+      if (item.parentId !== null && map.has(item.parentId)) {
+        const parent = map.get(item.parentId)!;
+        parent.children.push(item);
+      } else {
+        // parent 不存在（可能为 null 或缺失），视为根节点
+        roots.push(item);
+      }
+      // if (item.parentId === null) {
+      //   roots.push(map.get(item._id));
+      // } else {
+      //   const parent = map.get(item.parentId);
+      //   if (parent) {
+      //     parent.children.push(map.get(item._id));
+      //   }
+      // }
+    });
+  
+    return roots;
+  }
+
+  function renderOptions(tree: any[], level = 0) {
+    return tree.flatMap((node) => {
+      const indent = '\u00A0\u00A0'.repeat(level); // 每级2个空格
+      const option = (
+        <Option key={node._id} value={node._id}>
+          {indent}{node.title}
+        </Option>
+      );
+      const children: any = renderOptions(node.children || [], level + 1);
+      return [option, ...children];
+    });
+  }
+
   // 监听查询条件的改变
   useEffect(() => {
     fetch(
@@ -53,7 +98,8 @@ function CategoryPage() {
     )
       .then((res) => res.json())
       .then((res) => {
-        setList(res.data?.list);
+        const treeData = buildCategoryTree(res.data?.list);
+        setList(treeData);
         setTotal(res.data?.total);
       });
   }, [query]);
@@ -233,12 +279,13 @@ function CategoryPage() {
               <Select.Option value=''>
                     顶级分类
               </Select.Option>
-              {list &&
+              {renderOptions(list)}
+              {/* {list &&
                 list.map((item) => (
                   <Select.Option key={item._id} value={item._id}>
                     {item.title}
                   </Select.Option>
-                ))}
+                ))} */}
             </Select>
           </Form.Item>
 
