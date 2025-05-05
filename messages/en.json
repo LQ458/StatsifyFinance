@@ -27,11 +27,19 @@
     "manage": "Manage",
     "logout": "Logout",
     "hello": "Hello: ",
-    "admin": "Admin: "
+    "admin": "Admin: ",
+    "wiki": "wiki"
+  },
+  "wiki": {
+    "title": "Quantitative Wiki",
+    "difficulty": {
+      "beginner": "beginner",
+      "intermediate": "intermediate",
+      "advanced": "advanced"
+    }
   },
   "common": {
     "loading": "Loading...",
-    "error": "Error occurred",
     "login": "Login",
     "logout": "Logout",
     "register": "Register",

@@ -1120,27 +1120,52 @@
 
 /* KaTeX 全局样式 */
 .katex {
-  @apply !text-lg text-gray-100;
+  font-size: 1.1em !important;
   text-rendering: optimizeLegibility;
+  color: #ffffff;
 }
 
 .katex-display {
-  @apply !m-0 !p-0 overflow-x-auto overflow-y-hidden;
+  margin: 1.5rem 0 !important;
+  padding: 1rem;
+  background-color: rgba(212, 175, 55, 0.05);
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
 }
 
 .katex-display > .katex {
-  @apply whitespace-normal;
+  text-align: left;
+  max-width: 100%;
 }
 
 .katex-display > .katex > .katex-html {
-  @apply whitespace-normal block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .katex-display > .katex > .katex-html > .tag {
-  @apply static;
+  position: static;
+}
+
+.katex .mrel {
+  color: #d4af37;
+}
+
+.katex .mord {
+  color: #ffffff;
+}
+
+/* 行内公式样式 */
+.katex-inline {
+  padding: 0.1em 0.2em;
+  margin: 0 0.1em;
+  background-color: rgba(212, 175, 55, 0.05);
+  border-radius: 4px;
 }
 
 /* 暗色主题支持 */
 .dark .katex {
-  @apply text-gray-100;
+  color: #ffffff;
 }

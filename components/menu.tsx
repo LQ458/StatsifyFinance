@@ -64,6 +64,12 @@ const Menu = () => {
             >
               <h4 className="self-center font-[400]">{t("strategy")}</h4>
             </Link>
+            <Link
+              href="/wiki"
+              className={`${pathname.indexOf("/wiki") > -1 ? styles.current : ""} relative justify-center flex no-underline text-white h-[60px] border-t border-black hover:bg-yellow-400 hover:text-black duration-200 transition`}
+            >
+              <h4 className="self-center font-[400]">{t("wiki")}</h4>
+            </Link>
           </div>
         )}
       </div>

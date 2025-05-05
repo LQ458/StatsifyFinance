@@ -115,7 +115,9 @@ const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
               <div className="w-[800px] mx-auto bg-[#3E3E3E] border border-[#666] ss-img-width">
                 <div
                   className="cursor-pointer h-[450px] ss-img-height"
-                  onClick={() => handleClick(locale === 'zh' ? item.content : item.enContent)}
+                  onClick={() =>
+                    handleClick(locale === "zh" ? item.content : item.enContent)
+                  }
                 >
                   <img
                     className="h-full"
@@ -124,7 +126,7 @@ const InvestorSlider = forwardRef<SwiperComponentHandle, sliderProps>(
                   />
                 </div>
                 <div className="text-[#fff] text-[16px] text-center h-[60px] leading-[60px]">
-                  {locale === 'zh' ? item.title : item.enTitle}
+                  {locale === "zh" ? item.title : item.enTitle}
                 </div>
               </div>
             </SwiperSlide>

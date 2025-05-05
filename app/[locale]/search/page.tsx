@@ -313,10 +313,20 @@ const Search = () => {
                     <li key={idx}>
                       <div className={`${styles.learn}`}>
                         <h3>
-                          <Str2html htmlString={locale === 'zh' ? item.title : item.enTitle || ""} />
+                          <Str2html
+                            htmlString={
+                              locale === "zh" ? item.title : item.enTitle || ""
+                            }
+                          />
                         </h3>
                         <div className="text-[14px]">
-                          <Str2html htmlString={locale === 'zh' ? item.content : item.enContent || ""} />
+                          <Str2html
+                            htmlString={
+                              locale === "zh"
+                                ? item.content
+                                : item.enContent || ""
+                            }
+                          />
                         </div>
                         <div className="text-[14px] text-[#666] mt-[10px]">
                           {dayjs(item.createdAt).format(

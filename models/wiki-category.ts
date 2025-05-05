@@ -18,12 +18,14 @@ const categorySchema = new Schema({
   parentId: {
     type: Schema.Types.ObjectId,
     default: null,
-    ref: 'Category'
+    ref: "Category",
   },
-  path: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Category'
-  }],
+  path: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -35,5 +37,6 @@ const categorySchema = new Schema({
 });
 
 const Category =
-  mongoose.models.wikiCategory || mongoose.model("wikiCategory", categorySchema);
+  mongoose.models.wikiCategory ||
+  mongoose.model("wikiCategory", categorySchema);
 export default Category;

@@ -19,9 +19,11 @@ export const GET = async (req: NextRequest) => {
     }
 
     const data = await Articles.find(query)
+      .populate("category")
       .sort({ createdAt: -1 })
       .skip((page - 1) * per)
-      .limit(per);
+      .limit(per)
+      .lean();
     const total = await Articles.countDocuments(query);
     return NextResponse.json({
       success: true,

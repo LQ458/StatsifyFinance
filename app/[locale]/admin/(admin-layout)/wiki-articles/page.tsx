@@ -302,9 +302,12 @@ function ArticlePage() {
                     title="是否确认删除?"
                     onConfirm={async () => {
                       //
-                      const res = await fetch("/api/admin/wiki-articles/" + r._id, {
-                        method: "DELETE",
-                      }).then((res) => res.json());
+                      const res = await fetch(
+                        "/api/admin/wiki-articles/" + r._id,
+                        {
+                          method: "DELETE",
+                        },
+                      ).then((res) => res.json());
                       if (!res.success) {
                         return message.error(res.errorMessage || "操作失败！");
                       }
