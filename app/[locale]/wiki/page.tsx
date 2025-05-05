@@ -109,6 +109,17 @@ const CategoryItem: React.FC<{
   );
 };
 
+// 添加公式处理函数
+const processLatexFormulas = (text: string): string => {
+  // 处理块级公式
+  text = text.replace(/\\\[([\s\S]*?)\\\]/g, "$$$1$$");
+
+  // 处理行内公式
+  text = text.replace(/\\\((.*?)\\\)/g, "$$$1$$");
+
+  return text;
+};
+
 const Wiki: React.FC = () => {
   const t = useTranslations("wiki");
   const params = useParams();
@@ -158,23 +169,34 @@ const Wiki: React.FC = () => {
 
         // 将文章数据整合到分类中
         const categoriesWithArticles = categoryData.data.map(
-          (category: WikiCategory) => ({
-            ...category,
-            articles: articleData.data.list.filter(
+          (category: WikiCategory) => {
+            const categoryArticles = articleData.data.list.filter(
               (article: WikiArticle) => article.category === category._id,
-            ),
-          }),
+            );
+            console.log(
+              `Category ${category.title} has ${categoryArticles.length} articles`,
+            );
+            return {
+              ...category,
+              articles: categoryArticles,
+            };
+          },
         );
 
         // 过滤只保留有文章的分类
         const filteredCategories = filterCategoriesWithArticles(
           categoriesWithArticles,
         );
+
         setCategories(filteredCategories);
 
+        console.log(filteredCategories);
         // 默认选择第一篇文章
         if (filteredCategories[0]?.articles?.[0]) {
           setSelectedArticle(filteredCategories[0].articles[0]);
+        }
+        if (filteredCategories[0].children?.[0].articles[0]) {
+          setSelectedArticle(filteredCategories[0]?.children[0]?.articles[0]);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -191,9 +213,14 @@ const Wiki: React.FC = () => {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <Spin size="large" />
-      </div>
+      <>
+        <Topbar position="relative" />
+        <div className={styles.container}>
+          <div className={styles.loadingContainer}>
+            <Spin size="large" />
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -206,7 +233,7 @@ const Wiki: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="fixed w-full h-full">
       <Topbar position="relative" />
       <div className={styles.container}>
         <div className={styles.sidebar}>
@@ -244,17 +271,29 @@ const Wiki: React.FC = () => {
               )}
               <ReactMarkdown
                 remarkPlugins={[remarkMath]}
-                rehypePlugins={[[rehypeKatex, { output: "html" }]]}
+                rehypePlugins={[
+                  [
+                    rehypeKatex,
+                    {
+                      strict: false,
+                      trust: true,
+                      throwOnError: false,
+                      displayMode: true,
+                    },
+                  ],
+                ]}
               >
-                {locale === "en"
-                  ? selectedArticle.enContent
-                  : selectedArticle.content}
+                {processLatexFormulas(
+                  locale === "en"
+                    ? selectedArticle.enContent
+                    : selectedArticle.content,
+                )}
               </ReactMarkdown>
             </>
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

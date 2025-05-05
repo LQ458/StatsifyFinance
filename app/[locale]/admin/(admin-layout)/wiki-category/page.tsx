@@ -193,32 +193,29 @@ function CategoryPage() {
           layout="vertical"
           form={myForm}
           onFinish={async (v) => {
-            // console.log(v);
+            // 处理parentId，如果为空字符串则设为null
+            const parentId = v.parentId === "" ? null : v.parentId;
+
             if (currentId) {
               // 修改
-              let parentId = null;
-              if (v.parentId !== "") {
-                parentId = v.parentId;
-              }
               await fetch("/api/admin/wiki-category/" + currentId, {
                 body: JSON.stringify({ ...v, parentId }),
                 method: "PUT",
               }).then((res) => res.json());
             } else {
+              // 新增时处理path
               let path: any = [];
-              let parentId = null;
-              if (v.parentId !== "") {
-                const result = list.find((item) => item._id === v.parentId);
-                path = result?.path ? [...result.path, v.parentId] : [];
-                parentId = v.parentId;
+              if (parentId) {
+                const parent = list.find((item) => item._id === parentId);
+                path = parent?.path ? [...parent.path, parentId] : [parentId];
               }
+
               await fetch("/api/admin/wiki-category", {
                 method: "POST",
                 body: JSON.stringify({ ...v, path, parentId }),
               }).then((res) => res.json());
             }
 
-            // 此处需要调接口
             setOpen(false);
             setQuery({ ...query }); // 改变query会重新去取数据
           }}

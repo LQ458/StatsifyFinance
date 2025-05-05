@@ -1,5 +1,6 @@
 declare const styles: {
   container: string;
+  loadingContainer: string;
   sidebar: string;
   title: string;
   categories: string;

@@ -59,21 +59,44 @@ export const GET = async (req: NextRequest) => {
 
     // 5. 构建树结构
     const tree: any[] = [];
+    const processedCategories = new Set<string>();
 
+    // 先处理顶级分类
     categories.forEach((cat: any) => {
       const id = String(cat._id);
 
+      // 如果在搜索模式下且不在结果集中，跳过
       if (title && !finalCategorySet.has(id)) return;
 
-      if (cat.parentId) {
-        const parent = categoryMap.get(String(cat.parentId));
-        if (parent) {
-          parent.children.push(cat);
-        }
-      } else {
+      // 如果没有parentId或parentId为空，则为顶级分类
+      if (!cat.parentId || cat.parentId === "") {
         tree.push(cat);
+        processedCategories.add(id);
       }
     });
+
+    // 再处理子分类
+    let hasChanges = true;
+    while (hasChanges) {
+      hasChanges = false;
+      categories.forEach((cat: any) => {
+        const id = String(cat._id);
+
+        // 如果已经处理过或在搜索模式下不在结果集中，跳过
+        if (processedCategories.has(id) || (title && !finalCategorySet.has(id)))
+          return;
+
+        // 如果有parentId且父分类已经处理过
+        if (cat.parentId && processedCategories.has(String(cat.parentId))) {
+          const parent = categoryMap.get(String(cat.parentId));
+          if (parent) {
+            parent.children.push(cat);
+            processedCategories.add(id);
+            hasChanges = true;
+          }
+        }
+      });
+    }
 
     return NextResponse.json({
       success: true,

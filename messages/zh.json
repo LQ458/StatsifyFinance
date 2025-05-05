@@ -116,13 +116,7 @@
       "large": "中窗口",
       "full": "全屏模式"
     },
-    "retry": "重试",
-    "error": {
-      "failed": "发送消息失败",
-      "network": "网络错误",
-      "server": "服务器错误",
-      "unknown": "未知错误"
-    }
+    "retry": "重试"
   },
   "footer": {
     "copyright": "© 2024 StatsifyFinance. 保留所有权利。",
@@ -284,17 +278,10 @@
   },
   "wiki": {
     "title": "量化百科",
-    "subtitle": "探索量化交易的理论与实践",
     "difficulty": {
       "beginner": "入门",
       "intermediate": "进阶",
       "advanced": "高级"
-    },
-    "categories": {
-      "basics": "基础知识",
-      "strategies": "交易策略",
-      "math": "数学基础",
-      "technology": "技术工具"
     }
   }
 }
