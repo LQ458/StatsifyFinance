@@ -51,13 +51,12 @@ function CategoryPage() {
   function buildCategoryTree(data: any[]) {
     const map = new Map();
     const roots: any = [];
-  
-    data.forEach(item => {
+
+    data.forEach((item) => {
       map.set(item._id, { ...item, children: [] });
     });
-  
-    map.forEach(item => {
 
+    map.forEach((item) => {
       if (item.parentId !== null && map.has(item.parentId)) {
         const parent = map.get(item.parentId)!;
         parent.children.push(item);
@@ -74,16 +73,17 @@ function CategoryPage() {
       //   }
       // }
     });
-  
+
     return roots;
   }
 
   function renderOptions(tree: any[], level = 0) {
     return tree.flatMap((node) => {
-      const indent = '\u00A0\u00A0'.repeat(level); // 每级2个空格
+      const indent = "\u00A0\u00A0".repeat(level); // 每级2个空格
       const option = (
         <Option key={node._id} value={node._id}>
-          {indent}{node.title}
+          {indent}
+          {node.title}
         </Option>
       );
       const children: any = renderOptions(node.children || [], level + 1);
@@ -267,14 +267,9 @@ function CategoryPage() {
           }}
           initialValues={{ parentId: "" }}
         >
-          <Form.Item
-            label="父级分类"
-            name="parentId"
-          >
-            <Select value={selectedValue} >
-              <Select.Option value=''>
-                    顶级分类
-              </Select.Option>
+          <Form.Item label="父级分类" name="parentId">
+            <Select value={selectedValue}>
+              <Select.Option value="">顶级分类</Select.Option>
               {renderOptions(list)}
               {/* {list &&
                 list.map((item) => (
