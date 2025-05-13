@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { Spin, Alert } from "antd";
+import { Spin, Alert, BackTop } from "antd";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { useParams } from "next/navigation";
+import { RightOutlined, UpOutlined } from "@ant-design/icons";
 import styles from "@/src/css/wiki.module.css";
 import Topbar from "@/components/topbar";
 
@@ -76,35 +77,36 @@ const CategoryItem: React.FC<{
   return (
     <div className={styles.categoryItem}>
       <div className={styles.categoryHeader} onClick={() => setIsOpen(!isOpen)}>
-        <span className={`${styles.arrow} ${isOpen ? styles.open : ""}`}>
-          ▶
-        </span>
         <span className={styles.categoryName}>
           {locale === "en" ? category.enTitle : category.title}
         </span>
+        <span className={`${styles.arrow} ${isOpen ? styles.open : ""}`}>
+          <RightOutlined />
+        </span>
       </div>
-      {isOpen && (
-        <div className={styles.categoryContent}>
-          {category.articles?.map((article) => (
-            <div
-              key={article._id}
-              className={`${styles.article} ${selectedArticleId === article._id ? styles.active : ""}`}
-              onClick={() => onSelectArticle(article)}
-            >
-              {locale === "en" ? article.enTitle : article.title}
-            </div>
-          ))}
-          {category.children?.map((subcat) => (
-            <CategoryItem
-              key={subcat._id}
-              category={subcat}
-              selectedArticleId={selectedArticleId}
-              onSelectArticle={onSelectArticle}
-              locale={locale}
-            />
-          ))}
-        </div>
-      )}
+      {/* Always render the content, but control visibility with CSS classes */}
+      <div className={`${styles.categoryContent} ${isOpen ? styles.open : ""}`}>
+        {category.articles?.map((article) => (
+          <div
+            key={article._id}
+            className={`${styles.article} ${
+              selectedArticleId === article._id ? styles.active : ""
+            }`}
+            onClick={() => onSelectArticle(article)}
+          >
+            {locale === "en" ? article.enTitle : article.title}
+          </div>
+        ))}
+        {category.children?.map((subcat) => (
+          <CategoryItem
+            key={subcat._id}
+            category={subcat}
+            selectedArticleId={selectedArticleId}
+            onSelectArticle={onSelectArticle}
+            locale={locale}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -128,9 +130,35 @@ const Wiki: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<WikiCategory[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(
-    null,
-  );
+  const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(null);
+  const [showBackTop, setShowBackTop] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // 监听滚动事件
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!contentRef.current) return;
+      
+      const scrollTop = contentRef.current.scrollTop;
+      console.log('Scroll position:', scrollTop); // 调试日志
+      
+      // 简单判断: 滚动超过100px就显示按钮
+      setShowBackTop(scrollTop > 100);
+    };
+
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      contentElement.addEventListener('scroll', handleScroll);
+      // 初始检查
+      handleScroll();
+    }
+
+    return () => {
+      if (contentElement) {
+        contentElement.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -237,7 +265,6 @@ const Wiki: React.FC = () => {
       <Topbar position="relative" />
       <div className={styles.container}>
         <div className={styles.sidebar}>
-          <h1 className={styles.title}>{t("title")}</h1>
           <div className={styles.categories}>
             {categories.map((category) => (
               <CategoryItem
@@ -250,7 +277,7 @@ const Wiki: React.FC = () => {
             ))}
           </div>
         </div>
-        <div className={styles.content}>
+        <div className={styles.content} ref={contentRef}>
           {selectedArticle && (
             <>
               <h1>
@@ -292,6 +319,17 @@ const Wiki: React.FC = () => {
             </>
           )}
         </div>
+        {/* Reserved space for future table of contents */}
+        <div className={styles.tocSpace}></div>
+        
+        {/* Back to top button */}
+        {showBackTop && (
+          <BackTop target={() => contentRef.current || window}>
+            <div className={styles.backTopBtn}>
+              <UpOutlined />
+            </div>
+          </BackTop>
+        )}
       </div>
     </div>
   );

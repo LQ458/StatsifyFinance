@@ -8,12 +8,11 @@ declare const styles: {
   categoryHeader: string;
   categoryName: string;
   categoryContent: string;
-  article: string;
-  active: string;
   content: string;
-  arrow: string;
-  open: string;
   articleImage: string;
+  backToTop: string;
+  backTopBtn: string;
+  tocSpace: string;
 };
 
 export default styles;
