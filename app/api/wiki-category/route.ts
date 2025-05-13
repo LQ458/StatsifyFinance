@@ -29,7 +29,7 @@ export const GET = async (req: NextRequest) => {
     }
 
     const articles = await Articles.find(articleQuery)
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: 1 })
       .lean();
 
     // 3. 文章挂到对应分类

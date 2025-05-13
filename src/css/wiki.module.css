@@ -142,8 +142,11 @@
 .content ol {
   margin: 1rem 0;
   padding-left: 2rem;
+  list-style: revert;
 }
-
+.content hr{
+  border-color:transparent;
+}
 .content li {
   margin: 0.5rem 0;
 }

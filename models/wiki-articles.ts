@@ -16,14 +16,6 @@ const articlesSchema = new Schema({
     ref: "wikiCategory",
     required: true,
   },
-  desc: {
-    type: String,
-    required: true,
-  },
-  enDesc: {
-    type: String,
-    required: true,
-  },
   content: {
     type: String,
     required: true,
@@ -31,10 +23,6 @@ const articlesSchema = new Schema({
   enContent: {
     type: String,
     required: true,
-  },
-  image: {
-    type: String,
-    required: false,
   },
   createdAt: {
     type: Date,

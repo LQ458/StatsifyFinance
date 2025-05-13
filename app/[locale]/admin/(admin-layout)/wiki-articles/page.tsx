@@ -35,9 +35,6 @@ type Article = {
   _id: string;
   title: string;
   enTitle: string;
-  desc: string;
-  enDesc: string;
-  image: string;
   content: string;
   enContent: string;
   category: string;
@@ -56,13 +53,12 @@ function ArticlePage() {
   const [open, setOpen] = useState(false); // 控制modal显示隐藏
   const [list, setList] = useState<Article[]>([]);
   const [category, setCategory] = useState<Category[]>([]);
+  const [flatCategory, setFlatCategory] = useState<Category[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
     undefined,
   );
   const [myForm] = Form.useForm(); // 获取Form组件
 
-  // 图片路径
-  const [imageUrl, setImageUrl] = useState<string>("");
   // 编辑器内容
   const [html, setHtml] = useState("");
   const [enHtml, setEnHtml] = useState("");
@@ -134,7 +130,6 @@ function ArticlePage() {
   useEffect(() => {
     if (!open) {
       setCurrentId("");
-      setImageUrl("");
       setHtml("");
       setEnHtml("");
     }
@@ -151,6 +146,8 @@ function ArticlePage() {
       .then((res) => {
         const treeData = buildCategoryTree(res.data?.list);
         setCategory(treeData);
+        // 列表回显分类用
+        setFlatCategory(res.data?.list)
       });
   };
 
@@ -223,7 +220,7 @@ function ArticlePage() {
             title: "分类",
             render(v, r) {
               let categoryStr = "";
-              category.forEach((item) => {
+              flatCategory.forEach((item) => {
                 if (item._id === v.category) {
                   categoryStr = item.title;
                 }
@@ -235,7 +232,7 @@ function ArticlePage() {
             title: "英文分类",
             render(v, r) {
               let categoryStr = "";
-              category.forEach((item) => {
+              flatCategory.forEach((item) => {
                 if (item._id === v.category) {
                   categoryStr = item.enTitle;
                 }
@@ -243,26 +240,26 @@ function ArticlePage() {
               return categoryStr;
             },
           },
-          {
-            title: "封面",
-            align: "center",
-            width: "100px",
-            // dataIndex: 'title',
-            render(v, r) {
-              return (
-                <img
-                  src={r.image}
-                  style={{
-                    display: "block",
-                    margin: "8px auto",
-                    width: "80px",
-                    maxHeight: "80px",
-                  }}
-                  alt={r.title}
-                />
-              );
-            },
-          },
+          // {
+          //   title: "封面",
+          //   align: "center",
+          //   width: "100px",
+          //   // dataIndex: 'title',
+          //   render(v, r) {
+          //     return (
+          //       <img
+          //         src={r.image}
+          //         style={{
+          //           display: "block",
+          //           margin: "8px auto",
+          //           width: "80px",
+          //           maxHeight: "80px",
+          //         }}
+          //         alt={r.title}
+          //       />
+          //     );
+          //   },
+          // },
           // {
           //   title: '简介',
           //   dataIndex: 'desc'
@@ -289,7 +286,6 @@ function ArticlePage() {
                       getGategory();
                       setOpen(true);
                       setCurrentId(r._id);
-                      setImageUrl(r.image);
                       setHtml(r.content);
                       setEnHtml(r.enContent);
                       setSelectedValue(r.category);
@@ -349,7 +345,6 @@ function ArticlePage() {
               const res = await fetch("/api/admin/wiki-articles/" + currentId, {
                 body: JSON.stringify({
                   ...v,
-                  image: imageUrl,
                   content: html,
                   enContent: enHtml,
                 }),
@@ -363,7 +358,6 @@ function ArticlePage() {
                 method: "POST",
                 body: JSON.stringify({
                   ...v,
-                  image: imageUrl,
                   content: html,
                   enContent: enHtml,
                 }),
@@ -428,24 +422,7 @@ function ArticlePage() {
                   </Select.Option>
                 ))} */}
             </Select>
-          </Form.Item>
-
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-            <Col span={12}>
-              <Form.Item label="简介" name="desc">
-                <Input.TextArea placeholder="请输入简介" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="英文简介" name="enDesc">
-                <Input.TextArea placeholder="请输入简介" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item label="封面">
-            <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
+          </Form.Item> 
           <Form.Item label="详情">
             <MarkdownEditor value={html} onChange={setHtml} />
           </Form.Item>
