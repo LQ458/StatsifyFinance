@@ -1,3 +1,6 @@
+/* 导入LXGW WenKai字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+
 .container {
   display: flex;
   width: 100%;
@@ -5,8 +8,8 @@
   color: #ffffff;
   overflow: hidden;
   height: calc(100vh - 60px);
-  font-family: "LXGW WenKai", sans-serif;
-  padding: 0 3rem; /* Increased horizontal padding */
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding: 0 3rem; /* Add overall container padding */
   box-sizing: border-box;
 }
 
@@ -24,23 +27,29 @@
   padding: 1.5rem 2rem;
   overflow-y: auto;
   height: 100%;
-  margin-left: 2rem; /* Increased left margin */
+  margin-left: 2rem; /* Add left margin */
 }
 
 .content {
   flex: 1;
-  padding: 2rem 7rem; /* Further increased horizontal padding */
+  padding: 2rem 7rem; /* Increased horizontal padding */
   overflow-y: auto;
   background-color: #1a1a1a;
   height: 100%;
-  max-width: calc(100% - 650px); /* Further reduced width */
+  max-width: calc(100% - 650px); /* Reduced width to create more space */
   line-height: 1.6;
 }
 
 .tocSpace {
-  flex: 0 0 300px;
-  height: 100%;
-  margin-right: 2rem; /* Increased right margin */
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.title {
+  color: #d4af37;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
 .categories {
@@ -64,7 +73,7 @@
   color: #ffffff;
   font-weight: 500;
   border-radius: 4px;
-  transition: color 0.2s; /* Only transition color, not background */
+  transition: color 0.2s; /* Only transition color */
   font-size: 0.9rem; /* Reduced font size */
 }
 
@@ -80,73 +89,7 @@
   font-size: 0.9rem; /* Reduced font size */
 }
 
-/* Update the category content for smooth animation */
-.categoryContent {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition:
-    max-height 0.3s ease-in-out,
-    opacity 0.2s ease-in-out;
-}
-
-.categoryContent.open {
-  max-height: 2000px; /* Large enough to fit most content */
-  opacity: 1;
-}
-
-.article {
-  padding: 0.5rem 1.25rem 0.5rem 1.5rem;
-  cursor: pointer;
-  color: #b8b8b8;
-  border-radius: 4px;
-  transition: color 0.2s; /* Only transition color */
-  font-size: 0.85rem; /* Further reduced font size */
-  line-height: 1.5;
-  margin-left: 0.75rem;
-}
-
-.article:hover {
-  background-color: transparent; /* Remove background change */
-  color: #d4af37; /* Change to gold color on hover */
-}
-
-.article.active {
-  background-color: transparent; /* Remove background */
-  color: #d4af37; /* Use gold for active state */
-  font-weight: 500; /* Add slight boldness to indicate active */
-}
-
-/* Add back to top button styles */
-.backToTop {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 1000;
-}
-
-.backToTop.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.backToTop:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Arrow styles - updated to use > character that rotates */
+/* Updated arrow styles for modern rotation animation */
 .arrow {
   display: inline-flex;
   align-items: center;
@@ -163,6 +106,41 @@
 
 .arrow svg {
   font-size: 0.8rem;
+}
+
+/* Update category content for smooth animation */
+.categoryContent {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.categoryContent.open {
+  max-height: 2000px; /* Large enough to fit most content */
+  opacity: 1;
+}
+
+.article {
+  padding: 0.5rem 1.25rem 0.5rem 1.5rem;
+  cursor: pointer;
+  color: #b8b8b8;
+  border-radius: 4px;
+  transition: color 0.2s; /* Only transition color */
+  font-size: 0.85rem; /* Smaller font size */
+  line-height: 1.5;
+  margin-left: 0.75rem;
+}
+
+.article:hover {
+  background-color: transparent; /* Remove background change */
+  color: #d4af37; /* Change to gold color on hover */
+}
+
+.article.active {
+  background-color: transparent; /* Remove background */
+  color: #d4af37; /* Use gold for active state */
+  font-weight: 500; /* Add slight boldness to indicate active */
 }
 
 /* Content area styles */
@@ -240,6 +218,73 @@
   margin-bottom: 1.5rem;
   max-width: 100%;
   border-radius: 4px;
+}
+
+/* Back to top button styles */
+.backToTop {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(26, 26, 26, 0.8);
+  color: #ffd700;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.backToTop.visible {
+  opacity: 1;
+  visibility: visible;
+  animation: pulseButton 2s infinite;
+}
+
+.backToTop:hover {
+  background: #ffd700;
+  color: #1a1a1a;
+  transform: translateY(-3px);
+}
+
+.backTopBtn {
+  width: 44px;
+  height: 44px;
+  background: rgba(26, 26, 26, 0.8);
+  color: #ffd700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.backTopBtn:hover {
+  background: #ffd700;
+  color: #1a1a1a;
+  transform: translateY(-3px);
+}
+
+@keyframes pulseButton {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
 }
 
 /* Math formula styles */
@@ -362,7 +407,7 @@
     height: auto;
     min-height: calc(100vh - 60px);
   }
-
+  
   .sidebar {
     flex: none;
     width: 100%;
@@ -370,13 +415,13 @@
     border-right: none;
     border-bottom: 1px solid #333;
   }
-
+  
   .content {
     flex: 1;
     max-width: 100%;
     padding: 1.5rem;
   }
-
+  
   .tocSpace {
     display: none;
   }
