@@ -278,6 +278,7 @@
   },
   "wiki": {
     "title": "量化百科",
+    "error": "加载失败，请稍后重试",
     "difficulty": {
       "beginner": "入门",
       "intermediate": "进阶",

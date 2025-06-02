@@ -49,16 +49,24 @@ interface ApiResponse<T> {
 function filterCategoriesWithArticles(
   categories: WikiCategory[],
 ): WikiCategory[] {
+  if (!Array.isArray(categories)) {
+    console.warn('filterCategoriesWithArticles: categories is not an array', categories);
+    return [];
+  }
+
   return categories
+    .filter(cat => cat && typeof cat === 'object' && cat._id) // 首先过滤无效对象
     .map((cat) => {
-      const filteredChildren = cat.children
+      const filteredChildren = cat.children && Array.isArray(cat.children)
         ? filterCategoriesWithArticles(cat.children)
         : [];
-      const hasArticles = cat.articles && cat.articles.length > 0;
+      const hasArticles = cat.articles && Array.isArray(cat.articles) && cat.articles.length > 0;
+      
       if (hasArticles || filteredChildren.length > 0) {
         return {
           ...cat,
           children: filteredChildren,
+          articles: cat.articles || [], // 确保 articles 是数组
         };
       }
       return null;
@@ -74,11 +82,20 @@ const CategoryItem: React.FC<{
 }> = ({ category, selectedArticleId, onSelectArticle, locale }) => {
   const [isOpen, setIsOpen] = useState(true);
 
+  // 安全检查：确保 category 对象有效
+  if (!category || typeof category !== 'object' || !category._id) {
+    console.warn('CategoryItem: Invalid category object', category);
+    return null;
+  }
+
+  const safeArticles = Array.isArray(category.articles) ? category.articles : [];
+  const safeChildren = Array.isArray(category.children) ? category.children : [];
+
   return (
     <div className={styles.categoryItem}>
       <div className={styles.categoryHeader} onClick={() => setIsOpen(!isOpen)}>
         <span className={styles.categoryName}>
-          {locale === "en" ? category.enTitle : category.title}
+          {locale === "en" ? (category.enTitle || category.title) : category.title}
         </span>
         <span
           className={`${(styles as any).arrow} ${isOpen ? (styles as any).open : ""}`}
@@ -90,26 +107,42 @@ const CategoryItem: React.FC<{
       <div
         className={`${styles.categoryContent} ${isOpen ? (styles as any).open : ""}`}
       >
-        {category.articles?.map((article) => (
-          <div
-            key={article._id}
-            className={`${(styles as any).article} ${
-              selectedArticleId === article._id ? (styles as any).active : ""
-            }`}
-            onClick={() => onSelectArticle(article)}
-          >
-            {locale === "en" ? article.enTitle : article.title}
-          </div>
-        ))}
-        {category.children?.map((subcat) => (
-          <CategoryItem
-            key={subcat._id}
-            category={subcat}
-            selectedArticleId={selectedArticleId}
-            onSelectArticle={onSelectArticle}
-            locale={locale}
-          />
-        ))}
+        {safeArticles.map((article) => {
+          // 安全检查：确保 article 对象有效
+          if (!article || !article._id) {
+            console.warn('CategoryItem: Invalid article object', article);
+            return null;
+          }
+          
+          return (
+            <div
+              key={article._id}
+              className={`${(styles as any).article} ${
+                selectedArticleId === article._id ? (styles as any).active : ""
+              }`}
+              onClick={() => onSelectArticle(article)}
+            >
+              {locale === "en" ? (article.enTitle || article.title) : article.title}
+            </div>
+          );
+        })}
+        {safeChildren.map((subcat) => {
+          // 安全检查：确保 subcat 对象有效
+          if (!subcat || !subcat._id) {
+            console.warn('CategoryItem: Invalid subcategory object', subcat);
+            return null;
+          }
+          
+          return (
+            <CategoryItem
+              key={subcat._id}
+              category={subcat}
+              selectedArticleId={selectedArticleId}
+              onSelectArticle={onSelectArticle}
+              locale={locale}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -170,6 +203,7 @@ const Wiki: React.FC = () => {
     const fetchData = async () => {
       try {
         setError(null);
+        setLoading(true);
 
         // 获取分类数据
         const categoryRes = await fetch("/api/wiki-category");
@@ -187,6 +221,11 @@ const Wiki: React.FC = () => {
           );
         }
 
+        // 检查分类数据是否有效
+        if (!Array.isArray(categoryData.data)) {
+          throw new Error("Invalid category data format");
+        }
+
         // 获取文章数据
         const articleRes = await fetch("/api/wiki");
         if (!articleRes.ok) {
@@ -201,36 +240,82 @@ const Wiki: React.FC = () => {
           );
         }
 
+        // 检查文章数据是否有效
+        if (!articleData.data || !Array.isArray(articleData.data.list)) {
+          throw new Error("Invalid article data format");
+        }
+
         // 将文章数据整合到分类中
         const categoriesWithArticles = categoryData.data.map(
           (category: WikiCategory) => {
+            // 确保 category 对象有效
+            if (!category || typeof category !== 'object' || !category._id) {
+              console.warn('Invalid category object:', category);
+              return null;
+            }
+
             const categoryArticles = articleData.data.list.filter(
-              (article: WikiArticle) => article.category === category._id,
+              (article: WikiArticle) => article && article.category === category._id,
             );
             console.log(
               `Category ${category.title} has ${categoryArticles.length} articles`,
             );
             return {
               ...category,
-              articles: categoryArticles,
+              articles: categoryArticles || [],
+              children: Array.isArray(category.children) ? category.children : [],
             };
           },
-        );
+        ).filter(Boolean) as WikiCategory[]; // 过滤掉无效的分类
 
         // 过滤只保留有文章的分类
         const filteredCategories = filterCategoriesWithArticles(
           categoriesWithArticles,
         );
 
+        // 确保至少有一些数据
+        if (!filteredCategories || filteredCategories.length === 0) {
+          console.warn('No valid categories found');
+          setCategories([]);
+          setSelectedArticle(null);
+          return;
+        }
+
         setCategories(filteredCategories);
 
         console.log(filteredCategories);
-        // 默认选择第一篇文章
+        // 默认选择第一篇文章 - 改进的逻辑
+        let firstArticle: WikiArticle | null = null;
+        
+        // 首先尝试从第一个分类的文章中选择
         if (filteredCategories[0]?.articles?.[0]) {
-          setSelectedArticle(filteredCategories[0].articles[0]);
+          firstArticle = filteredCategories[0].articles[0];
         }
-        if (filteredCategories[0].children?.[0].articles[0]) {
-          setSelectedArticle(filteredCategories[0]?.children[0]?.articles[0]);
+        // 如果第一个分类没有直接的文章，尝试从子分类中选择
+        else if (filteredCategories[0]?.children?.[0]?.articles?.[0]) {
+          firstArticle = filteredCategories[0].children[0].articles[0];
+        }
+        // 如果还是没有，遍历所有分类查找第一篇文章
+        else {
+          for (const category of filteredCategories) {
+            if (category?.articles?.[0]) {
+              firstArticle = category.articles[0];
+              break;
+            }
+            if (category?.children && Array.isArray(category.children)) {
+              for (const subCategory of category.children) {
+                if (subCategory?.articles?.[0]) {
+                  firstArticle = subCategory.articles[0];
+                  break;
+                }
+              }
+              if (firstArticle) break;
+            }
+          }
+        }
+        
+        if (firstArticle) {
+          setSelectedArticle(firstArticle);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
