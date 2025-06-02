@@ -32,6 +32,7 @@
   },
   "wiki": {
     "title": "Quantitative Wiki",
+    "error": "Failed to load, please try again later",
     "difficulty": {
       "beginner": "beginner",
       "intermediate": "intermediate",
