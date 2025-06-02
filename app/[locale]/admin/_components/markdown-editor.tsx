@@ -45,7 +45,7 @@ export default function MarkdownEditor({
   return (
     <MdEditor
       value={value}
-      style={{ height: "350px", backgroundColor: '#999' }}
+      style={{ height: "350px", backgroundColor: "#999" }}
       renderHTML={(text) => mdParser.render(text)}
       onChange={handleEditorChange}
     />

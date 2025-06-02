@@ -80,17 +80,21 @@ const CategoryItem: React.FC<{
         <span className={styles.categoryName}>
           {locale === "en" ? category.enTitle : category.title}
         </span>
-        <span className={`${styles.arrow} ${isOpen ? styles.open : ""}`}>
+        <span
+          className={`${(styles as any).arrow} ${isOpen ? (styles as any).open : ""}`}
+        >
           <RightOutlined />
         </span>
       </div>
       {/* Always render the content, but control visibility with CSS classes */}
-      <div className={`${styles.categoryContent} ${isOpen ? styles.open : ""}`}>
+      <div
+        className={`${styles.categoryContent} ${isOpen ? (styles as any).open : ""}`}
+      >
         {category.articles?.map((article) => (
           <div
             key={article._id}
-            className={`${styles.article} ${
-              selectedArticleId === article._id ? styles.active : ""
+            className={`${(styles as any).article} ${
+              selectedArticleId === article._id ? (styles as any).active : ""
             }`}
             onClick={() => onSelectArticle(article)}
           >
@@ -130,7 +134,9 @@ const Wiki: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<WikiCategory[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(
+    null,
+  );
   const [showBackTop, setShowBackTop] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -138,24 +144,24 @@ const Wiki: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (!contentRef.current) return;
-      
+
       const scrollTop = contentRef.current.scrollTop;
-      console.log('Scroll position:', scrollTop); // 调试日志
-      
+      console.log("Scroll position:", scrollTop); // 调试日志
+
       // 简单判断: 滚动超过100px就显示按钮
       setShowBackTop(scrollTop > 100);
     };
 
     const contentElement = contentRef.current;
     if (contentElement) {
-      contentElement.addEventListener('scroll', handleScroll);
+      contentElement.addEventListener("scroll", handleScroll);
       // 初始检查
       handleScroll();
     }
 
     return () => {
       if (contentElement) {
-        contentElement.removeEventListener('scroll', handleScroll);
+        contentElement.removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
@@ -321,7 +327,7 @@ const Wiki: React.FC = () => {
         </div>
         {/* Reserved space for future table of contents */}
         <div className={styles.tocSpace}></div>
-        
+
         {/* Back to top button */}
         {showBackTop && (
           <BackTop target={() => contentRef.current || window}>

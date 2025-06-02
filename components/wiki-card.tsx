@@ -41,17 +41,17 @@ const WikiCard: React.FC<WikiCardProps> = ({
     <Link href={`/wiki/${id}`}>
       <Card
         hoverable
-        className={styles.card}
+        className={(styles as any).card}
         cover={
-          <div className={styles.imageContainer}>
-            <img alt={title} src={image} className={styles.image} />
+          <div className={(styles as any).imageContainer}>
+            <img alt={title} src={image} className={(styles as any).image} />
           </div>
         }
       >
-        <div className={styles.content}>
+        <div className={(styles as any).content}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.desc}>{desc}</p>
-          <div className={styles.tags}>
+          <p className={(styles as any).desc}>{desc}</p>
+          <div className={(styles as any).tags}>
             <Tag color={getDifficultyColor(difficulty)}>
               {t(`difficulty.${difficulty}`)}
             </Tag>

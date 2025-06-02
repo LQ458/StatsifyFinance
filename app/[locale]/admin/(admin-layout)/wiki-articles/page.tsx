@@ -146,7 +146,7 @@ function ArticlePage() {
         const treeData = buildCategoryTree(res.data?.list);
         setCategory(treeData);
         // 列表回显分类用
-        setFlatCategory(res.data?.list)
+        setFlatCategory(res.data?.list);
       });
   };
 
@@ -421,7 +421,7 @@ function ArticlePage() {
                   </Select.Option>
                 ))} */}
             </Select>
-          </Form.Item> 
+          </Form.Item>
           <Form.Item label="详情">
             <MarkdownEditor value={html} onChange={setHtml} />
           </Form.Item>

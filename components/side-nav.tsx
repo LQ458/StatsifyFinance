@@ -15,7 +15,7 @@ interface ChildComponentProps {
   onItemClick: (id: string) => void;
 }
 
-const sideNav: React.FC<ChildComponentProps> = ({
+const SideNav: React.FC<ChildComponentProps> = ({
   currentNav,
   navItems,
   onItemClick,
@@ -44,4 +44,4 @@ const sideNav: React.FC<ChildComponentProps> = ({
   );
 };
 
-export default sideNav;
+export default SideNav;
