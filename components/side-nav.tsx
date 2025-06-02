@@ -15,7 +15,7 @@ interface ChildComponentProps {
   onItemClick: (id: string) => void;
 }
 
-const sideNav: React.FC<ChildComponentProps> = ({
+const SideNav: React.FC<ChildComponentProps> = ({
   currentNav,
   navItems,
   onItemClick,
@@ -32,9 +32,9 @@ const sideNav: React.FC<ChildComponentProps> = ({
                 <button
                   onClick={() => onItemClick(item._id)}
                   type="button"
-                  className={`text-white w-full ${ styles["ellipsis"]}`}
+                  className={`text-white w-full ${styles["ellipsis"]}`}
                 >
-                  {locale === 'zh' ? item.title : item.enTitle}
+                  {locale === "zh" ? item.title : item.enTitle}
                 </button>
               </li>
             </React.Fragment>
@@ -44,4 +44,4 @@ const sideNav: React.FC<ChildComponentProps> = ({
   );
 };
 
-export default sideNav;
+export default SideNav;

@@ -12,7 +12,6 @@ import * as echarts from "echarts";
 import { mainNavList } from "@/src/data/strategy/mainNav";
 import { useTranslations, useLocale } from "next-intl";
 
-
 interface Mapping {
   _id: string;
   title: string;

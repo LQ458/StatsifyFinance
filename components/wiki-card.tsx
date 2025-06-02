@@ -3,9 +3,9 @@ import React from "react";
 import { Card, Tag } from "antd";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import styles from "@/src/css/quant-wiki.module.css";
+import styles from "../src/css/wiki.module.css";
 
-interface QuantWikiCardProps {
+interface WikiCardProps {
   id: string;
   title: string;
   desc: string;
@@ -14,7 +14,7 @@ interface QuantWikiCardProps {
   difficulty: string;
 }
 
-const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
+const WikiCard: React.FC<WikiCardProps> = ({
   id,
   title,
   desc,
@@ -22,7 +22,7 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   tags,
   difficulty,
 }) => {
-  const t = useTranslations("quant-wiki");
+  const t = useTranslations("wiki");
 
   const getDifficultyColor = (level: string) => {
     switch (level) {
@@ -38,20 +38,20 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   };
 
   return (
-    <Link href={`/quant-wiki/${id}`}>
+    <Link href={`/wiki/${id}`}>
       <Card
         hoverable
-        className={styles.card}
+        className={(styles as any).card}
         cover={
-          <div className={styles.imageContainer}>
-            <img alt={title} src={image} className={styles.image} />
+          <div className={(styles as any).imageContainer}>
+            <img alt={title} src={image} className={(styles as any).image} />
           </div>
         }
       >
-        <div className={styles.content}>
+        <div className={(styles as any).content}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.desc}>{desc}</p>
-          <div className={styles.tags}>
+          <p className={(styles as any).desc}>{desc}</p>
+          <div className={(styles as any).tags}>
             <Tag color={getDifficultyColor(difficulty)}>
               {t(`difficulty.${difficulty}`)}
             </Tag>
@@ -67,4 +67,4 @@ const QuantWikiCard: React.FC<QuantWikiCardProps> = ({
   );
 };
 
-export default QuantWikiCard;
+export default WikiCard;

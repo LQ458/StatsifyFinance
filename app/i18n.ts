@@ -24,6 +24,6 @@ export default getRequestConfig(async ({ locale }) => {
   if (!locales.includes(locale as any)) notFound();
 
   return {
-    messages: (await import(`../messages/${locale}/quant-wiki.json`)).default,
+    messages: (await import(`../messages/${locale}/wiki.json`)).default,
   };
 });
