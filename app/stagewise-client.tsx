@@ -7,8 +7,6 @@ export default function StagewiseClient() {
     // 确保在客户端环境中才加载
     if (typeof window === "undefined") return;
 
-    let cleanup: (() => void) | undefined;
-
     const initStagewise = async () => {
       try {
         const { initToolbar } = await import("@stagewise/toolbar");
@@ -18,8 +16,8 @@ export default function StagewiseClient() {
           plugins: [],
         };
 
-        // 初始化工具栏
-        cleanup = initToolbar(config);
+        // 初始化工具栏（不返回清理函数）
+        initToolbar(config);
 
         console.log("✅ Stagewise 工具栏初始化成功");
       } catch (error) {
@@ -32,13 +30,6 @@ export default function StagewiseClient() {
 
     return () => {
       clearTimeout(timer);
-      if (cleanup) {
-        try {
-          cleanup();
-        } catch (error) {
-          console.warn("Stagewise 清理失败:", error);
-        }
-      }
     };
   }, []);
 

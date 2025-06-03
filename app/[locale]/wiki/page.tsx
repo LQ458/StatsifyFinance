@@ -81,11 +81,21 @@ function filterCategoriesWithArticles(
 
 const CategoryItem: React.FC<{
   category: WikiCategory;
-  selectedArticleId: string | null;
-  onSelectArticle: (article: WikiArticle) => void;
+  activeArticleId: string | null;
+  onSelectCategory: (category: WikiCategory) => void;
+  onArticleClick: (articleId: string) => void;
+  selectedCategoryId: string | null;
   locale: string;
-}> = ({ category, selectedArticleId, onSelectArticle, locale }) => {
+}> = ({
+  category,
+  activeArticleId,
+  onSelectCategory,
+  onArticleClick,
+  selectedCategoryId,
+  locale,
+}) => {
   const [isOpen, setIsOpen] = useState(true);
+  const isSelected = selectedCategoryId === category._id;
 
   // 安全检查：确保 category 对象有效
   if (!category || typeof category !== "object" || !category._id) {
@@ -100,9 +110,19 @@ const CategoryItem: React.FC<{
     ? category.children
     : [];
 
+  const handleCategoryClick = () => {
+    setIsOpen(!isOpen);
+    if (safeArticles.length > 0) {
+      onSelectCategory(category);
+    }
+  };
+
   return (
     <div className={styles.categoryItem}>
-      <div className={styles.categoryHeader} onClick={() => setIsOpen(!isOpen)}>
+      <div
+        className={`${styles.categoryHeader} ${isSelected ? "wiki_active__9z_TX" : ""}`}
+        onClick={handleCategoryClick}
+      >
         <span className={styles.categoryName}>
           {locale === "en"
             ? category.enTitle || category.title
@@ -129,9 +149,9 @@ const CategoryItem: React.FC<{
             <div
               key={article._id}
               className={`${(styles as any).article} ${
-                selectedArticleId === article._id ? (styles as any).active : ""
+                activeArticleId === article._id ? (styles as any).active : ""
               }`}
-              onClick={() => onSelectArticle(article)}
+              onClick={() => onArticleClick(article._id)}
             >
               {locale === "en"
                 ? article.enTitle || article.title
@@ -150,8 +170,10 @@ const CategoryItem: React.FC<{
             <CategoryItem
               key={subcat._id}
               category={subcat}
-              selectedArticleId={selectedArticleId}
-              onSelectArticle={onSelectArticle}
+              activeArticleId={activeArticleId}
+              onSelectCategory={onSelectCategory}
+              onArticleClick={onArticleClick}
+              selectedCategoryId={selectedCategoryId}
               locale={locale}
             />
           );
@@ -172,6 +194,25 @@ const processLatexFormulas = (text: string): string => {
   return text;
 };
 
+// 收集所有文章的函数
+const collectAllArticles = (categories: WikiCategory[]): WikiArticle[] => {
+  const articles: WikiArticle[] = [];
+
+  const traverse = (cats: WikiCategory[]) => {
+    cats.forEach((cat) => {
+      if (cat.articles) {
+        articles.push(...cat.articles);
+      }
+      if (cat.children) {
+        traverse(cat.children);
+      }
+    });
+  };
+
+  traverse(categories);
+  return articles;
+};
+
 const Wiki: React.FC = () => {
   const t = useTranslations("wiki");
   const params = useParams();
@@ -180,29 +221,81 @@ const Wiki: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<WikiCategory[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(
+  const [selectedCategory, setSelectedCategory] = useState<WikiCategory | null>(
     null,
   );
+  const [activeArticleId, setActiveArticleId] = useState<string | null>(null);
   const [showBackTop, setShowBackTop] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const articleRefs = useRef<{ [key: string]: HTMLDivElement }>({});
+  const isChangingCategory = useRef(false); // 添加标志防止切换时的滚动干扰
 
-  // 监听滚动事件
+  // 监听滚动事件，实现滚动高亮
   useEffect(() => {
     const handleScroll = () => {
-      if (!contentRef.current) return;
+      if (
+        !contentRef.current ||
+        !selectedCategory ||
+        isChangingCategory.current
+      )
+        return;
 
-      const scrollTop = contentRef.current.scrollTop;
-      console.log("Scroll position:", scrollTop); // 调试日志
+      const scrollTop = contentRef.current.scrollTop + 100; // 添加偏移量
+      setShowBackTop(scrollTop > 200);
 
-      // 简单判断: 滚动超过100px就显示按钮
-      setShowBackTop(scrollTop > 100);
+      // 改进的滚动高亮逻辑
+      const containerRect = contentRef.current.getBoundingClientRect();
+      const articles = selectedCategory.articles;
+      let currentActiveId = null;
+
+      // 检查是否滚动到底部
+      const isAtBottom =
+        contentRef.current.scrollTop + contentRef.current.clientHeight >=
+        contentRef.current.scrollHeight - 50;
+
+      if (isAtBottom && articles.length > 0) {
+        // 如果滚动到底部，高亮最后一个文章
+        currentActiveId = articles[articles.length - 1]._id;
+      } else {
+        // 找到当前视口中最合适的文章进行高亮
+        let bestArticle = null;
+        let bestDistance = Infinity;
+
+        for (const article of articles) {
+          const element = articleRefs.current[article._id];
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // 计算文章标题距离容器顶部的距离
+            const distance = Math.abs(rect.top - containerRect.top - 100);
+
+            // 如果文章在视口内且距离更近，则选择它
+            if (
+              rect.top <= containerRect.top + 300 &&
+              distance < bestDistance
+            ) {
+              bestDistance = distance;
+              bestArticle = article._id;
+            }
+          }
+        }
+
+        if (bestArticle) {
+          currentActiveId = bestArticle;
+        }
+      }
+
+      if (currentActiveId && currentActiveId !== activeArticleId) {
+        setActiveArticleId(currentActiveId);
+      }
     };
 
     const contentElement = contentRef.current;
     if (contentElement) {
       contentElement.addEventListener("scroll", handleScroll);
       // 初始检查
-      handleScroll();
+      if (!isChangingCategory.current) {
+        handleScroll();
+      }
     }
 
     return () => {
@@ -210,7 +303,7 @@ const Wiki: React.FC = () => {
         contentElement.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [selectedCategory, activeArticleId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -293,45 +386,53 @@ const Wiki: React.FC = () => {
         if (!filteredCategories || filteredCategories.length === 0) {
           console.warn("No valid categories found");
           setCategories([]);
-          setSelectedArticle(null);
+          setSelectedCategory(null);
           return;
         }
 
         setCategories(filteredCategories);
 
         console.log(filteredCategories);
-        // 默认选择第一篇文章 - 改进的逻辑
-        let firstArticle: WikiArticle | null = null;
+        // 默认选择第一个有文章的分类
+        let firstCategory: WikiCategory | null = null;
 
-        // 首先尝试从第一个分类的文章中选择
-        if (filteredCategories[0]?.articles?.[0]) {
-          firstArticle = filteredCategories[0].articles[0];
+        // 首先尝试从第一个分类选择
+        if (filteredCategories[0]?.articles?.length > 0) {
+          firstCategory = filteredCategories[0];
         }
         // 如果第一个分类没有直接的文章，尝试从子分类中选择
-        else if (filteredCategories[0]?.children?.[0]?.articles?.[0]) {
-          firstArticle = filteredCategories[0].children[0].articles[0];
+        else if (
+          filteredCategories[0] &&
+          filteredCategories[0].children &&
+          filteredCategories[0].children[0] &&
+          filteredCategories[0].children[0].articles?.length > 0
+        ) {
+          firstCategory = filteredCategories[0].children[0];
         }
-        // 如果还是没有，遍历所有分类查找第一篇文章
+        // 如果还是没有，遍历所有分类查找第一个有文章的分类
         else {
           for (const category of filteredCategories) {
-            if (category?.articles?.[0]) {
-              firstArticle = category.articles[0];
+            if (category?.articles?.length > 0) {
+              firstCategory = category;
               break;
             }
             if (category?.children && Array.isArray(category.children)) {
               for (const subCategory of category.children) {
-                if (subCategory?.articles?.[0]) {
-                  firstArticle = subCategory.articles[0];
+                if (subCategory?.articles?.length > 0) {
+                  firstCategory = subCategory;
                   break;
                 }
               }
-              if (firstArticle) break;
+              if (firstCategory) break;
             }
           }
         }
 
-        if (firstArticle) {
-          setSelectedArticle(firstArticle);
+        if (firstCategory) {
+          setSelectedCategory(firstCategory);
+          if (firstCategory.articles.length > 0) {
+            setActiveArticleId(firstCategory.articles[0]._id);
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -345,6 +446,86 @@ const Wiki: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const handleCategorySelect = (category: WikiCategory) => {
+    isChangingCategory.current = true; // 标记正在切换category
+    setSelectedCategory(category);
+    if (category.articles.length > 0) {
+      setActiveArticleId(category.articles[0]._id);
+      // 滚动到顶部
+      if (contentRef.current) {
+        contentRef.current.scrollTo({ top: 0 }); // 移除动画
+      }
+    }
+    // 延迟恢复滚动监听
+    setTimeout(() => {
+      isChangingCategory.current = false;
+    }, 100); // 减少延迟
+  };
+
+  // 添加文章跳转功能
+  const handleArticleClick = (articleId: string) => {
+    // 首先找到包含这篇文章的category
+    const findCategoryWithArticle = (
+      cats: WikiCategory[],
+      targetArticleId: string,
+    ): WikiCategory | null => {
+      for (const cat of cats) {
+        // 检查当前category是否包含目标文章
+        if (
+          cat.articles &&
+          cat.articles.some((article) => article._id === targetArticleId)
+        ) {
+          return cat;
+        }
+        // 递归检查子category
+        if (cat.children) {
+          const foundInChild = findCategoryWithArticle(
+            cat.children,
+            targetArticleId,
+          );
+          if (foundInChild) return foundInChild;
+        }
+      }
+      return null;
+    };
+
+    const targetCategory = findCategoryWithArticle(categories, articleId);
+
+    if (targetCategory) {
+      // 如果目标文章不在当前选中的category中，先切换category
+      if (!selectedCategory || selectedCategory._id !== targetCategory._id) {
+        isChangingCategory.current = true; // 标记正在切换
+        setSelectedCategory(targetCategory);
+        setActiveArticleId(articleId);
+
+        // 使用setTimeout确保DOM更新后再滚动
+        setTimeout(() => {
+          const element = articleRefs.current[articleId];
+          if (element && contentRef.current) {
+            const offsetTop = element.offsetTop - 100;
+            contentRef.current.scrollTo({
+              top: offsetTop, // 移除动画
+            });
+          }
+          // 恢复滚动监听
+          setTimeout(() => {
+            isChangingCategory.current = false;
+          }, 50); // 减少延迟
+        }, 50); // 减少延迟
+      } else {
+        // 如果文章在当前category中，直接滚动
+        const element = articleRefs.current[articleId];
+        if (element && contentRef.current) {
+          const offsetTop = element.offsetTop - 100;
+          contentRef.current.scrollTo({
+            top: offsetTop, // 移除动画
+          });
+          setActiveArticleId(articleId);
+        }
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -377,54 +558,63 @@ const Wiki: React.FC = () => {
               <CategoryItem
                 key={category._id}
                 category={category}
-                selectedArticleId={selectedArticle?._id || null}
-                onSelectArticle={setSelectedArticle}
+                activeArticleId={activeArticleId}
+                onSelectCategory={handleCategorySelect}
+                onArticleClick={handleArticleClick}
+                selectedCategoryId={selectedCategory?._id || null}
                 locale={locale}
               />
             ))}
           </div>
         </div>
         <div className={styles.content} ref={contentRef}>
-          {selectedArticle && (
-            <>
-              <h1>
-                {locale === "en"
-                  ? selectedArticle.enTitle
-                  : selectedArticle.title}
-              </h1>
-              {selectedArticle.image && (
-                <img
-                  src={selectedArticle.image}
-                  alt={
-                    locale === "en"
-                      ? selectedArticle.enTitle
-                      : selectedArticle.title
-                  }
-                  className={styles.articleImage}
-                />
-              )}
-              <ReactMarkdown
-                remarkPlugins={[remarkMath]}
-                rehypePlugins={[
-                  [
-                    rehypeKatex,
-                    {
-                      strict: false,
-                      trust: true,
-                      throwOnError: false,
-                      displayMode: true,
-                    },
-                  ],
-                ]}
+          {selectedCategory &&
+            selectedCategory.articles.map((article, index) => (
+              <div
+                key={article._id}
+                ref={(el) => {
+                  if (el) articleRefs.current[article._id] = el;
+                }}
+                className="wiki_articleSection__FJPDL"
               >
-                {processLatexFormulas(
-                  locale === "en"
-                    ? selectedArticle.enContent
-                    : selectedArticle.content,
+                <h1>
+                  {locale === "en"
+                    ? article.enTitle || article.title
+                    : article.title}
+                </h1>
+                {article.image && (
+                  <img
+                    src={article.image}
+                    alt={
+                      locale === "en"
+                        ? article.enTitle || article.title
+                        : article.title
+                    }
+                    className={styles.articleImage}
+                  />
                 )}
-              </ReactMarkdown>
-            </>
-          )}
+                <ReactMarkdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[
+                    [
+                      rehypeKatex,
+                      {
+                        strict: false,
+                        trust: true,
+                        throwOnError: false,
+                        displayMode: true,
+                      },
+                    ],
+                  ]}
+                >
+                  {processLatexFormulas(
+                    locale === "en"
+                      ? article.enContent || article.content
+                      : article.content,
+                  )}
+                </ReactMarkdown>
+              </div>
+            ))}
         </div>
         {/* Reserved space for future table of contents */}
         <div className={styles.tocSpace}></div>
