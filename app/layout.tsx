@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { AuthProvider } from "./Providers";
+import dynamic from "next/dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,6 +11,12 @@ export const metadata: Metadata = {
   title: "Statsify Finance",
   description: "Your Path To Financial Clarity",
 };
+
+// 创建 Stagewise 客户端组件
+const StagewiseClient = dynamic(() => import("./stagewise-client"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default async function RootLayout({
   children,
@@ -32,6 +39,8 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>{children}</AuthProvider>
         </NextIntlClientProvider>
+        {/* Stagewise 工具栏 - 仅在开发模式下显示 */}
+        {process.env.NODE_ENV === "development" && <StagewiseClient />}
       </body>
     </html>
   );

@@ -50,18 +50,23 @@ function filterCategoriesWithArticles(
   categories: WikiCategory[],
 ): WikiCategory[] {
   if (!Array.isArray(categories)) {
-    console.warn('filterCategoriesWithArticles: categories is not an array', categories);
+    console.warn(
+      "filterCategoriesWithArticles: categories is not an array",
+      categories,
+    );
     return [];
   }
 
   return categories
-    .filter(cat => cat && typeof cat === 'object' && cat._id) // 首先过滤无效对象
+    .filter((cat) => cat && typeof cat === "object" && cat._id) // 首先过滤无效对象
     .map((cat) => {
-      const filteredChildren = cat.children && Array.isArray(cat.children)
-        ? filterCategoriesWithArticles(cat.children)
-        : [];
-      const hasArticles = cat.articles && Array.isArray(cat.articles) && cat.articles.length > 0;
-      
+      const filteredChildren =
+        cat.children && Array.isArray(cat.children)
+          ? filterCategoriesWithArticles(cat.children)
+          : [];
+      const hasArticles =
+        cat.articles && Array.isArray(cat.articles) && cat.articles.length > 0;
+
       if (hasArticles || filteredChildren.length > 0) {
         return {
           ...cat,
@@ -83,19 +88,25 @@ const CategoryItem: React.FC<{
   const [isOpen, setIsOpen] = useState(true);
 
   // 安全检查：确保 category 对象有效
-  if (!category || typeof category !== 'object' || !category._id) {
-    console.warn('CategoryItem: Invalid category object', category);
+  if (!category || typeof category !== "object" || !category._id) {
+    console.warn("CategoryItem: Invalid category object", category);
     return null;
   }
 
-  const safeArticles = Array.isArray(category.articles) ? category.articles : [];
-  const safeChildren = Array.isArray(category.children) ? category.children : [];
+  const safeArticles = Array.isArray(category.articles)
+    ? category.articles
+    : [];
+  const safeChildren = Array.isArray(category.children)
+    ? category.children
+    : [];
 
   return (
     <div className={styles.categoryItem}>
       <div className={styles.categoryHeader} onClick={() => setIsOpen(!isOpen)}>
         <span className={styles.categoryName}>
-          {locale === "en" ? (category.enTitle || category.title) : category.title}
+          {locale === "en"
+            ? category.enTitle || category.title
+            : category.title}
         </span>
         <span
           className={`${(styles as any).arrow} ${isOpen ? (styles as any).open : ""}`}
@@ -110,10 +121,10 @@ const CategoryItem: React.FC<{
         {safeArticles.map((article) => {
           // 安全检查：确保 article 对象有效
           if (!article || !article._id) {
-            console.warn('CategoryItem: Invalid article object', article);
+            console.warn("CategoryItem: Invalid article object", article);
             return null;
           }
-          
+
           return (
             <div
               key={article._id}
@@ -122,17 +133,19 @@ const CategoryItem: React.FC<{
               }`}
               onClick={() => onSelectArticle(article)}
             >
-              {locale === "en" ? (article.enTitle || article.title) : article.title}
+              {locale === "en"
+                ? article.enTitle || article.title
+                : article.title}
             </div>
           );
         })}
         {safeChildren.map((subcat) => {
           // 安全检查：确保 subcat 对象有效
           if (!subcat || !subcat._id) {
-            console.warn('CategoryItem: Invalid subcategory object', subcat);
+            console.warn("CategoryItem: Invalid subcategory object", subcat);
             return null;
           }
-          
+
           return (
             <CategoryItem
               key={subcat._id}
@@ -246,16 +259,17 @@ const Wiki: React.FC = () => {
         }
 
         // 将文章数据整合到分类中
-        const categoriesWithArticles = categoryData.data.map(
-          (category: WikiCategory) => {
+        const categoriesWithArticles = categoryData.data
+          .map((category: WikiCategory) => {
             // 确保 category 对象有效
-            if (!category || typeof category !== 'object' || !category._id) {
-              console.warn('Invalid category object:', category);
+            if (!category || typeof category !== "object" || !category._id) {
+              console.warn("Invalid category object:", category);
               return null;
             }
 
             const categoryArticles = articleData.data.list.filter(
-              (article: WikiArticle) => article && article.category === category._id,
+              (article: WikiArticle) =>
+                article && article.category === category._id,
             );
             console.log(
               `Category ${category.title} has ${categoryArticles.length} articles`,
@@ -263,10 +277,12 @@ const Wiki: React.FC = () => {
             return {
               ...category,
               articles: categoryArticles || [],
-              children: Array.isArray(category.children) ? category.children : [],
+              children: Array.isArray(category.children)
+                ? category.children
+                : [],
             };
-          },
-        ).filter(Boolean) as WikiCategory[]; // 过滤掉无效的分类
+          })
+          .filter(Boolean) as WikiCategory[]; // 过滤掉无效的分类
 
         // 过滤只保留有文章的分类
         const filteredCategories = filterCategoriesWithArticles(
@@ -275,7 +291,7 @@ const Wiki: React.FC = () => {
 
         // 确保至少有一些数据
         if (!filteredCategories || filteredCategories.length === 0) {
-          console.warn('No valid categories found');
+          console.warn("No valid categories found");
           setCategories([]);
           setSelectedArticle(null);
           return;
@@ -286,7 +302,7 @@ const Wiki: React.FC = () => {
         console.log(filteredCategories);
         // 默认选择第一篇文章 - 改进的逻辑
         let firstArticle: WikiArticle | null = null;
-        
+
         // 首先尝试从第一个分类的文章中选择
         if (filteredCategories[0]?.articles?.[0]) {
           firstArticle = filteredCategories[0].articles[0];
@@ -313,7 +329,7 @@ const Wiki: React.FC = () => {
             }
           }
         }
-        
+
         if (firstArticle) {
           setSelectedArticle(firstArticle);
         }
