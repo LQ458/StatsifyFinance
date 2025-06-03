@@ -90,6 +90,11 @@
   color: #d4af37; /* Change text color to gold on hover */
 }
 
+.categoryHeader.active {
+  color: #d4af37; /* Gold color for selected category */
+  font-weight: 600;
+}
+
 .categoryName {
   color: inherit; /* Use the parent's color for transition effect */
   font-weight: 500;
@@ -131,26 +136,52 @@
   opacity: 1;
 }
 
+/* 添加 active 类 */
+.active {
+  color: #d4af37 !important;
+}
+
 .article {
   padding: 0.5rem 1.25rem 0.5rem 1.5rem;
   cursor: pointer;
   color: #b8b8b8;
   border-radius: 4px;
-  transition: color 0.2s; /* Only transition color */
+  transition: all 0.2s ease; /* 改为过渡所有属性 */
   font-size: 0.85rem; /* Smaller font size */
   line-height: 1.5;
   margin-left: 0.75rem;
 }
 
 .article:hover {
-  background-color: transparent; /* Remove background change */
   color: #d4af37; /* Change to gold color on hover */
 }
 
 .article.active {
-  background-color: transparent; /* Remove background */
   color: #d4af37; /* Use gold for active state */
-  font-weight: 500; /* Add slight boldness to indicate active */
+}
+
+/* 文章区域样式 */
+.articleSection {
+  margin-bottom: 3rem;
+  scroll-margin-top: 2rem; /* 为滚动定位提供额外空间 */
+}
+
+.articleSection:last-child {
+  margin-bottom: 0;
+}
+
+/* 文章分隔线 */
+.articleSeparator {
+  margin: 3rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #333 20%,
+    #333 80%,
+    transparent
+  );
 }
 
 /* Content area styles */
@@ -162,6 +193,7 @@
   padding-bottom: 0.5rem;
   font-weight: 600;
   letter-spacing: normal;
+  scroll-margin-top: 2rem; /* 滚动定位时的上边距 */
 }
 
 .content h2 {
@@ -198,9 +230,11 @@
   padding-left: 1.5rem;
   list-style: revert;
 }
+
 .content hr {
   border-color: transparent;
 }
+
 .content li {
   margin: 0.35rem 0;
   line-height: 1.6;
