@@ -31,6 +31,7 @@
     "cookie": "^1.0.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "dom-to-image": "^2.6.0",
     "echarts": "^5.5.1",
     "highlight.js": "^11.11.1",
     "html2canvas": "^1.4.1",

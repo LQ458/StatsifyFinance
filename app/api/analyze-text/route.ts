@@ -94,31 +94,40 @@ export async function POST(req: NextRequest) {
     // 构建提示词
     const prompt = getPrompt(text, question, locale);
 
-    // 调用DeepSeek API
-    const response = await fetch(
-      "https://api.deepseek.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "deepseek-chat",
-          messages: [
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          temperature: 0.7,
-          stream: true,
-        }),
+    // 调用DeepSeek API - 使用和chat相同的配置
+    const response = await fetch(process.env.DEEPSEEK_ALT_BASE_URL!, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
       },
-    );
+      body: JSON.stringify({
+        model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        stream: true,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("DeepSeek API error:", await response.text());
+      throw new Error(`DeepSeek API error: ${response.status}`);
+    }
+
+    // 设置响应头
+    const headers = new Headers({
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    });
 
     // 返回流式响应
-    return streamText(response);
+    return streamText(response, headers);
   } catch (error) {
     console.error("Error in analyze-text:", error);
     return new Response("Internal Server Error", { status: 500 });

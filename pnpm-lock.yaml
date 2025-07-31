@@ -70,6 +70,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      dom-to-image:
+        specifier: ^2.6.0
+        version: 2.6.0
       echarts:
         specifier: ^5.5.1
         version: 5.5.1
@@ -3406,6 +3409,12 @@ packages:
         integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==,
       }
     engines: { node: ">=6.0.0" }
+
+  dom-to-image@2.6.0:
+    resolution:
+      {
+        integrity: sha512-Dt0QdaHmLpjURjU7Tnu3AgYSF2LuOmksSGsUcE6ItvJoCWTBEmiMXcqBdNSAm9+QbbwD7JMoVsuuKX6ZVQv1qA==,
+      }
 
   dom7@3.0.0:
     resolution:
@@ -10601,6 +10610,8 @@ snapshots:
   doctrine@3.0.0:
     dependencies:
       esutils: 2.0.3
+
+  dom-to-image@2.6.0: {}
 
   dom7@3.0.0:
     dependencies:

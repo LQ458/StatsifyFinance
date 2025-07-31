@@ -705,7 +705,17 @@ export default function AIChat() {
                 );
 
                 if (content) {
-                  accumulatedContent += content;
+                  // 处理引号格式，与普通聊天保持一致
+                  let processedContent = content;
+                  if (content.startsWith('"') && content.endsWith('"')) {
+                    processedContent = content
+                      .slice(1, -1)
+                      .replace(/\\"/g, '"') // 处理转义的引号
+                      .replace(/\\n/g, "\n") // 处理换行符
+                      .replace(/\$/g, "\\$"); // 处理LaTeX符号
+                  }
+
+                  accumulatedContent += processedContent;
                   // 只更新AI消息的内容
                   setMessages((prevMessages) => {
                     const aiMessageIndex = prevMessages.findIndex(
@@ -1284,7 +1294,10 @@ export default function AIChat() {
         onCapture={handleImageAnalysis}
         onScreenshotEnd={() => setIsScreenshotting(false)}
         isSelecting={isScreenshotting}
-        onQuestionSelected={() => setIsOpen(true)}
+        onQuestionSelected={() => {
+          // 截图分析完成后打开聊天框
+          setIsOpen(true);
+        }}
       />
     </>
   );

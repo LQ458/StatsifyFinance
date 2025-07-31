@@ -93,8 +93,6 @@ export async function POST(req: NextRequest) {
   try {
     const { image, question, locale = "zh" } = await req.json();
 
-    const base_url = process.env.DEEPSEEK_ALT_BASE_URL;
-
     if (!image || typeof image !== "string") {
       return new Response("Invalid image data", { status: 400 });
     }
@@ -109,15 +107,15 @@ export async function POST(req: NextRequest) {
     // 调用百度云OCR
     const result = await client.generalBasic(base64Data);
 
-    // 调用DeepSeek API进行分析
-    const response = await fetch(`${base_url}`, {
+    // 调用DeepSeek API进行分析 - 使用和chat相同的配置
+    const response = await fetch(process.env.DEEPSEEK_ALT_BASE_URL!, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
       },
       body: JSON.stringify({
-        model: process.env.DEEPSEEK_ALT_MODEL,
+        model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
         messages: [
           {
             role: "system",
@@ -138,8 +136,15 @@ export async function POST(req: NextRequest) {
       throw new Error(`DeepSeek API error: ${response.status}`);
     }
 
+    // 设置响应头
+    const headers = new Headers({
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    });
+
     // 返回流式响应
-    return streamText(response);
+    return streamText(response, headers);
   } catch (error) {
     console.error("Error in analyze-image:", error);
     return new Response("Internal Server Error", { status: 500 });
