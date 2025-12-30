@@ -34,6 +34,8 @@ interface twoDimension extends Array<Item[]> {}
 
 const Analysis = () => {
   const t = useTranslations("quantitative");
+  console.log('typeof t("title")', typeof t("title"));
+  console.log('typeof t("description")', typeof t("description"));
   const locale = useLocale();
   const [currentNav, setCurrentNav] = useState("");
   const [swiperIndex, setSwiperIndex] = useState(0);
