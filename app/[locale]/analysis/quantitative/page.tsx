@@ -34,8 +34,6 @@ interface twoDimension extends Array<Item[]> {}
 
 const Analysis = () => {
   const t = useTranslations("quantitative");
-  const title = t("title");
-  const description = t("description");
   const locale = useLocale();
   const [currentNav, setCurrentNav] = useState("");
   const [swiperIndex, setSwiperIndex] = useState(0);
@@ -235,9 +233,9 @@ const Analysis = () => {
             </div>
             <div className={`${styles["main"]} ss-main`}>
               <h1 className="text-white opacity-90 text-[40px] font-normal leading-[1.2] mb-[20px]">
-                {title}
+                {t("title")}
               </h1>
-              <p className="text-[#B8B8B8] text-[16px]">{description}</p>
+              <p className="text-[#B8B8B8] text-[16px]">{t("description")}</p>
 
               <div className="mt-[30px] text-left">
                 <div className={`${styles.tab} ss-tab`}>
