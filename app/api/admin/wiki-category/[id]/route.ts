@@ -1,9 +1,14 @@
 import Category from "@/models/wiki-category";
 import { DBconnect } from "@/libs/mongodb";
+import { requireAdmin } from "@/libs/admin-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest, { params }: any) => {
   const { id } = params; // 路由中传递的参数
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
+  }
   const data = await req.json(); // 请求体中传递的数据
   try {
     await DBconnect();
@@ -31,6 +36,10 @@ export const PUT = async (req: NextRequest, { params }: any) => {
 
 export const DELETE = async (req: NextRequest, { params }: any) => {
   const { id } = params;
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
+  }
   try {
     await DBconnect();
     await Category.findByIdAndDelete(id);

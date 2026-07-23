@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { useCallback } from "react";
 import MarkdownIt from "markdown-it";
-import mk from "markdown-it-katex";
 import mh from "markdown-it-highlightjs";
 
 // 样式文件
@@ -19,12 +18,10 @@ const MdEditor = dynamic(
 
 // Markdown-it 实例 + 插件
 const mdParser = new MarkdownIt({
-  html: true,
+  html: false,
   linkify: true,
   typographer: true,
-})
-  .use(mk)
-  .use(mh);
+}).use(mh);
 
 interface MarkdownEditorProps {
   value: string;

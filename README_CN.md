@@ -1,8 +1,8 @@
 # 🏛️ StatsifyFinance
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.16-black)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.21-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.15.0-green)](https://www.mongodb.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green)](https://www.mongodb.com/)
 [![AI Powered](https://img.shields.io/badge/AI-Powered-orange)](https://deepseek.com/)
 [![License](https://img.shields.io/badge/License-Apache--2.0-red)](LICENSE)
 
@@ -23,7 +23,7 @@
 - **定量分析**: 盈利能力、流动性、偿债能力、运营效率、成长能力、估值水平
 - **定性分析**: 管理质量、品牌价值、市场竞争力等非财务因素评估
 - **截图分析**: 智能识别金融图表和数据，提供专业解读
-- **文本分析**: OCR 文字识别 + AI 语义分析
+- **文本分析**: 使用 DeepSeek 分析选中的金融文本
 
 ### 📈 策略研究中心
 
@@ -36,8 +36,8 @@
 
 - **金融百科**: 量化投资知识体系，支持数学公式渲染
 - **术语词典**: 金融专业术语详细解释和案例说明
-- **市场资讯**: 实时更新的行业动态和趋势分析
-- **全站搜索**: 智能检索系统，快速定位相关内容
+- **市场文章**: 由 MongoDB 管理的中英双语金融文章
+- **全站搜索**: 按标题检索内容库
 
 ## 🛠️ 技术架构
 
@@ -45,7 +45,7 @@
 
 ```bash
 # 核心框架
-Next.js 14.2.16          # React全栈框架
+Next.js 15.5.21          # React全栈框架
 TypeScript 5.0           # 类型系统
 Tailwind CSS 3.4.1      # 原子化CSS框架
 
@@ -56,7 +56,7 @@ react-icons 5.2.1        # 补充图标
 
 # 数据可视化
 ECharts 5.5.1           # 图表库
-Swiper 11.1.9           # 轮播组件
+Swiper 12.2.0           # 轮播组件
 
 # 内容渲染
 @wangeditor/editor       # 富文本编辑器
@@ -67,25 +67,22 @@ react-syntax-highlighter # 代码高亮
 # 功能增强
 html2canvas 1.4.1        # 截图功能
 next-intl 3.26.2         # 国际化
-next-auth 4.24.7         # 身份认证
-zustand 5.0.3            # 状态管理
+next-auth 4.24.15        # 身份认证
 ```
 
 ### 后端技术栈
 
 ```bash
 # 数据库
-MongoDB 6.15.0           # 文档数据库
-Mongoose 8.5.2           # ODM对象建模
+MongoDB                  # 文档数据库
+Mongoose 8.24.1          # ODM对象建模
 
 # AI服务
 DeepSeek API             # 大语言模型
-Baidu AIP SDK 4.16.16    # 百度AI平台(OCR)
-LangChain 0.3.11         # AI应用框架
-
-# 其他服务
-@sentry/nextjs           # 错误监控
-@vercel/analytics        # 数据分析
+Baidu OCR REST API       # 百度AI平台(OCR)
+# 可观测性
+@vercel/analytics        # 隐私友好的网站分析
+@vercel/speed-insights   # Web 性能指标
 ```
 
 ### 项目结构
@@ -129,7 +126,7 @@ LangChain 0.3.11         # AI应用框架
 
 ### 环境要求
 
-- Node.js >= 18.0.0
+- Node.js >= 20.9.0
 - pnpm >= 8.0.0 (推荐)
 - MongoDB >= 6.0
 
@@ -158,17 +155,15 @@ cp .env.example .env.local
 
 # 配置环境变量
 MONGODB_URI=mongodb://localhost:27017/statsify
-NEXTAUTH_SECRET=your-nextauth-secret
+AUTH_SECRET=replace-with-a-long-random-secret
 NEXTAUTH_URL=http://localhost:8810
 
 # AI服务配置
-DEEPSEEK_API_KEY=your-deepseek-api-key
 DEEPSEEK_ALT_BASE_URL=https://api.deepseek.com/v1/chat/completions
 DEEPSEEK_ALT_API_KEY=your-deepseek-alt-api-key
 DEEPSEEK_ALT_MODEL=deepseek-ai/DeepSeek-V3
 
 # 百度AI配置 (OCR功能)
-BAIDU_APP_ID=your-baidu-app-id
 BAIDU_API_KEY=your-baidu-api-key
 BAIDU_SECRET_KEY=your-baidu-secret-key
 ```
@@ -203,9 +198,15 @@ npm run format
 pnpm lint         # ESLint代码检查
 npm run lint
 
-# 初始化向量数据
-pnpm init-vectors # 初始化AI向量数据
-npm run init-vectors
+# 自动化测试
+pnpm test
+npm test
+
+# 隐私安全的聚合使用数据报告
+pnpm metrics:usage
+
+# 明文密码字段清理（默认只做 dry run）
+pnpm migration:remove-original-password
 ```
 
 ## 📋 功能详解
@@ -214,7 +215,7 @@ npm run init-vectors
 
 - **智能对话**: 支持金融领域专业问答
 - **截图分析**: 实时截图并 AI 解读图表数据
-- **文本分析**: OCR 识别 + 智能语义分析
+- **文本分析**: 直接分析选中的金融文本
 - **多语言**: 自动检测并适配中英文响应
 - **流式响应**: 实时打字机效果显示
 - **历史记录**: 登录用户对话历史保存
@@ -236,9 +237,8 @@ npm run init-vectors
 ### 📚 知识管理系统
 
 - **分类体系**: 结构化知识分类管理
-- **搜索引擎**: 全文检索 + 语义搜索
+- **搜索引擎**: 按标题匹配中英双语内容
 - **公式渲染**: LaTeX 数学公式支持
-- **版本控制**: 内容版本管理和更新追踪
 
 ## 🌐 国际化支持
 
@@ -254,7 +254,7 @@ npm run init-vectors
 ### 认证方式
 
 - NextAuth.js 集成
-- 支持邮箱密码登录
+- 支持用户名密码登录
 - 访客模式限制对话次数
 - 管理员权限系统
 
@@ -262,7 +262,7 @@ npm run init-vectors
 
 - **访客用户**: 限制 AI 对话次数(3 次)
 - **注册用户**: 无限对话 + 历史记录
-- **管理员**: 内容管理 + 数据统计
+- **管理员**: 用户和内容管理
 
 ## 🎯 特色功能
 
@@ -286,16 +286,6 @@ import ScreenCapture from "@/components/ScreenCapture";
 $$\text{ROE} = \frac{\text{净利润}}{\text{股东权益}} \times 100\%$$
 ```
 
-### 🔍 全文搜索
-
-```typescript
-// 搜索功能
-const searchResults = await fetch("/api/search", {
-  method: "POST",
-  body: JSON.stringify({ query: searchTerm }),
-});
-```
-
 ## 📦 部署指南
 
 ### Vercel 部署
@@ -306,22 +296,16 @@ npx vercel
 
 # 配置环境变量
 vercel env add MONGODB_URI
-vercel env add DEEPSEEK_API_KEY
+vercel env add AUTH_SECRET
+vercel env add DEEPSEEK_ALT_API_KEY
 # ... 其他环境变量
 ```
 
-### Docker 部署
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
+对生产数据库执行 credential 清理前，先创建数据库备份，运行默认 dry
+run，并核对只包含数量的输出。正式执行需要同时设置
+`MIGRATION_BACKUP_CONFIRMED=true` 和
+`MIGRATION_CONFIRM=unset-original-password`，然后运行
+`pnpm migration:remove-original-password -- --execute`。
 
 ## 🤝 贡献指南
 

@@ -2,7 +2,7 @@
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import Message from "@/components/message";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -34,21 +34,18 @@ const Login = () => {
         password,
         redirect: false,
       });
-      console.log("res:::", res);
       if (!res?.ok) {
         Msg("error", "用户名或密码错误");
         return;
       }
       if (res?.error) {
         Msg("error", "登录失败");
-        console.log("登录失败");
       } else {
         Msg("success", "登录成功");
-        console.log("登录成功");
         nav.push("/");
       }
-    } catch (error) {
-      console.error("登录失败", error);
+    } catch {
+      Msg("error", "登录失败");
     }
   };
 

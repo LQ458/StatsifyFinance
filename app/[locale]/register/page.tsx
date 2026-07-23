@@ -3,7 +3,7 @@ import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
 import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Message from "@/components/message";
 type TipType = "success" | "warning" | "error";
@@ -61,13 +61,15 @@ const Register = () => {
     }
 
     try {
-      const params = new URLSearchParams({
-        username: username,
-        password: password,
-        email: email,
-      });
-
-      const res = await axios.post(`/api/register?${params.toString()}`);
+      const res = await axios.post(
+        "/api/register",
+        { username, password, email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
       if (res.data.success) {
         // alert("注册成功");
         Msg("success", "注册成功!即将跳转到登录");
@@ -76,9 +78,11 @@ const Register = () => {
         Msg("error", "注册失败");
         // alert("注册失败");
       }
-    } catch (error: any) {
-      console.error(error.response.data.error);
-      Msg("error", error.response.data.error || "注册失败");
+    } catch (error: unknown) {
+      const responseMessage = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      Msg("error", responseMessage || "注册失败");
       // alert("注册失败");
     }
   };

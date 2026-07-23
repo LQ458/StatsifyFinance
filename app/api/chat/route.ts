@@ -1,5 +1,4 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from "next/server";
 import { getSystemPrompt } from "@/utils/prompt";
 import { streamText } from "@/utils/stream";
 import { Chat } from "@/models/chat";
@@ -7,6 +6,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth";
 import { v4 as uuidv4 } from "uuid";
 import { DBconnect } from "@/libs/mongodb";
+import { recordProductEvent } from "@/libs/product-events";
+import {
+  chatRequestSchema,
+  jsonInputError,
+  MAX_CHAT_BODY_BYTES,
+  readJsonBody,
+  RequestInputError,
+} from "@/libs/request-validation";
 
 // 类型定义
 interface ChatQuery {
@@ -20,13 +27,6 @@ interface ChatMessage {
   timestamp?: Date;
 }
 
-// 请求体验证schema
-const requestSchema = z.object({
-  message: z.string().min(1).max(1000),
-  locale: z.string(),
-  conversationId: z.string().nullable().optional(),
-});
-
 // 错误类型定义
 class APIError extends Error {
   constructor(
@@ -39,25 +39,6 @@ class APIError extends Error {
   }
 }
 
-// 请求验证函数
-async function validateRequest(req: Request) {
-  try {
-    const body = await req.json();
-    const result = requestSchema.safeParse(body);
-
-    if (!result.success) {
-      throw new APIError("无效的请求参数", 400, "INVALID_REQUEST");
-    }
-
-    return result.data;
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      throw new APIError("请求参数验证失败", 400, "VALIDATION_ERROR");
-    }
-    throw error;
-  }
-}
-
 // 会话管理函数
 async function handleSession(
   userId: string,
@@ -67,10 +48,17 @@ async function handleSession(
     let chat = null;
 
     if (conversationId) {
-      chat = await Chat.findOne({
-        userId: String(userId),
-        conversationId: String(conversationId),
-      }).lean();
+      chat = await Chat.findOne(
+        {
+          userId: String(userId),
+          conversationId: String(conversationId),
+        },
+        {
+          conversationId: 1,
+          title: 1,
+          messages: 1,
+        },
+      ).lean();
     }
 
     if (!chat) {
@@ -90,54 +78,114 @@ async function handleSession(
 
     return chat;
   } catch (error) {
-    console.error("Error handling chat session:", error);
     throw new APIError("处理会话失败", 500, "SESSION_ERROR");
   }
 }
 
-// 为访客用户生成ID
-function generateGuestId(req: Request) {
-  // 使用IP地址和用户代理作为唯一标识的基础
-  const ip = req.headers.get("x-forwarded-for") || "unknown-ip";
-  const userAgent = req.headers.get("user-agent") || "unknown-ua";
+const GUEST_COOKIE_NAME = "statsify_guest";
+const GUEST_COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-  // 使用简单的哈希函数计算唯一标识
-  let hash = 0;
-  const str = `${ip}-${userAgent}`;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // 转换为32bit整数
+type Actor = {
+  userId: string;
+  isGuest: boolean;
+  guestToken?: string;
+  setGuestCookie: boolean;
+};
+
+async function resolveActor(req: NextRequest): Promise<Actor> {
+  const session = await getServerSession(authOptions);
+  if (session?.user?.id) {
+    return {
+      userId: session.user.id,
+      isGuest: false,
+      setGuestCookie: false,
+    };
   }
 
-  // 返回前缀为guest的ID
-  return `guest-${Math.abs(hash)}`;
+  const currentGuestToken = req.cookies.get(GUEST_COOKIE_NAME)?.value;
+  const guestToken =
+    currentGuestToken && UUID_PATTERN.test(currentGuestToken)
+      ? currentGuestToken
+      : uuidv4();
+
+  return {
+    userId: `guest-${guestToken}`,
+    isGuest: true,
+    guestToken,
+    setGuestCookie: guestToken !== currentGuestToken,
+  };
 }
 
-export async function POST(req: Request) {
-  try {
-    // 确保数据库连接
-    await DBconnect();
+function setGuestCookie(response: NextResponse, actor: Actor) {
+  if (!actor.isGuest || !actor.guestToken || !actor.setGuestCookie) {
+    return;
+  }
 
-    // 验证请求
-    const { message, locale, conversationId } = await validateRequest(req);
+  response.cookies.set(GUEST_COOKIE_NAME, actor.guestToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: GUEST_COOKIE_MAX_AGE,
+  });
+}
 
-    // 验证用户会话
-    const session = await getServerSession(authOptions);
-    let userId = session?.user?.id;
-    let isGuest = false;
+function setGuestCookieHeader(headers: Headers, actor: Actor) {
+  if (!actor.isGuest || !actor.guestToken || !actor.setGuestCookie) {
+    return;
+  }
 
-    // 如果用户未登录，生成访客ID
-    if (!userId) {
-      userId = generateGuestId(req);
-      isGuest = true;
+  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  headers.append(
+    "Set-Cookie",
+    `${GUEST_COOKIE_NAME}=${actor.guestToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${GUEST_COOKIE_MAX_AGE}${secure}`,
+  );
+}
+
+function providerMessages(messages: ChatMessage[]) {
+  const maximumCharacters = 12_000;
+  const maximumMessages = 20;
+  const selected: ChatMessage[] = [];
+  let characterCount = 0;
+
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    if (selected.length >= maximumMessages) {
+      break;
     }
+
+    const message = messages[index];
+    const remainingCharacters = maximumCharacters - characterCount;
+    if (remainingCharacters <= 0) {
+      break;
+    }
+
+    const content = String(message.content || "").slice(-remainingCharacters);
+    selected.unshift({ ...message, content });
+    characterCount += content.length;
+  }
+
+  return selected;
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await readJsonBody(req, MAX_CHAT_BODY_BYTES);
+    const parsed = chatRequestSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new RequestInputError("Invalid chat request", 400, "INVALID_INPUT");
+    }
+    const { message, locale, conversationId } = parsed.data;
+
+    await DBconnect();
+    const actor = await resolveActor(req);
 
     // 获取系统提示词
     const systemPrompt = getSystemPrompt(locale);
 
     // 处理会话
-    const chat = await handleSession(userId, conversationId);
+    const chat = await handleSession(actor.userId, conversationId);
     const messages = Array.isArray(chat.messages) ? chat.messages : [];
 
     // 添加用户消息
@@ -149,18 +197,23 @@ export async function POST(req: Request) {
     messages.push(userMessage);
 
     // 调用AI API
-    console.log("[Chat] Calling AI API");
-    const response = await fetch(process.env.DEEPSEEK_ALT_BASE_URL!, {
+    const endpoint = process.env.DEEPSEEK_ALT_BASE_URL;
+    const apiKey = process.env.DEEPSEEK_ALT_API_KEY;
+    if (!endpoint || !apiKey) {
+      throw new APIError("聊天服务暂不可用", 503, "SERVICE_UNAVAILABLE");
+    }
+
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
         messages: [
           { role: "system", content: systemPrompt },
-          ...messages.map((msg: ChatMessage) => ({
+          ...providerMessages(messages).map((msg: ChatMessage) => ({
             role: msg.role,
             content: String(msg.content || ""),
           })),
@@ -168,14 +221,11 @@ export async function POST(req: Request) {
         temperature: 0.7,
         stream: true,
       }),
+      signal: AbortSignal.timeout(30_000),
     });
 
     if (!response.ok) {
-      throw new APIError(
-        `AI服务错误: ${response.status}`,
-        503,
-        "AI_SERVICE_ERROR",
-      );
+      throw new APIError("聊天服务暂不可用", 503, "AI_SERVICE_ERROR");
     }
 
     // 设置响应头
@@ -190,8 +240,9 @@ export async function POST(req: Request) {
     }
 
     // 设置访客标志
-    if (isGuest) {
+    if (actor.isGuest) {
       headers.set("X-Guest-User", "true");
+      setGuestCookieHeader(headers, actor);
     }
 
     // 添加助手消息到数据库
@@ -233,9 +284,12 @@ export async function POST(req: Request) {
           },
         );
       }
+      await recordProductEvent("chat_submitted", !actor.isGuest);
     });
   } catch (error) {
-    console.error("Chat API Error:", error);
+    if (error instanceof RequestInputError) {
+      return jsonInputError(error);
+    }
 
     if (error instanceof APIError) {
       return NextResponse.json(
@@ -260,37 +314,43 @@ export async function POST(req: Request) {
 }
 
 // 获取聊天历史
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     await DBconnect();
 
-    const session = await getServerSession(authOptions);
-    let userId = session?.user?.id;
-
-    // 如果用户未登录，尝试使用访客ID
-    if (!userId) {
-      userId = generateGuestId(request);
-    }
+    const actor = await resolveActor(request);
 
     const { searchParams } = new URL(request.url);
     const conversationId = searchParams.get("conversationId");
+    if (
+      conversationId &&
+      (conversationId.length > 64 || !/^[a-zA-Z0-9-]+$/.test(conversationId))
+    ) {
+      throw new APIError("无效的conversationId", 400, "INVALID_PARAM");
+    }
 
     const query = conversationId
       ? {
-          userId: String(userId),
+          userId: actor.userId,
           conversationId: String(conversationId),
         }
-      : { userId: String(userId) };
+      : { userId: actor.userId };
 
-    const chats = await Chat.find(query)
+    const chats = await Chat.find(query, {
+      conversationId: 1,
+      title: 1,
+      messages: 1,
+      createdAt: 1,
+      updatedAt: 1,
+    })
       .sort({ updatedAt: -1 })
       .limit(20)
       .lean();
 
-    return NextResponse.json({ success: true, data: chats });
+    const response = NextResponse.json({ success: true, data: chats });
+    setGuestCookie(response, actor);
+    return response;
   } catch (error) {
-    console.error("Get chat history error:", error);
-
     if (error instanceof APIError) {
       return NextResponse.json(
         {
@@ -314,17 +374,11 @@ export async function GET(request: Request) {
 }
 
 // 删除聊天记录
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
     await DBconnect();
 
-    const session = await getServerSession(authOptions);
-    let userId = session?.user?.id;
-
-    // 如果用户未登录，尝试使用访客ID
-    if (!userId) {
-      userId = generateGuestId(request);
-    }
+    const actor = await resolveActor(request);
 
     const { searchParams } = new URL(request.url);
     const conversationId = searchParams.get("conversationId");
@@ -332,9 +386,12 @@ export async function DELETE(request: Request) {
     if (!conversationId) {
       throw new APIError("缺少conversationId", 400, "MISSING_PARAM");
     }
+    if (conversationId.length > 64 || !/^[a-zA-Z0-9-]+$/.test(conversationId)) {
+      throw new APIError("无效的conversationId", 400, "INVALID_PARAM");
+    }
 
     const result = await Chat.deleteOne({
-      userId: String(userId),
+      userId: actor.userId,
       conversationId: String(conversationId),
     });
 
@@ -342,10 +399,10 @@ export async function DELETE(request: Request) {
       throw new APIError("对话不存在或无权删除", 404, "NOT_FOUND");
     }
 
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    setGuestCookie(response, actor);
+    return response;
   } catch (error) {
-    console.error("Delete chat error:", error);
-
     if (error instanceof APIError) {
       return NextResponse.json(
         {

@@ -23,8 +23,7 @@ import dayjs from "dayjs";
 type User = {
   _id: string;
   username: string;
-  originalPassword: string;
-  admin: string;
+  admin: boolean;
   image: string;
   email: string;
   createdAt: string;
@@ -116,10 +115,6 @@ function UserPage() {
           {
             title: "邮箱",
             dataIndex: "email",
-          },
-          {
-            title: "密码",
-            dataIndex: "originalPassword",
           },
           {
             title: "头像",
@@ -219,6 +214,9 @@ function UserPage() {
             const res = await fetch("/api/admin/users/" + currentId, {
               body: JSON.stringify({ ...v, image: imageUrl }),
               method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
             }).then((res) => res.json());
             if (!res.success) {
               return message.error(res.errorMessage || "操作失败！");
@@ -232,19 +230,6 @@ function UserPage() {
           <Form.Item label="用户名" name="username">
             <Input placeholder="请输入标题" readOnly />
           </Form.Item>
-          <Form.Item
-            label="密码"
-            name="originalPassword"
-            rules={[
-              {
-                required: true,
-                message: "密码不能为空",
-              },
-            ]}
-          >
-            <Input placeholder="请输入密码" />
-          </Form.Item>
-
           <Form.Item label="邮箱" name="email">
             <Input placeholder="请输入邮箱" />
           </Form.Item>

@@ -1,107 +1,193 @@
+import mongoose from "mongoose";
 import User from "@/models/user";
-import bcrypt from "bcryptjs";
 import { DBconnect } from "@/libs/mongodb";
+import { requireAdmin } from "@/libs/admin-auth";
+import {
+  adminUserUpdateSchema,
+  SAFE_USER_PROJECTION,
+  serializeSafeUser,
+} from "@/libs/safe-user";
+import {
+  jsonInputError,
+  readJsonBody,
+  RequestInputError,
+} from "@/libs/request-validation";
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-const cookieName =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-next-auth.session-token"
-    : "next-auth.session-token";
 
-export const PUT = async (req: NextRequest, { params }: any) => {
-  const { id } = params; // 路由中传递的参数
-  const data = await req.json(); // 请求体中传递的数据
-  const { originalPassword } = data;
-  const password = await bcrypt.hash(originalPassword, 10);
-  data.password = password;
-  const token = await getToken({
-    req,
-    cookieName,
-    secret: process?.env?.AUTH_SECRET,
-  });
-  console.log("管理员验证,isAdmin::::", token?.admin);
-  if (!Boolean(token?.admin)) {
-    // 没有权限
-    return NextResponse.json({
+const MAX_USER_UPDATE_BODY_BYTES = 16 * 1024;
+type RouteContext = { params: Promise<{ id: string }> };
+
+function invalidIdResponse() {
+  return NextResponse.json(
+    {
       success: false,
-      errorMessage: "您没有权限操作此功能!",
-    });
+      error: "Invalid user id",
+      code: "INVALID_INPUT",
+    },
+    { status: 400 },
+  );
+}
+
+export const PUT = async (req: NextRequest, { params }: RouteContext) => {
+  const { id } = await params;
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
   }
+
+  if (!mongoose.isValidObjectId(id)) {
+    return invalidIdResponse();
+  }
+
   try {
+    const body = await readJsonBody(req, MAX_USER_UPDATE_BODY_BYTES);
+    const parsed = adminUserUpdateSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid user update",
+          code: "INVALID_INPUT",
+        },
+        { status: 400 },
+      );
+    }
+
     await DBconnect();
-    await User.findByIdAndUpdate(
+    const updated = await User.findByIdAndUpdate(
       id,
-      { ...data, updatedAt: new Date() },
-      { new: true },
-    );
-    // await prisma.article.update({
-    //   where: { id },
-    //   data,
-    // });
+      {
+        $set: {
+          ...parsed.data,
+          updatedAt: new Date(),
+        },
+      },
+      { new: true, runValidators: true, projection: SAFE_USER_PROJECTION },
+    ).lean();
+
+    if (!updated) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "User not found",
+          code: "NOT_FOUND",
+        },
+        { status: 404 },
+      );
+    }
+
     return NextResponse.json({
       success: true,
       errorMessage: "修改成功",
     });
   } catch (error) {
-    console.error("发生错误:", error);
-    return NextResponse.json({
-      success: false,
-      errorMessage: "服务器错误，请稍后重试。",
-    });
+    if (error instanceof RequestInputError) {
+      return jsonInputError(error);
+    }
+
+    if ((error as { code?: number }).code === 11000) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Email already exists",
+          code: "ACCOUNT_EXISTS",
+        },
+        { status: 409 },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "服务器错误，请稍后重试。",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+      { status: 500 },
+    );
   }
 };
 
-export const DELETE = async (req: NextRequest, { params }: any) => {
-  const { id } = params;
-  const token = await getToken({
-    req,
-    cookieName,
-    secret: process?.env?.AUTH_SECRET,
-  });
-  console.log("管理员验证,isAdmin::::", token?.admin);
-  if (!Boolean(token?.admin)) {
-    // 没有权限
-    return NextResponse.json({
-      success: false,
-      errorMessage: "您没有权限操作此功能!",
-    });
+export const DELETE = async (_req: NextRequest, { params }: RouteContext) => {
+  const { id } = await params;
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
   }
+
+  if (!mongoose.isValidObjectId(id)) {
+    return invalidIdResponse();
+  }
+
   try {
     await DBconnect();
-    await User.findByIdAndDelete(id);
-    // await prisma.article.delete({
-    //   where: { id },
-    // });
+    const deleted = await User.findByIdAndDelete(id);
+    if (!deleted) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "User not found",
+          code: "NOT_FOUND",
+        },
+        { status: 404 },
+      );
+    }
+
     return NextResponse.json({
       success: true,
       errorMessage: "删除成功",
     });
-  } catch (error) {
-    console.error("发生错误:", error);
-    return NextResponse.json({
-      success: false,
-      errorMessage: "服务器错误，请稍后重试。",
-    });
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "服务器错误，请稍后重试。",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+      { status: 500 },
+    );
   }
 };
 
-export const GET = async (req: NextRequest, { params }: any) => {
-  const { id } = params;
+export const GET = async (_req: NextRequest, { params }: RouteContext) => {
+  const { id } = await params;
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
+  }
+
+  if (!mongoose.isValidObjectId(id)) {
+    return invalidIdResponse();
+  }
+
   try {
     await DBconnect();
-    const data = await User.find({ _id: id });
+    const user = await User.findById(id, SAFE_USER_PROJECTION).lean();
+    if (!user) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "User not found",
+          code: "NOT_FOUND",
+        },
+        { status: 404 },
+      );
+    }
+
     return NextResponse.json({
       success: true,
       errorMessage: "",
       data: {
-        list: data[0],
+        list: serializeSafeUser(user as Record<string, unknown>),
       },
     });
-  } catch (error) {
-    console.error("发生错误:", error);
-    return NextResponse.json({
-      success: false,
-      errorMessage: "服务器错误，请稍后重试。",
-    });
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "服务器错误，请稍后重试。",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+      { status: 500 },
+    );
   }
 };

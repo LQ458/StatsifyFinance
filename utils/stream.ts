@@ -50,8 +50,6 @@ export async function streamText(
       throw new Error("No reader available");
     }
 
-    console.log("[Stream] streamText start");
-
     // 用于累积完整内容的变量
     let fullContent = "";
 
@@ -67,8 +65,8 @@ export async function streamText(
               if (onComplete) {
                 try {
                   await onComplete(fullContent);
-                } catch (callbackError) {
-                  console.error("[Stream] Callback error:", callbackError);
+                } catch {
+                  console.error("[Stream] completion callback failed");
                 }
               }
 
@@ -106,15 +104,15 @@ export async function streamText(
                       ),
                     );
                   }
-                } catch (e) {
-                  console.error("Error parsing JSON:", e);
+                } catch {
+                  console.error("[Stream] invalid upstream chunk");
                 }
               }
             }
           }
-        } catch (error) {
-          console.error("Stream processing error:", error);
-          controller.error(error);
+        } catch {
+          console.error("[Stream] processing failed");
+          controller.error(new Error("Stream processing failed"));
         }
       },
 
@@ -132,9 +130,9 @@ export async function streamText(
           Connection: "keep-alive",
         }),
     });
-  } catch (error) {
-    console.error("[Stream] streamText error:", error);
-    throw error;
+  } catch {
+    console.error("[Stream] initialization failed");
+    throw new Error("Stream initialization failed");
   }
 }
 

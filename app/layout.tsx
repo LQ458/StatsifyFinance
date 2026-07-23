@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { AuthProvider } from "./Providers";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +15,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: { locale = "zh" },
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale?: string }>;
 }) {
+  const { locale = "zh" } = await params;
   let messages;
   try {
     messages = (await import(`../messages/${locale}.json`)).default;
@@ -32,6 +35,8 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>{children}</AuthProvider>
         </NextIntlClientProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,8 +1,8 @@
 # 🏛️ StatsifyFinance
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.16-black)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.21-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.15.0-green)](https://www.mongodb.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green)](https://www.mongodb.com/)
 [![AI Powered](https://img.shields.io/badge/AI-Powered-orange)](https://deepseek.com/)
 [![License](https://img.shields.io/badge/License-Apache--2.0-red)](LICENSE)
 
@@ -23,7 +23,7 @@
 - **Quantitative Analysis**: Profitability, liquidity, solvency, operational efficiency, growth capability, valuation level
 - **Qualitative Analysis**: Assessment of non-financial factors such as management quality, brand value, and market competitiveness
 - **Screenshot Analysis**: Intelligent recognition of financial charts and data with professional interpretation
-- **Text Analysis**: OCR text recognition + AI semantic analysis
+- **Text Analysis**: DeepSeek-powered analysis of selected financial text
 
 ### 📈 Strategy Research Center
 
@@ -36,8 +36,8 @@
 
 - **Financial Encyclopedia**: Quantitative investment knowledge system with mathematical formula rendering support
 - **Terminology Dictionary**: Detailed explanations and case studies of financial professional terms
-- **Market News**: Real-time updates of industry dynamics and trend analysis
-- **Site-wide Search**: Intelligent retrieval system for quick content location
+- **Market Articles**: Bilingual financial articles managed in MongoDB
+- **Site-wide Search**: Title-based retrieval across the content library
 
 ## 🛠️ Technical Architecture
 
@@ -45,7 +45,7 @@
 
 ```bash
 # Core Framework
-Next.js 14.2.16          # React full-stack framework
+Next.js 15.5.21          # React full-stack framework
 TypeScript 5.0           # Type system
 Tailwind CSS 3.4.1      # Atomic CSS framework
 
@@ -56,7 +56,7 @@ react-icons 5.2.1        # Supplementary icons
 
 # Data Visualization
 ECharts 5.5.1           # Chart library
-Swiper 11.1.9           # Carousel component
+Swiper 12.2.0           # Carousel component
 
 # Content Rendering
 @wangeditor/editor       # Rich text editor
@@ -67,25 +67,22 @@ react-syntax-highlighter # Code highlighting
 # Feature Enhancement
 html2canvas 1.4.1        # Screenshot functionality
 next-intl 3.26.2         # Internationalization
-next-auth 4.24.7         # Authentication
-zustand 5.0.3            # State management
+next-auth 4.24.15        # Authentication
 ```
 
 ### Backend Technology Stack
 
 ```bash
 # Database
-MongoDB 6.15.0           # Document database
-Mongoose 8.5.2           # ODM object modeling
+MongoDB                  # Document database
+Mongoose 8.24.1          # ODM object modeling
 
 # AI Services
 DeepSeek API             # Large language model
-Baidu AIP SDK 4.16.16    # Baidu AI platform (OCR)
-LangChain 0.3.11         # AI application framework
-
-# Other Services
-@sentry/nextjs           # Error monitoring
-@vercel/analytics        # Data analytics
+Baidu OCR REST API       # Baidu AI platform (OCR)
+# Observability
+@vercel/analytics        # Privacy-friendly web analytics
+@vercel/speed-insights   # Web performance metrics
 ```
 
 ### Project Structure
@@ -129,7 +126,7 @@ LangChain 0.3.11         # AI application framework
 
 ### Environment Requirements
 
-- Node.js >= 18.0.0
+- Node.js >= 20.9.0
 - pnpm >= 8.0.0 (recommended)
 - MongoDB >= 6.0
 
@@ -158,17 +155,15 @@ cp .env.example .env.local
 
 # Configure environment variables
 MONGODB_URI=mongodb://localhost:27017/statsify
-NEXTAUTH_SECRET=your-nextauth-secret
+AUTH_SECRET=replace-with-a-long-random-secret
 NEXTAUTH_URL=http://localhost:8810
 
 # AI service configuration
-DEEPSEEK_API_KEY=your-deepseek-api-key
 DEEPSEEK_ALT_BASE_URL=https://api.deepseek.com/v1/chat/completions
 DEEPSEEK_ALT_API_KEY=your-deepseek-alt-api-key
 DEEPSEEK_ALT_MODEL=deepseek-ai/DeepSeek-V3
 
 # Baidu AI configuration (OCR functionality)
-BAIDU_APP_ID=your-baidu-app-id
 BAIDU_API_KEY=your-baidu-api-key
 BAIDU_SECRET_KEY=your-baidu-secret-key
 ```
@@ -203,9 +198,15 @@ npm run format
 pnpm lint         # ESLint code checking
 npm run lint
 
-# Initialize vector data
-pnpm init-vectors # Initialize AI vector data
-npm run init-vectors
+# Automated tests
+pnpm test
+npm test
+
+# Privacy-safe aggregate usage report
+pnpm metrics:usage
+
+# Plaintext-password cleanup (dry run by default)
+pnpm migration:remove-original-password
 ```
 
 ## 📋 Feature Details
@@ -214,7 +215,7 @@ npm run init-vectors
 
 - **Intelligent Conversation**: Supports professional Q&A in the financial domain
 - **Screenshot Analysis**: Real-time screenshot and AI interpretation of chart data
-- **Text Analysis**: OCR recognition + intelligent semantic analysis
+- **Text Analysis**: Direct analysis of selected financial text
 - **Multilingual**: Automatic detection and adaptation of Chinese/English responses
 - **Streaming Response**: Real-time typewriter effect display
 - **History Records**: Conversation history saving for logged-in users
@@ -236,9 +237,8 @@ npm run init-vectors
 ### 📚 Knowledge Management System
 
 - **Classification System**: Structured knowledge classification management
-- **Search Engine**: Full-text search + semantic search
+- **Search Engine**: Title matching across bilingual content
 - **Formula Rendering**: LaTeX mathematical formula support
-- **Version Control**: Content version management and update tracking
 
 ## 🌐 Internationalization Support
 
@@ -254,7 +254,7 @@ The project supports bilingual Chinese and English:
 ### Authentication Methods
 
 - NextAuth.js integration
-- Email and password login support
+- Username and password login support
 - Guest mode with limited conversation count
 - Administrator permission system
 
@@ -262,7 +262,7 @@ The project supports bilingual Chinese and English:
 
 - **Guest Users**: Limited AI conversation count (3 times)
 - **Registered Users**: Unlimited conversations + history records
-- **Administrators**: Content management + data statistics
+- **Administrators**: User and content management
 
 ## 🎯 Featured Functions
 
@@ -286,16 +286,6 @@ Supports LaTeX syntax:
 $$\text{ROE} = \frac{\text{Net Income}}{\text{Shareholders' Equity}} \times 100\%$$
 ```
 
-### 🔍 Full-text Search
-
-```typescript
-// Search functionality
-const searchResults = await fetch("/api/search", {
-  method: "POST",
-  body: JSON.stringify({ query: searchTerm }),
-});
-```
-
 ## 📦 Deployment Guide
 
 ### Vercel Deployment
@@ -306,22 +296,16 @@ npx vercel
 
 # Configure environment variables
 vercel env add MONGODB_URI
-vercel env add DEEPSEEK_API_KEY
+vercel env add AUTH_SECRET
+vercel env add DEEPSEEK_ALT_API_KEY
 # ... other environment variables
 ```
 
-### Docker Deployment
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
+Before executing the credential cleanup against production, create a database
+backup, run the default dry run, and review its count-only output. Execution
+requires both `MIGRATION_BACKUP_CONFIRMED=true` and
+`MIGRATION_CONFIRM=unset-original-password`, followed by
+`pnpm migration:remove-original-password -- --execute`.
 
 ## 🤝 Contributing Guide
 

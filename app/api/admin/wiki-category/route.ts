@@ -1,5 +1,6 @@
 import Category from "@/models/wiki-category";
 import { DBconnect } from "@/libs/mongodb";
+import { requireAdmin } from "@/libs/admin-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -43,6 +44,10 @@ export const GET = async (req: NextRequest) => {
 
 // post请求
 export const POST = async (req: NextRequest) => {
+  const authorization = await requireAdmin();
+  if (!authorization.authorized) {
+    return authorization.response;
+  }
   const data = await req.json();
   try {
     await DBconnect();

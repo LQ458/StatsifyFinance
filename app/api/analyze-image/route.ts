@@ -1,152 +1,126 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/auth";
+import { recognizeImageText } from "@/libs/baidu-ocr";
+import { recordProductEvent } from "@/libs/product-events";
+import {
+  jsonInputError,
+  MAX_IMAGE_BODY_BYTES,
+  parseImageAnalysisRequest,
+  readJsonBody,
+  RequestInputError,
+} from "@/libs/request-validation";
 import { streamText } from "@/utils/stream";
-import * as AipOcrClient from "baidu-aip-sdk";
-
-// 初始化百度云OCR客户端
-const client = new AipOcrClient.ocr(
-  process.env.BAIDU_APP_ID!,
-  process.env.BAIDU_API_KEY!,
-  process.env.BAIDU_SECRET_KEY!,
-);
 
 interface OCRWordResult {
   words: string;
 }
 
-// 系统提示词
 const getSystemPrompt = (locale: string) => {
   const isEnglish = locale === "en";
-  const languageInstruction = isEnglish
-    ? `CRITICAL LANGUAGE REQUIREMENT:
-- You MUST ALWAYS respond in English
-- This is a STRICT requirement that overrides all other instructions
-- Even if the OCR detects text in another language, you MUST respond in English
-- Translate any non-English terms or concepts into English
-- If you're unsure about any translation, provide both the original term and its English translation
-- Never switch to any other language under any circumstances`
-    : `语言要求：始终使用中文回答`;
+  return `You are StatsifyFinance's financial image analysis assistant.
 
-  return `You are StatsifyFinance's intelligent assistant, specializing in financial image analysis. Your role is to analyze financial charts, statements, and documents to provide concise, professional insights.
+${isEnglish ? "Always respond in English." : "始终使用中文回答。"}
 
-${languageInstruction}
-
-Analysis Guidelines:
-1. Image Content Analysis:
-   - Identify the type of financial document or chart
-   - Extract key financial metrics and data points
-   - Recognize trends and patterns in visual data
-   - Note any significant anomalies or outliers
-
-2. OCR Text Processing:
-   - Process and analyze text extracted from the image
-   - Identify key financial terms and metrics
-   - Validate data consistency and highlight any discrepancies
-   - ${isEnglish ? "Translate any non-English text while preserving financial terminology accuracy" : "保持金融术语的准确性"}
-
-3. Financial Interpretation:
-   - Provide context for the financial information
-   - Explain significant trends or changes
-   - Highlight important financial indicators
-   - Identify potential areas of concern or interest
-
-Response Guidelines:
-1. ${isEnglish ? "ALWAYS respond in English regardless of the image content language" : "使用中文回答"}
-2. Be concise, keeping each response under 200 words
-3. Structure the analysis in a clear, logical order
-4. Focus on the most relevant financial information
-5. Explain technical terms briefly for clarity
-6. Highlight any data quality issues or limitations
-7. Maintain objectivity in analysis
-8. Avoid making specific investment recommendations
-
-Additional Requirements:
-- If the image is unclear or contains insufficient information, explain the limitations
-- For non-financial images, briefly explain your inability to provide relevant analysis
-- Maintain a professional and analytical tone
-- ${isEnglish ? "Remember to ALWAYS respond in English, regardless of the image content language" : "始终使用中文回答"}`;
+Identify the financial document or chart, extract key metrics and trends, explain important implications, state data-quality limitations, remain objective, and avoid specific investment recommendations. Keep the response under 200 words.`;
 };
 
-// 获取完整提示词
-const getPrompt = (
-  question: string,
-  ocrResult: { words_result: OCRWordResult[] },
-  locale: string,
-) => {
-  const extractedText = ocrResult.words_result
+const getPrompt = (question: string, words: OCRWordResult[]): string => {
+  const extractedText = words
     .map((item) => item.words)
-    .join("\n");
+    .join("\n")
+    .slice(0, 12_000);
 
   return `Content to analyze:
 ${extractedText}
 
 Question: ${question}
 
-Important:
-1. Provide a direct, concise analysis of the financial information
-2. Do not mention OCR, image processing, or any technical details
-3. Focus on explaining the financial concepts and their implications
-4. Keep the response professional but easy to understand
-5. Avoid phrases like "the image shows", "OCR results", etc.`;
+Provide a direct financial analysis. Do not mention OCR or image-processing details.`;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const { image, question, locale = "zh" } = await req.json();
+    const body = await readJsonBody(req, MAX_IMAGE_BODY_BYTES);
+    const parsed = parseImageAnalysisRequest(body);
 
-    if (!image || typeof image !== "string") {
-      return new Response("Invalid image data", { status: 400 });
+    const baiduApiKey = process.env.BAIDU_API_KEY;
+    const baiduSecretKey = process.env.BAIDU_SECRET_KEY;
+    const endpoint = process.env.DEEPSEEK_ALT_BASE_URL;
+    const deepseekApiKey = process.env.DEEPSEEK_ALT_API_KEY;
+    if (!baiduApiKey || !baiduSecretKey || !endpoint || !deepseekApiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Image analysis is unavailable",
+          code: "SERVICE_UNAVAILABLE",
+        },
+        { status: 503 },
+      );
     }
 
-    if (!question || typeof question !== "string") {
-      return new Response("Invalid question", { status: 400 });
-    }
+    const session = await getServerSession(authOptions);
+    const words = await recognizeImageText(parsed.base64);
 
-    // 从base64中提取图片数据
-    const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
-
-    // 调用百度云OCR
-    const result = await client.generalBasic(base64Data);
-
-    // 调用DeepSeek API进行分析 - 使用和chat相同的配置
-    const response = await fetch(process.env.DEEPSEEK_ALT_BASE_URL!, {
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
+        Authorization: `Bearer ${deepseekApiKey}`,
       },
       body: JSON.stringify({
         model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
         messages: [
           {
             role: "system",
-            content: getSystemPrompt(locale),
+            content: getSystemPrompt(parsed.locale),
           },
           {
             role: "user",
-            content: getPrompt(question, result, locale),
+            content: getPrompt(parsed.question, words),
           },
         ],
         temperature: 0.7,
         stream: true,
       }),
+      signal: AbortSignal.timeout(30_000),
     });
 
     if (!response.ok) {
-      console.error("DeepSeek API error:", await response.text());
-      throw new Error(`DeepSeek API error: ${response.status}`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Image analysis is temporarily unavailable",
+          code: "UPSTREAM_ERROR",
+        },
+        { status: 502 },
+      );
     }
 
-    // 设置响应头
     const headers = new Headers({
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
     });
 
-    // 返回流式响应
-    return streamText(response, headers);
+    return streamText(response, headers, async () => {
+      await recordProductEvent(
+        "image_analysis_completed",
+        Boolean(session?.user?.id),
+      );
+    });
   } catch (error) {
-    console.error("Error in analyze-image:", error);
-    return new Response("Internal Server Error", { status: 500 });
+    if (error instanceof RequestInputError) {
+      return jsonInputError(error);
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Image analysis is temporarily unavailable",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+      { status: 500 },
+    );
   }
 }

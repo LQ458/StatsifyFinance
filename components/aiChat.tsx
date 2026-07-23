@@ -26,7 +26,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import mathStyles from "@/src/css/math-formula.module.css";
@@ -578,11 +577,11 @@ export default function AIChat() {
                     return newMessages;
                   });
                 }
-              } catch (jsonError) {
-                console.debug("Non-JSON chunk received:", chunk);
+              } catch {
+                // Ignore protocol markers that are not JSON payloads.
               }
-            } catch (e) {
-              console.debug("Error processing chunk:", chunk, e);
+            } catch {
+              // Ignore malformed stream chunks and continue reading.
             }
           }
         }
@@ -692,17 +691,12 @@ export default function AIChat() {
             try {
               // 处理结束标记
               if (chunk === "d:[DONE]") {
-                console.log("[Chat Frontend] Image analysis complete");
                 continue;
               }
 
               // 处理内容
               if (chunk.startsWith("0:")) {
                 const content = chunk.slice(2);
-                console.log(
-                  "[Chat Frontend] Processing image analysis content:",
-                  content,
-                );
 
                 if (content) {
                   // 处理引号格式，与普通聊天保持一致
@@ -734,8 +728,8 @@ export default function AIChat() {
                   });
                 }
               }
-            } catch (e) {
-              console.error("Error processing image analysis chunk:", chunk, e);
+            } catch {
+              // Ignore malformed stream chunks and continue reading.
             }
           }
         }
@@ -845,7 +839,7 @@ export default function AIChat() {
           <ReactMarkdown
             key={`md-${message.id}-${index}`}
             remarkPlugins={[remarkGfm, remarkMath]}
-            rehypePlugins={[rehypeKatex, rehypeRaw]}
+            rehypePlugins={[rehypeKatex]}
             components={
               {
                 code({ node, inline, className, children, ...props }: any) {

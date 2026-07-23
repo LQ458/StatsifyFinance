@@ -1,7 +1,16 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/auth";
+import { recordProductEvent } from "@/libs/product-events";
+import {
+  jsonInputError,
+  MAX_TEXT_BODY_BYTES,
+  readJsonBody,
+  RequestInputError,
+  textAnalysisRequestSchema,
+} from "@/libs/request-validation";
 import { streamText } from "@/utils/stream";
 
-// 系统提示词
 const getSystemPrompt = (locale: string) => {
   const isEnglish = locale === "en";
   const languageInstruction = isEnglish
@@ -19,54 +28,17 @@ const getSystemPrompt = (locale: string) => {
 ${languageInstruction}
 
 Analysis Guidelines:
-1. Text Content Analysis:
-   - Identify the type of financial content
-   - Extract key financial metrics and data points
-   - Recognize important financial terms and concepts
-   - Note any significant information or trends
-
-2. Financial Context:
-   - Understand the broader financial context
-   - Identify industry-specific terminology
-   - Validate data consistency and highlight any discrepancies
-   - ${
-     isEnglish
-       ? "Translate any non-English financial terms while preserving accuracy"
-       : "保持金融术语的准确性"
-   }
-
-3. Financial Interpretation:
-   - Provide context for the financial information
-   - Explain significant points or implications
-   - Highlight important financial indicators
-   - Identify potential areas of concern or interest
+1. Identify the type of financial content, key metrics, terminology, and trends.
+2. Explain relevant context, consistency issues, and important implications.
+3. Remain objective and avoid specific investment recommendations.
 
 Response Guidelines:
-1. ${
-    isEnglish
-      ? "ALWAYS respond in English regardless of the input text language"
-      : "使用中文回答"
-  }
-2. Be concise, keeping each response under 200 words
-3. Structure the analysis in a clear, logical order
-4. Focus on the most relevant financial information
-5. Explain technical terms briefly for clarity
-6. Highlight any data quality issues or limitations
-7. Maintain objectivity in analysis
-8. Avoid making specific investment recommendations
-
-Additional Requirements:
-- If the text is unclear or contains insufficient information, explain the limitations
-- For non-financial text, briefly explain your inability to provide relevant analysis
-- Maintain a professional and analytical tone
-- ${
-    isEnglish
-      ? "Remember to ALWAYS respond in English, regardless of the input text language"
-      : "始终使用中文回答"
-  }`;
+1. ${isEnglish ? "Always respond in English." : "使用中文回答。"}
+2. Keep the response under 200 words.
+3. Use a clear logical structure and briefly explain technical terms.
+4. State limitations when the source is unclear or insufficient.`;
 };
 
-// 获取完整提示词
 const getPrompt = (text: string, question: string, locale: string) => {
   return `${getSystemPrompt(locale)}
 
@@ -76,60 +48,97 @@ ${text}
 Question:
 ${question}
 
-Please analyze the above content following the guidelines:`;
+Please analyze the content following the guidelines above.`;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const { text, question, locale = "zh" } = await req.json();
-
-    if (!text || typeof text !== "string") {
-      return new Response("Invalid text input", { status: 400 });
+    const body = await readJsonBody(req, MAX_TEXT_BODY_BYTES);
+    const parsed = textAnalysisRequestSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid text analysis request",
+          code: "INVALID_INPUT",
+        },
+        { status: 400 },
+      );
     }
 
-    if (!question || typeof question !== "string") {
-      return new Response("Invalid question", { status: 400 });
+    const endpoint = process.env.DEEPSEEK_ALT_BASE_URL;
+    const apiKey = process.env.DEEPSEEK_ALT_API_KEY;
+    if (!endpoint || !apiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Text analysis is unavailable",
+          code: "SERVICE_UNAVAILABLE",
+        },
+        { status: 503 },
+      );
     }
 
-    // 构建提示词
-    const prompt = getPrompt(text, question, locale);
-
-    // 调用DeepSeek API - 使用和chat相同的配置
-    const response = await fetch(process.env.DEEPSEEK_ALT_BASE_URL!, {
+    const session = await getServerSession(authOptions);
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.DEEPSEEK_ALT_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: process.env.DEEPSEEK_ALT_MODEL ?? "deepseek-ai/DeepSeek-V3",
         messages: [
           {
             role: "user",
-            content: prompt,
+            content: getPrompt(
+              parsed.data.text,
+              parsed.data.question,
+              parsed.data.locale,
+            ),
           },
         ],
         temperature: 0.7,
         stream: true,
       }),
+      signal: AbortSignal.timeout(30_000),
     });
 
     if (!response.ok) {
-      console.error("DeepSeek API error:", await response.text());
-      throw new Error(`DeepSeek API error: ${response.status}`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Text analysis is temporarily unavailable",
+          code: "UPSTREAM_ERROR",
+        },
+        { status: 502 },
+      );
     }
 
-    // 设置响应头
     const headers = new Headers({
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
     });
 
-    // 返回流式响应
-    return streamText(response, headers);
+    return streamText(response, headers, async () => {
+      await recordProductEvent(
+        "text_analysis_completed",
+        Boolean(session?.user?.id),
+      );
+    });
   } catch (error) {
-    console.error("Error in analyze-text:", error);
-    return new Response("Internal Server Error", { status: 500 });
+    if (error instanceof RequestInputError) {
+      return jsonInputError(error);
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Text analysis is temporarily unavailable",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+      { status: 500 },
+    );
   }
 }
